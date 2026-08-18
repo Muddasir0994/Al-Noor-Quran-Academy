@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/admin/
+Disallow: /admin
+Disallow: /student-portal/private/
+Disallow: /teacher-portal/private/
+
+# Sitemaps
+Sitemap: https://www.alnoorquranacademy.com/sitemap.xml

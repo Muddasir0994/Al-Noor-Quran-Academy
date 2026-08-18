@@ -1,0 +1,952 @@
+{
+  "courses": [
+    {
+      "id": "c-1",
+      "slug": "noorani-qaida",
+      "name": "Noorani Qaida",
+      "arabicName": "القاعدة النورانية",
+      "category": "kids",
+      "shortDescription": "Essential foundation for Arabic phonetics, Makharij articulation points, and beginner reading.",
+      "description": "The fundamental beginner course designed to teach letter recognition, correct phonetic articulation (Makharij), joining letters, Harakaat, Tanween, Madd, and Sukoon to build a flawless foundation for Quran recitation.",
+      "audience": "Kids (Ages 4+), Beginners & New Muslims",
+      "duration": "3 - 5 Months",
+      "classesPerWeek": "4 - 5 Days / Week",
+      "feePKR": 3500,
+      "feeUSD": 35,
+      "featured": true,
+      "status": "active",
+      "highlights": [
+        "Arabic Alphabet & Precise Makharij Articulation",
+        "Letter Recognition & Joining Rules",
+        "Short Vowels (Harakat), Tanween & Sukoon",
+        "Gentle 1-on-1 pacing customized for children"
+      ],
+      "syllabus": [
+        "Lesson 1: Individual Letters & Articulation Points (Makharij)",
+        "Lesson 2: Compound Letters (Murakkabat)",
+        "Lesson 3: Muqatta'at Letters (Abbreviated Letters)",
+        "Lesson 4: Short Vowels (Harakat: Fatha, Kasra, Damma)",
+        "Lesson 5: Tanween (Double Vowels)",
+        "Lesson 6: Exercises on Harakat & Tanween",
+        "Lesson 7: Standing Fatha, Kasra, Damma (Khari Harkat)",
+        "Lesson 8: Huroof Maddah & Leen",
+        "Lesson 9: Sukoon / Jazm & Qalqalah letters",
+        "Lesson 10: Shaddah (Tashdeed) & Practical Quran Words"
+      ],
+      "learningOutcomes": [
+        "Accurate pronunciation of all 28 Arabic letters without mixing sounds",
+        "Ability to read compound words directly from the Mushaf",
+        "Smooth transition into Para 30 (Juz Amma)"
+      ]
+    },
+    {
+      "id": "c-2",
+      "slug": "quran-reading-nazra",
+      "name": "Quran Reading / Nazra",
+      "arabicName": "ناظرة القرآن الكريم",
+      "category": "recitation",
+      "shortDescription": "Fluent reading of the complete 30 Paras (Juz) with rhythm, breath control, and confidence.",
+      "description": "Master continuous and fluent reading of the Holy Quran from cover to cover. Students receive 1-on-1 supervision to correct pronunciation errors in real-time and cultivate love for daily Quranic recitation.",
+      "audience": "Students who completed Qaida & Adults",
+      "duration": "6 - 12 Months",
+      "classesPerWeek": "4 - 5 Days / Week",
+      "feePKR": 4000,
+      "feeUSD": 40,
+      "featured": true,
+      "status": "active",
+      "highlights": [
+        "Complete 30 Paras (Juz) Reading with continuous monitoring",
+        "Real-time error correction and recitation confidence",
+        "Breath control & rhythmic pace development",
+        "Daily Sabaq recording and progress tracking"
+      ],
+      "syllabus": [
+        "Juz 30 (Juz Amma): Short Surahs fluency & basic pause rules",
+        "Juz 1-5: Building endurance & continuous reading speed",
+        "Juz 6-15: Complex vocabulary and longer verses",
+        "Juz 16-30: Complete Khatam al-Quran with final assessment"
+      ]
+    },
+    {
+      "id": "c-3",
+      "slug": "quran-with-tajweed",
+      "name": "Quran with Tajweed",
+      "arabicName": "تجويد القرآن الكريم",
+      "category": "tajweed",
+      "shortDescription": "Master the science of Tajweed rules: Noon Sakin, Meem Sakin, Madd, and Stopping Signs (Waqf).",
+      "description": "Learn the theoretical principles and practical application of Tajweed. This course enables learners to beautify their voices while strictly adhering to classical rules taught by the Prophet (PBUH).",
+      "audience": "Kids, Teens, Adults & Advanced Reciters",
+      "duration": "6 - 9 Months",
+      "classesPerWeek": "3 - 4 Days / Week",
+      "feePKR": 4500,
+      "feeUSD": 45,
+      "featured": true,
+      "status": "active",
+      "highlights": [
+        "Theoretical & Practical Rules of Noon Sakinah & Tanween",
+        "Meem Sakinah, Qalqalah & Sifaat al-Huroof",
+        "Heavy and Light letters (Tafkheem & Tarqeeq)",
+        "Rules of Waqf (Stopping & Starting Signs in Quran)"
+      ],
+      "syllabus": [
+        "Module 1: Makharij (5 major articulation areas)",
+        "Module 2: Noon Sakin & Tanween (Izhar, Idgham, Iqlab, Ikhfa)",
+        "Module 3: Meem Sakin (Ikhfa Shafawi, Idgham Shafawi, Izhar Shafawi)",
+        "Module 4: Madd rules (Asli, Muttasil, Munfasil, Lazim, Aaridh)",
+        "Module 5: Rules of Raa & Laam",
+        "Module 6: Stopping Signs (Meem, Taa, Jeem, Zaa, Saad, Qaf, Laa)"
+      ]
+    },
+    {
+      "id": "c-4",
+      "slug": "quran-memorization-hifz",
+      "name": "Quran Memorization / Hifz",
+      "arabicName": "حفظ القرآن الكريم",
+      "category": "hifz",
+      "shortDescription": "Full or selective Quran memorization with daily Sabaq, Sabqi, and Manzil retention methodology.",
+      "description": "A structured and spiritually uplifting memorization program led by certified Huffaz. Students follow an established retention system ensuring memorized Surahs remain permanently retained.",
+      "audience": "Dedicated Boys, Girls, and Adults",
+      "duration": "2 - 3.5 Years (Flexible tracks available)",
+      "classesPerWeek": "5 Days / Week",
+      "feePKR": 6000,
+      "feeUSD": 55,
+      "featured": true,
+      "status": "active",
+      "highlights": [
+        "Daily Sabaq (New Memorization Lesson)",
+        "Daily Sabqi (Recent 5-10 Pages Revision)",
+        "Manzil Retention Cycle (Previous Paras)",
+        "Monthly memorization examinations & certificates"
+      ],
+      "syllabus": [
+        "Stage 1: Juz 30 (Juz Amma) & Juz 29 (Tabarak)",
+        "Stage 2: Selected Virtuous Surahs (Yaseen, Rahman, Waqiah, Mulk, Kahf)",
+        "Stage 3: Progressive Surah-by-Surah memorization from Surah Baqarah",
+        "Stage 4: Complete Quran Khatam with intensive Manzil revision"
+      ]
+    },
+    {
+      "id": "c-5",
+      "slug": "quran-translation-tafseer",
+      "name": "Quran Translation & Tafseer",
+      "arabicName": "ترجمة القرآن والتفسير",
+      "category": "islamic_studies",
+      "shortDescription": "Word-by-word translation and authentic explanation of divine verses and their modern application.",
+      "description": "Understand what Allah SWT is speaking to you. Learn word-by-word Arabic vocabulary, context of revelation (Asbab al-Nuzul), legal rulings, and life lessons for spiritual enlightenment.",
+      "audience": "Teens, Adults, Parents, Seekers of Knowledge",
+      "duration": "12 - 18 Months",
+      "classesPerWeek": "3 Days / Week",
+      "feePKR": 5000,
+      "feeUSD": 50,
+      "featured": true,
+      "status": "active",
+      "highlights": [
+        "Word-by-word Translation in Urdu / English",
+        "Historical context and background (Asbab al-Nuzul)",
+        "Practical everyday takeaways and moral injunctions",
+        "Taught by qualified Islamic scholars and Aalims"
+      ],
+      "syllabus": [
+        "Section 1: Surah Al-Fatiha and Core Aqeedah Principles",
+        "Section 2: Juz Amma with detailed Tafseer & reflections",
+        "Section 3: Major Surahs: Al-Kahf, Yaseen, Ar-Rahman, Al-Mulk, Al-Hujurat",
+        "Section 4: Systematic Juz-by-Juz journey through the entire Quran"
+      ]
+    },
+    {
+      "id": "c-6",
+      "slug": "islamic-studies-general",
+      "name": "Islamic Studies & Tarbiyah",
+      "arabicName": "التربية والدراسات الإسلامية",
+      "category": "islamic_studies",
+      "shortDescription": "Comprehensive Islamic character building, Seerah of the Prophet (PBUH), and Islamic manners (Adab).",
+      "description": "Nurture strong Islamic identity and moral values in young minds. Covers the life of the Prophet Muhammad (PBUH), stories of the Prophets, halal/haram concepts, and noble Islamic etiquette.",
+      "audience": "Kids, Teens & Young Adults",
+      "duration": "6 Months",
+      "classesPerWeek": "3 Days / Week",
+      "feePKR": 3500,
+      "feeUSD": 35,
+      "featured": false,
+      "status": "active",
+      "highlights": [
+        "Stories of the 25 Prophets mentioned in Quran",
+        "Seerah of Prophet Muhammad (PBUH)",
+        "Core Beliefs: 6 Articles of Iman & 5 Pillars of Islam",
+        "Islamic manners: Respect for parents, honesty, kindness, modesty"
+      ],
+      "syllabus": [
+        "Month 1: Tawheed, Angels, Holy Books, and Prophets",
+        "Month 2: Seerah from birth in Makkah to Hijrah",
+        "Month 3: Madinah period, Battles, Treaty of Hudaybiyyah, Conquest of Makkah",
+        "Month 4: Islamic Etiquette: Table manners, speaking truth, helping neighbors",
+        "Month 5: Concept of Halal, Haram, and Daily Islamic Living"
+      ]
+    },
+    {
+      "id": "c-7",
+      "slug": "namaz-salah-mastery",
+      "name": "Namaz / Salah Mastery",
+      "arabicName": "تعليم الصلاة والوضوء",
+      "category": "islamic_studies",
+      "shortDescription": "Step-by-step Wudu, practical Salah movements, Azan, Tashahhud, and translation of prayer recitations.",
+      "description": "Learn the second pillar of Islam with complete precision. From physical postures (Qiyam, Ruku, Sujood, Jalsah) to word-by-word translation of Subhanaka, Attahiyyat, Durood Ibrahim, and Duas.",
+      "audience": "Children (Ages 5+), New Muslims & Beginners",
+      "duration": "2 - 3 Months",
+      "classesPerWeek": "3 Days / Week",
+      "feePKR": 3000,
+      "feeUSD": 30,
+      "featured": false,
+      "status": "active",
+      "highlights": [
+        "Physical Demonstration of Wudu, Ghusl, and Tayammum",
+        "Correct Salah Postures and Movements step-by-step",
+        "Word-by-word meaning of everything recited in Namaz",
+        "Rules of Janazah Prayer, Eid Prayer, and Witr Dua Qunoot"
+      ],
+      "syllabus": [
+        "Week 1: Taharah, Rules of Cleanliness & Method of Wudu",
+        "Week 2: Preparation for Salah, Takbeer-e-Tahreema & Qiyam",
+        "Week 3: Subhanaka, Surah Fatiha, Ruku, Qawmah, and Sajdah",
+        "Week 4: Tashahhud (Attahiyyat), Durood-e-Ibrahimi & Rabbana Duas",
+        "Week 5: Sunnah, Fardh, Wajib, Nafil prayer structures & Qaza Salah rules"
+      ]
+    },
+    {
+      "id": "c-8",
+      "slug": "duas-and-kalmas",
+      "name": "Daily Duas & 6 Kalmas",
+      "arabicName": "الأدعية والكلمات الست",
+      "category": "islamic_studies",
+      "shortDescription": "40 essential Masnoon supplications with Urdu/English translations and 6 Kalimas memorization.",
+      "description": "Equip yourself and your children with daily prophetic Duas for protection, eating, sleeping, waking up, entering the home, traveling, and the 6 foundational Kalimas.",
+      "audience": "Children, Teens & Entire Family",
+      "duration": "2 - 3 Months",
+      "classesPerWeek": "2 - 3 Days / Week",
+      "feePKR": 3000,
+      "feeUSD": 30,
+      "featured": false,
+      "status": "active",
+      "highlights": [
+        "6 Kalimas with accurate Arabic pronunciation & translation",
+        "40 Daily Masnoon Duas from Hisnul Muslim",
+        "Ayat-ul-Kursi & 4 Quls for spiritual protection",
+        "Interactive flashcard methods for kids"
+      ],
+      "syllabus": [
+        "Unit 1: The 6 Kalimas (Tayyab, Shahadat, Tamjeed, Tawheed, Astaghfar, Rad-de-Kufr)",
+        "Unit 2: Morning & Evening Protection Duas",
+        "Unit 3: Eating, Drinking, Sleeping, Waking, Bathroom Duas",
+        "Unit 4: Traveling, Mosque, Leaving Home & Rain Duas",
+        "Unit 5: Duas for Parents, Forgiveness & Protection from evil eye"
+      ]
+    },
+    {
+      "id": "c-9",
+      "slug": "quran-for-kids",
+      "name": "Quran Classes for Kids",
+      "arabicName": "تعليم القرآن للأطفال",
+      "category": "kids",
+      "shortDescription": "Child-friendly pedagogy, interactive rewards, patience, and positive reinforcement.",
+      "description": "Specially engineered for children ages 4 to 14. Our teachers use interactive whiteboards, animated illustrations, and gentle encouragement to make Quran learning joyful and lifelong.",
+      "audience": "Children Ages 4 to 14",
+      "duration": "Customized based on child pace",
+      "classesPerWeek": "3 - 5 Days / Week",
+      "feePKR": 3800,
+      "feeUSD": 38,
+      "featured": true,
+      "status": "active",
+      "highlights": [
+        "Trained kids specialists with extreme patience and gentle tone",
+        "1-on-1 private attention without any group distractions",
+        "Combined Qaida, Nazra, Namaz, Duas, and Islamic manners",
+        "Weekly progress logs and parent WhatsApp updates"
+      ],
+      "syllabus": [
+        "Interactive Noorani Qaida phonetics with fun sound drills",
+        "Short Surahs from Juz Amma memorization with correct rhythm",
+        "Practical Namaz and Wudu demonstrations",
+        "Stories of the Prophets and moral values (honesty, kindness)"
+      ]
+    },
+    {
+      "id": "c-10",
+      "slug": "quran-for-women",
+      "name": "Quran for Women & Sisters",
+      "arabicName": "تعليم القرآن للنساء",
+      "category": "women",
+      "shortDescription": "100% private 1-on-1 sessions taught exclusively by certified female scholars (Aalima / Hafiza).",
+      "description": "A completely secure, private, and comfortable learning environment for sisters, mothers, and working women. Study Noorani Qaida, Tajweed refinement, Tafseer, or Hifz at flexible hours.",
+      "audience": "Sisters, Mothers, College Students & Working Women",
+      "duration": "Flexible / Customized",
+      "classesPerWeek": "2 - 5 Days / Week",
+      "feePKR": 4000,
+      "feeUSD": 40,
+      "featured": true,
+      "status": "active",
+      "highlights": [
+        "Certified Female Quran Tutors (Ijazah & Aalima graduates)",
+        "100% privacy and comfortable home environment",
+        "Flexible morning, afternoon, or late-night schedules",
+        "Women-specific Fiqh guidance (Taharah, Salah, Family values)"
+      ],
+      "syllabus": [
+        "Track A: Beginner Arabic reading & Makharij perfection",
+        "Track B: Fluency in recitation with practical Tajweed rules",
+        "Track C: Word-by-word translation & Tafseer of Surah Maryam, An-Nur, An-Nisa",
+        "Track D: Selective Hifz of Surah Yaseen, Al-Mulk, Al-Waqiah, Ar-Rahman"
+      ]
+    },
+    {
+      "id": "c-11",
+      "slug": "quran-for-beginners",
+      "name": "Quran for Absolute Beginners",
+      "arabicName": "القرآن للمبتدئين",
+      "category": "adults",
+      "shortDescription": "Zero prior Arabic knowledge required. Start from letter sounds to reading full verses.",
+      "description": "Designed for anyone who never had the chance to learn in childhood or wants to restart from scratch. Zero judgment, highly supportive, and step-by-step guidance from single letters to fluent reading.",
+      "audience": "Adults, Teens, Converts & New Learners",
+      "duration": "4 - 6 Months",
+      "classesPerWeek": "3 - 4 Days / Week",
+      "feePKR": 4000,
+      "feeUSD": 40,
+      "featured": false,
+      "status": "active",
+      "highlights": [
+        "Start from Zero: No prerequisite knowledge needed",
+        "Encouraging, adult-friendly adult pedagogy without embarrassment",
+        "Master Arabic letter forms (Beginning, Middle, End)",
+        "Read your first full Quranic page within 12 weeks"
+      ],
+      "syllabus": [
+        "Phase 1: 28 Alphabet shapes and pronunciation points",
+        "Phase 2: Connecting letters to form syllables and words",
+        "Phase 3: Vowels (Fatha, Kasra, Damma) and Tanween",
+        "Phase 4: Reading full sentences directly from Surah Al-Fatiha and Juz 30"
+      ]
+    },
+    {
+      "id": "c-12",
+      "slug": "quran-for-adults",
+      "name": "Quran Classes for Adults",
+      "arabicName": "تعليم القرآن للكبار",
+      "category": "adults",
+      "shortDescription": "Executive flexible schedules tailored for busy professionals, university students, and parents.",
+      "description": "Busy schedules shouldn't keep you from the Quran. Choose early morning, late evening, or weekend slots across any international timezone with dedicated 1-on-1 private tutors.",
+      "audience": "Busy Professionals, University Students & Parents",
+      "duration": "Flexible Ongoing",
+      "classesPerWeek": "2 - 5 Days / Week",
+      "feePKR": 4500,
+      "feeUSD": 45,
+      "featured": false,
+      "status": "active",
+      "highlights": [
+        "Ultra-flexible time slots accommodating work and family life",
+        "Choice of Tajweed, Translation, Tafseer, or Recitation tracks",
+        "1-on-1 focused instruction with respected Male or Female tutors",
+        "Make-up class flexibility for missed sessions"
+      ],
+      "syllabus": [
+        "Tailored Diagnostic Assessment during 3-Day Trial",
+        "Targeted correction of common pronunciation habits",
+        "Tajweed rule application with immediate audio feedback",
+        "Spiritual reflections and understanding of divine commandments"
+      ]
+    }
+  ],
+  "packages": [
+    {
+      "id": "pkg-2days",
+      "name": "Basic Foundation",
+      "code": "pkg-2days",
+      "daysPerWeek": "2 Days / Week",
+      "classesPerMonth": 8,
+      "classDurationMinutes": 30,
+      "monthlyFeePKR": 3000,
+      "monthlyFeeUSD": 30,
+      "monthlyFeeGBP": 25,
+      "monthlyFeeEUR": 28,
+      "monthlyFeeAED": 110,
+      "monthlyFeeCAD": 40,
+      "monthlyFeeAUD": 45,
+      "badge": "Starter Friendly",
+      "description": "Perfect for working adults, young beginners, or revision of Tajweed with a steady pace.",
+      "features": [
+        "8 One-on-One Live Classes per month",
+        "30 Minutes per private lesson",
+        "Choice of Male or Female certified tutor",
+        "Includes Quran Reading, Namaz & Daily Duas",
+        "Flexible weekend or weekday slots",
+        "3-Day Free Trial with zero advance fee"
+      ]
+    },
+    {
+      "id": "pkg-3days",
+      "name": "Standard Learning",
+      "code": "pkg-3days",
+      "daysPerWeek": "3 Days / Week",
+      "classesPerMonth": 12,
+      "classDurationMinutes": 30,
+      "monthlyFeePKR": 4000,
+      "monthlyFeeUSD": 40,
+      "monthlyFeeGBP": 32,
+      "monthlyFeeEUR": 36,
+      "monthlyFeeAED": 145,
+      "monthlyFeeCAD": 52,
+      "monthlyFeeAUD": 58,
+      "isPopular": true,
+      "badge": "Most Popular Choice",
+      "description": "Our most recommended plan for steady, consistent progress in Noorani Qaida, Tajweed, or Nazra.",
+      "features": [
+        "12 One-on-One Live Classes per month",
+        "30 Minutes per private lesson",
+        "Choice of Male or Female certified tutor",
+        "Complete Quran Reading + Tajweed + Islamic Studies",
+        "Monthly Progress Assessment & Report Card",
+        "Free Class Rescheduling & Makeup support",
+        "3-Day Free Trial included"
+      ]
+    },
+    {
+      "id": "pkg-5days",
+      "name": "Intensive Track",
+      "code": "pkg-5days",
+      "daysPerWeek": "5 Days / Week",
+      "classesPerMonth": 20,
+      "classDurationMinutes": 30,
+      "monthlyFeePKR": 6000,
+      "monthlyFeeUSD": 55,
+      "monthlyFeeGBP": 45,
+      "monthlyFeeEUR": 50,
+      "monthlyFeeAED": 200,
+      "monthlyFeeCAD": 72,
+      "monthlyFeeAUD": 80,
+      "badge": "Best for Rapid Fluency & Hifz",
+      "description": "Ideal for serious learners, Hifz-ul-Quran students, and kids seeking rapid daily Quranic mastery.",
+      "features": [
+        "20 One-on-One Live Classes per month",
+        "30 Minutes daily focused lesson",
+        "Daily Sabaq, Sabqi, and Manzil revisions",
+        "Dedicated Hafiz / Aalima tutor assigned",
+        "Weekly voice notes & audio homework checks",
+        "Priority scheduling and make-up slots",
+        "3-Day Free Trial included"
+      ]
+    },
+    {
+      "id": "pkg-weekend",
+      "name": "Weekend Special",
+      "code": "pkg-weekend",
+      "daysPerWeek": "Saturday & Sunday",
+      "classesPerMonth": 8,
+      "classDurationMinutes": 45,
+      "monthlyFeePKR": 3500,
+      "monthlyFeeUSD": 35,
+      "monthlyFeeGBP": 28,
+      "monthlyFeeEUR": 32,
+      "monthlyFeeAED": 130,
+      "monthlyFeeCAD": 46,
+      "monthlyFeeAUD": 52,
+      "badge": "School & Office Friendly",
+      "description": "Customized for school children and office workers with busy Monday-to-Friday schedules.",
+      "features": [
+        "8 Weekend Classes per month (Sat & Sun)",
+        "Extended 45 Minutes per class for deep learning",
+        "Male and Female tutors available on weekends",
+        "Noorani Qaida, Nazra, Namaz & Kalmas included",
+        "Parent coordination and attendance reports",
+        "3-Day Free Trial included"
+      ]
+    }
+  ],
+  "leads": [
+    {
+      "id": "lead-101",
+      "studentName": "Zayd Ali",
+      "parentName": "Imran Ali",
+      "email": "imran.ali.uk@gmail.com",
+      "phone": "+44 7911 123456",
+      "country": "United Kingdom",
+      "courseId": "c-1",
+      "courseName": "Noorani Qaida",
+      "tutorGender": "Female",
+      "timeSlot": "Evening",
+      "preferredDays": [
+        "Monday",
+        "Tuesday",
+        "Wednesday"
+      ],
+      "preferredTimeRange": "5:00 PM - 7:00 PM (UK Time)",
+      "learningPace": "Normal",
+      "notes": [
+        {
+          "id": "n-1",
+          "text": "Interested in female tutor for 6-year-old child",
+          "author": "System",
+          "createdAt": "2026-08-18T03:41:40.936Z"
+        }
+      ],
+      "status": "New Lead",
+      "createdAt": "2026-08-17T23:41:40.937Z",
+      "updatedAt": "2026-08-17T23:41:40.937Z"
+    },
+    {
+      "id": "lead-102",
+      "studentName": "Maryam K.",
+      "parentName": "Self (Adult)",
+      "email": "maryam.k@outlook.com",
+      "phone": "+1 416 555 0192",
+      "country": "Canada",
+      "courseId": "c-3",
+      "courseName": "Quran with Tajweed",
+      "tutorGender": "Female",
+      "timeSlot": "Night",
+      "preferredDays": [
+        "Saturday",
+        "Sunday"
+      ],
+      "preferredTimeRange": "8:00 PM - 10:00 PM (EST)",
+      "learningPace": "Normal",
+      "notes": [
+        {
+          "id": "n-2",
+          "text": "Wants to polish Tajweed rules and Makharij",
+          "author": "System",
+          "createdAt": "2026-08-18T03:41:40.937Z"
+        }
+      ],
+      "status": "Trial Scheduled",
+      "createdAt": "2026-08-17T03:41:40.937Z",
+      "updatedAt": "2026-08-17T15:41:40.937Z"
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "app-201",
+      "studentName": "Ayaan Mahmood",
+      "studentEmail": "ayaankids@gmail.com",
+      "phone": "+44 7700 900077",
+      "country": "United Kingdom",
+      "parentName": "Dr. Tariq Mahmood",
+      "parentPhone": "+44 7700 900077",
+      "parentEmail": "tariq.mahmood@nhs.net",
+      "courseId": "c-2",
+      "courseName": "Quran Reading / Nazra",
+      "packageId": "pkg-3days",
+      "packageName": "Standard Learning (3 Days/Week)",
+      "tutorPreference": "Female",
+      "timeSlot": "Evening",
+      "preferredDays": [
+        "Monday",
+        "Wednesday",
+        "Friday"
+      ],
+      "preferredTimeRange": "6:00 PM UK Time",
+      "learningPace": "Normal",
+      "additionalNotes": "Completed Qaida recently, ready for Juz 1 recitation.",
+      "status": "Approved",
+      "assignedTutorId": "tut-1",
+      "assignedTutorName": "Ustadha Maryam Siddiqa",
+      "notes": [
+        {
+          "id": "n-3",
+          "text": "Assigned to Ustadha Maryam. Classes starting Monday.",
+          "author": "Admin",
+          "createdAt": "2026-08-18T03:41:40.937Z"
+        }
+      ],
+      "createdAt": "2026-08-16T03:41:40.937Z",
+      "updatedAt": "2026-08-17T21:41:40.937Z"
+    }
+  ],
+  "students": [
+    {
+      "id": "stu-301",
+      "studentName": "Ayaan Mahmood",
+      "parentName": "Dr. Tariq Mahmood",
+      "email": "tariq.mahmood@nhs.net",
+      "phone": "+44 7700 900077",
+      "country": "United Kingdom",
+      "courseId": "c-2",
+      "courseName": "Quran Reading / Nazra",
+      "packageId": "pkg-3days",
+      "packageName": "Standard Learning (3 Days/Week)",
+      "tutorId": "tut-1",
+      "tutorName": "Ustadha Maryam Siddiqa",
+      "preferredTime": "Evening",
+      "preferredDays": [
+        "Monday",
+        "Wednesday",
+        "Friday"
+      ],
+      "learningPace": "Normal",
+      "status": "Active",
+      "currentSurahOrLesson": "Para 2 (Sayaqool)",
+      "notes": [
+        {
+          "id": "n-4",
+          "text": "Enrolled in 3 days/week plan. Excellent attendance.",
+          "author": "Admin",
+          "createdAt": "2026-08-18T03:41:40.937Z"
+        }
+      ],
+      "createdAt": "2026-08-16T03:41:40.937Z",
+      "updatedAt": "2026-08-17T21:41:40.937Z"
+    },
+    {
+      "id": "stu-302",
+      "studentName": "Hamza Farhan",
+      "parentName": "Farhan Akhtar",
+      "email": "farhan.akhtar@gmail.com",
+      "phone": "+1 647 123 4567",
+      "country": "Canada",
+      "courseId": "c-4",
+      "courseName": "Quran Memorization / Hifz",
+      "packageId": "pkg-5days",
+      "packageName": "Intensive Track (5 Days/Week)",
+      "tutorId": "tut-2",
+      "tutorName": "Qari Hafiz Muhammad Bilal",
+      "preferredTime": "Morning",
+      "preferredDays": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "learningPace": "Fast",
+      "status": "Active",
+      "currentSurahOrLesson": "Juz 6 (La Yuhibbullah)",
+      "notes": [
+        {
+          "id": "n-5",
+          "text": "Daily Sabaq 1 page, Sabqi 5 pages, Manzil 1/2 Juz.",
+          "author": "Qari Bilal",
+          "createdAt": "2026-08-18T03:41:40.937Z"
+        }
+      ],
+      "createdAt": "2026-08-13T03:41:40.937Z",
+      "updatedAt": "2026-08-18T01:41:40.937Z"
+    }
+  ],
+  "tutors": [
+    {
+      "id": "tut-1",
+      "name": "Ustadha Maryam Siddiqa",
+      "gender": "Female",
+      "qualification": "Shahadat-ul-Aalamiyyah (M.A Islamic Studies), Hafiza & Ijazah in Tajweed",
+      "specialization": "Noorani Qaida, Tajweed, Kids Specialist, Quran for Women",
+      "languages": [
+        "English",
+        "Urdu",
+        "Arabic"
+      ],
+      "experienceYears": 7,
+      "availableTimings": "Morning & Afternoon (UK / USA / Gulf slots)",
+      "studentsCapacity": 15,
+      "activeStudentsCount": 11,
+      "phone": "+92 327 4496163",
+      "email": "maryam.tutor@alnoor.edu",
+      "rating": 4.9,
+      "bio": "Renowned for gentle patience and engaging techniques for children ages 4-12 and sisters learning Tajweed.",
+      "status": "Available",
+      "createdAt": "2025-01-10"
+    },
+    {
+      "id": "tut-2",
+      "name": "Qari Hafiz Muhammad Bilal",
+      "gender": "Male",
+      "qualification": "Hafiz-e-Quran, Wifaq-ul-Madaris Certified, Qari of 10 Qira'at",
+      "specialization": "Hifz-ul-Quran, Advanced Tajweed, Nazra Fluency, Adults",
+      "languages": [
+        "English",
+        "Urdu",
+        "Arabic",
+        "Punjabi"
+      ],
+      "experienceYears": 9,
+      "availableTimings": "Evening & Night (Worldwide Timezones)",
+      "studentsCapacity": 18,
+      "activeStudentsCount": 14,
+      "phone": "+92 336 0796786",
+      "email": "bilal.qari@alnoor.edu",
+      "rating": 5,
+      "bio": "Expert in memorization retention (Manzil cycle) and teaching adult professionals to read with melodic Tarteel.",
+      "status": "Available",
+      "createdAt": "2025-01-12"
+    },
+    {
+      "id": "tut-3",
+      "name": "Ustadha Fatima Zahra",
+      "gender": "Female",
+      "qualification": "Aalima Course Graduate, Tajweed Specialist & Islamic Studies Educator",
+      "specialization": "Tafseer, Duas & Kalmas, Namaz Salah, Slow Learners Support",
+      "languages": [
+        "English",
+        "Urdu"
+      ],
+      "experienceYears": 5,
+      "availableTimings": "Afternoon & Evening (US / Canada / Europe slots)",
+      "studentsCapacity": 12,
+      "activeStudentsCount": 8,
+      "phone": "+92 327 4496163",
+      "email": "fatima.tutor@alnoor.edu",
+      "rating": 4.9,
+      "bio": "Dedicated to helping slow learners overcome articulation and memorization hurdles with calm encouragement.",
+      "status": "Available",
+      "createdAt": "2025-01-15"
+    },
+    {
+      "id": "tut-4",
+      "name": "Maulana Usman Tariq",
+      "gender": "Male",
+      "qualification": "Dars-e-Nizami (Aalim Degree), Hafiz-e-Quran & Arabic Scholar",
+      "specialization": "Quran Translation & Tafseer, Islamic Studies, Hifz Revision",
+      "languages": [
+        "English",
+        "Urdu",
+        "Arabic"
+      ],
+      "experienceYears": 8,
+      "availableTimings": "Flexible 24/7 International Slots",
+      "studentsCapacity": 15,
+      "activeStudentsCount": 10,
+      "phone": "+92 336 0796786",
+      "email": "usman.alim@alnoor.edu",
+      "rating": 4.8,
+      "bio": "Simplifies complex Quranic themes and Arabic grammar for youth and converts seeking deeper connection.",
+      "status": "Available",
+      "createdAt": "2025-01-20"
+    }
+  ],
+  "classes": [
+    {
+      "id": "cls-1",
+      "studentId": "stu-301",
+      "studentName": "Ayaan Mahmood",
+      "tutorId": "tut-1",
+      "tutorName": "Ustadha Maryam Siddiqa",
+      "courseName": "Quran Reading / Nazra",
+      "days": [
+        "Monday",
+        "Wednesday",
+        "Friday"
+      ],
+      "time": "6:00 PM",
+      "timeZone": "UK (GMT)",
+      "classDuration": 30,
+      "status": "Scheduled",
+      "meetingLink": "https://meet.google.com/aln-quran-class",
+      "notes": "Focus on Madd Muttasil and stopping signs in Surah Baqarah"
+    },
+    {
+      "id": "cls-2",
+      "studentId": "stu-302",
+      "studentName": "Hamza Farhan",
+      "tutorId": "tut-2",
+      "tutorName": "Qari Hafiz Muhammad Bilal",
+      "courseName": "Quran Memorization / Hifz",
+      "days": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri"
+      ],
+      "time": "7:30 AM",
+      "timeZone": "EST (Canada)",
+      "classDuration": 30,
+      "status": "Scheduled",
+      "meetingLink": "https://meet.google.com/aln-hifz-class",
+      "notes": "Daily Sabaq Surah An-Nisa Ayah 45-60"
+    }
+  ],
+  "progressReports": [
+    {
+      "id": "pr-1",
+      "studentId": "stu-301",
+      "studentName": "Ayaan Mahmood",
+      "tutorId": "tut-1",
+      "tutorName": "Ustadha Maryam Siddiqa",
+      "date": "2026-08-18",
+      "lessonCovered": "Surah Al-Baqarah Verses 142 - 150",
+      "pronunciationScore": 9,
+      "tajweedScore": 8,
+      "retentionScore": 9,
+      "attendance": "Present",
+      "mistakesAndDifficulties": "Slight hesitation on heavy letter Qaf; repeated 3 times until mastered.",
+      "homework": "Recite verses 142 to 150 twice at home before next session.",
+      "nextLessonGoal": "Surah Al-Baqarah Verses 151 - 160 with focus on Ikhfa rules.",
+      "tutorRemarks": "MashaAllah Ayaan showed great improvement in breath control and rhythm today!",
+      "createdAt": "2026-08-18T03:41:40.937Z"
+    }
+  ],
+  "assessments": [
+    {
+      "id": "ass-1",
+      "studentId": "stu-301",
+      "studentName": "Ayaan Mahmood",
+      "month": "January 2026",
+      "readingFluency": "Excellent",
+      "tajweedAccuracy": "Good",
+      "memorizationRetention": "Excellent",
+      "overallGrade": "A",
+      "learningPace": "Normal",
+      "teacherRemarks": "Ayaan is progressing with dedication. His Makharij on throat letters is completely clear.",
+      "assessedBy": "Ustadha Maryam Siddiqa",
+      "assessedAt": "2026-08-18T03:41:40.937Z"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "t-1",
+      "name": "Dr. Tariq Mahmood",
+      "studentOrParent": "Father of Ayaan (7 yrs) & Zoya (9 yrs)",
+      "location": "London, United Kingdom",
+      "countryFlag": "🇬🇧",
+      "courseName": "Noorani Qaida & Nazra with Tajweed",
+      "rating": 5,
+      "comment": "Living in the UK, finding reliable, punctual Quran teachers who speak fluent English was our biggest struggle. Al-Noor Academy matched us with Ustadha Maryam, and in just 4 months my children progressed from basic letters to reading Juz Amma smoothly! The 1-on-1 attention is unmatched.",
+      "date": "February 2026",
+      "status": "published"
+    },
+    {
+      "id": "t-2",
+      "name": "Sister Sarah Al-Hashimi",
+      "studentOrParent": "Adult Learner",
+      "location": "Dallas, Texas, USA",
+      "countryFlag": "🇺🇸",
+      "courseName": "Quran for Women & Tajweed",
+      "rating": 5,
+      "comment": "As a working mother, having classes at 9:00 PM local time was a blessing. My female tutor is so patient with my slow pace and corrected pronunciation mistakes I had been making for 20 years. I highly recommend their 3-Day Free Trial!",
+      "date": "January 2026",
+      "status": "published"
+    },
+    {
+      "id": "t-3",
+      "name": "Brother Farhan Akhtar",
+      "studentOrParent": "Father of Hamza (11 yrs - Hifz Student)",
+      "location": "Toronto, Canada",
+      "countryFlag": "🇨🇦",
+      "courseName": "Quran Memorization / Hifz",
+      "rating": 5,
+      "comment": "The Manzil and Sabqi tracking system at Al-Noor Academy is exceptional. Qari Bilal checks daily homework and sends monthly progress reports. Hamza has already memorized 6 Paras with rock-solid retention.",
+      "date": "January 2026",
+      "status": "published"
+    },
+    {
+      "id": "t-4",
+      "name": "Rashid Khan",
+      "studentOrParent": "Father of Daniyal (6 yrs)",
+      "location": "Melbourne, Australia",
+      "countryFlag": "🇦🇺",
+      "courseName": "Quran for Kids & Slow Learners Support",
+      "rating": 5,
+      "comment": "Daniyal is quite shy and used to get anxious during group Islamic classes. Al-Noor’s slow learner approach gave him confidence. His tutor teaches with games, rewards, and zero pressure. MashAllah great service!",
+      "date": "December 2025",
+      "status": "published"
+    }
+  ],
+  "articles": [
+    {
+      "id": "art-1",
+      "slug": "rules-of-tajweed-for-beginners",
+      "title": "Essential Rules of Tajweed Every Muslim Should Know",
+      "category": "Tajweed",
+      "author": "Qari Hafiz Muhammad Bilal",
+      "readTime": "5 min read",
+      "publishedAt": "February 2026",
+      "summary": "A beginner-friendly guide explaining Makharij articulation points, Noon Sakin rules, and why reciting with Tajweed is a spiritual duty.",
+      "content": "Reciting the Holy Quran with Tajweed is not merely an art; it is an obligation to preserve the exact words revealed to the Prophet Muhammad (peace be upon him). \n\n### What is Tajweed?\nThe word *Tajweed* linguistically means 'proficiency' or 'doing something well'. In the context of Quranic recitation, it means giving every Arabic letter its exact rights from its specific articulation point (Makhraj) and respecting its intrinsic characteristics (Sifaat).\n\n### 1. Correct Makharij (Articulation Points)\nArabic has several letters with subtle differences that change entire meanings if confused. For example:\n- **ح (Haa)** vs **هـ (Haa)**: *Al-Rahman* (The Most Merciful) vs *Al-Rahman* (corrupted sound).\n- **ق (Qaf)** vs **ك (Kaaf)**: *Qalb* (Heart) vs *Kalb* (Dog).\n\n### 2. The 4 Rules of Noon Sakinah & Tanween\nWhenever a Noon without a vowel (Noon Sakin) or Tanween appears, one of 4 rules applies:\n1. **Izhar (Clarity):** Reciting clearly when followed by throat letters (Hamzah, Haa, Ayn, Haa, Ghayn, Khaa).\n2. **Idgham (Merging):** Merging into letters (Yaa, Raa, Meem, Laam, Waw, Noon).\n3. **Iqlab (Conversion):** Converting Noon into Meem when followed by Baa.\n4. **Ikhfa (Hiding):** Subtle nasalization before the remaining 15 letters.\n\nBy practicing 1-on-1 with a qualified teacher, these rules transition from theoretical memory to effortless, melodious habit.",
+      "status": "published"
+    },
+    {
+      "id": "art-2",
+      "slug": "how-to-motivate-kids-to-love-quran",
+      "title": "How to Nurture a Lifelong Love for the Quran in Children",
+      "category": "Kids",
+      "author": "Ustadha Maryam Siddiqa",
+      "readTime": "6 min read",
+      "publishedAt": "January 2026",
+      "summary": "Practical tips for parents on positive reinforcement, short daily consistency, and choosing compassionate 1-on-1 teachers.",
+      "content": "Teaching young children the Quran requires emotional warmth, consistency, and immense patience. When children associate Quran learning with affection and praise, they carry that love for life.\n\n### 1. Prioritize Consistency Over Long Hours\nA 30-minute focused 1-on-1 class 3 to 4 days a week is far more effective for children than an exhausting 2-hour marathon. Young attention spans thrive on short, energetic sessions.\n\n### 2. Choose Positive Reinforcement\nCelebrate every milestone: completing the Arabic alphabet, finishing their first Qaida lesson, or reciting Surah Al-Fatiha without errors. At Al-Noor Academy, our tutors use digital stars, verbal praise, and certificates of completion.\n\n### 3. Let Them Learn in Their Comfort Zone\nOnline 1-on-1 lessons from home remove the social anxiety of crowded classrooms and eliminate tiring commutes, allowing kids to learn relaxed beside their parents.",
+      "status": "published"
+    },
+    {
+      "id": "art-3",
+      "slug": "effective-hifz-memorization-system",
+      "title": "The 3-Pillar Daily System for Lifelong Hifz Retention",
+      "category": "Hifz",
+      "author": "Maulana Usman Tariq",
+      "readTime": "7 min read",
+      "publishedAt": "January 2026",
+      "summary": "Understand the traditional Ottoman & Subcontinent memorization methodology: Sabaq, Sabqi, and Manzil cycle.",
+      "content": "Many students struggle with Quran memorization not because of memory capacity, but because of a flawed revision structure. Memorizing a new page is easy; keeping previously memorized Paras intact requires a systematic rhythm.\n\n### Pillar 1: Daily Sabaq (New Lesson)\nMemorize 1 to 2 pages every morning after Fajr when the mind is fresh and undisturbed.\n\n### Pillar 2: Daily Sabqi (Recent Revision)\nEvery single day, recite the last 5 to 10 pages memorized before giving new Sabaq. This cements short-term memory into medium-term memory.\n\n### Pillar 3: Daily Manzil (Long-Term Retention)\nRecite at least 1/2 to 1 full Juz of previously memorized Paras on a continuous monthly cycle. With this rule, no verse is ever forgotten.",
+      "status": "published"
+    }
+  ],
+  "resources": [
+    {
+      "id": "res-1",
+      "title": "Complete Noorani Qaida Color-Coded Guide",
+      "category": "Qaida & Arabic",
+      "description": "High-resolution guide of the authentic Noorani Qaida with color-coded Makharij and Tajweed rules for beginners.",
+      "fileSize": "4.8 MB",
+      "fileType": "PDF",
+      "downloadUrl": "/resources/noorani-qaida-guide.html",
+      "featured": true
+    },
+    {
+      "id": "res-2",
+      "title": "Essential 40 Masnoon Daily Duas (with Meaning)",
+      "category": "Daily Duas",
+      "description": "Authentic daily supplications from Hisnul Muslim with Arabic text, phonetic transliteration, and English/Urdu translation.",
+      "fileSize": "2.3 MB",
+      "fileType": "PDF",
+      "downloadUrl": "/resources/daily-masnoon-duas.html",
+      "featured": true
+    },
+    {
+      "id": "res-3",
+      "title": "Step-by-Step Illustrated Salah (Namaz) & Wudu Guide",
+      "category": "Salah & Prayer",
+      "description": "Clear visual postures for brothers and sisters, method of Wudu, and word-by-word prayer recitation meanings.",
+      "fileSize": "3.5 MB",
+      "fileType": "PDF",
+      "downloadUrl": "/resources/daily-masnoon-duas.html",
+      "featured": true
+    },
+    {
+      "id": "res-4",
+      "title": "Tajweed Rules Summary & Makharij Chart",
+      "category": "Tajweed Rules",
+      "description": "A handy quick-reference cheat sheet covering Noon Sakin, Meem Sakin, Madd types, and Waqf stopping symbols.",
+      "fileSize": "1.9 MB",
+      "fileType": "PDF",
+      "downloadUrl": "/resources/noorani-qaida-guide.html",
+      "featured": false
+    },
+    {
+      "id": "res-5",
+      "title": "Kids Quran Tracing & Arabic Letter Worksheets",
+      "category": "Kids Worksheets",
+      "description": "Fun printable activity sheets for children to practice Arabic alphabet handwriting and letter connections.",
+      "fileSize": "5.2 MB",
+      "fileType": "Worksheet",
+      "downloadUrl": "/resources/noorani-qaida-guide.html",
+      "featured": false
+    },
+    {
+      "id": "res-6",
+      "title": "Hifz-ul-Quran Daily Sabaq & Manzil Tracker",
+      "category": "Hifz Tracker",
+      "description": "Printable monthly planner to log daily memorization verses, mistakes count, Sabqi revisions, and teacher signatures.",
+      "fileSize": "1.2 MB",
+      "fileType": "PDF",
+      "downloadUrl": "/resources/daily-masnoon-duas.html",
+      "featured": false
+    }
+  ],
+  "contacts": [],
+  "notifications": [],
+  "adminTokens": []
+}

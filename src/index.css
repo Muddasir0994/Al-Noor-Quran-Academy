@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-arabic: 'Amiri', 'Scheherazade New', serif;
+    --font-urdu: 'Noto Nastaliq Urdu', serif;
+    
+    /* Academy Signature Color System */
+    --color-emerald-primary: #064E3B;
+    --color-emerald-deep: #032B21;
+    --color-emerald-light: #ECFDF5;
+    --color-gold-accent: #D4A72C;
+    --color-gold-glow: #FBF3D5;
+    --color-gold-dark: #A37B15;
+    --color-ivory-bg: #FAF9F5;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-ivory-bg);
+    color: #1F2937;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-heading {
+    font-family: var(--font-heading);
+    letter-spacing: -0.01em;
+  }
+
+  .font-arabic, [lang="ar"] {
+    font-family: var(--font-arabic);
+    line-height: 1.8;
+  }
+
+  .font-urdu, [lang="ur"] {
+    font-family: var(--font-urdu);
+    line-height: 1.9;
+  }
+}
+
+/* Subtle Islamic geometric pattern overlay */
+.bg-islamic-pattern {
+  background-color: #064E3B;
+  background-image: radial-gradient(rgba(212, 167, 44, 0.16) 1.2px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.bg-islamic-subtle {
+  background-color: #FAF9F5;
+  background-image: radial-gradient(rgba(6, 78, 59, 0.06) 1.2px, transparent 0);
+  background-size: 20px 20px;
+}
+
+.bg-islamic-gold-pattern {
+  background-image: radial-gradient(rgba(212, 167, 44, 0.25) 1px, transparent 0);
+  background-size: 18px 18px;
+}
+
+/* Glassmorphism & Translucent Design System Tokens */
+:root {
+  /* 1. Backdrop Blur Scales */
+  --glass-blur-subtle: 8px;
+  --glass-blur-medium: 14px;
+  --glass-blur-strong: 20px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --glass-blur-subtle: 4px;
+    --glass-blur-medium: 6px;
+    --glass-blur-strong: 8px;
+  }
+}
+
+:root {
+
+  /* 2. Surface Backgrounds */
+  --glass-bg-light: rgba(255, 255, 255, 0.76);
+  --glass-bg-dark: rgba(3, 43, 33, 0.82);
+  --glass-bg-gold: rgba(251, 243, 213, 0.78);
+  --glass-bg-emerald: rgba(236, 253, 245, 0.80);
+  --glass-bg-nav: rgba(255, 255, 255, 0.88);
+  --glass-bg-floating: rgba(255, 255, 255, 0.90);
+
+  /* 3. Borders & Specular Inner Highlights */
+  --glass-border-light: 1px solid rgba(6, 78, 59, 0.09);
+  --glass-border-dark: 1px solid rgba(212, 167, 44, 0.28);
+  --glass-border-gold: 1px solid rgba(212, 167, 44, 0.38);
+  --glass-border-emerald: 1px solid rgba(6, 78, 59, 0.20);
+  
+  --glass-inset-light: inset 0 1px 0 0 rgba(255, 255, 255, 0.85);
+  --glass-inset-dark: inset 0 1px 0 0 rgba(212, 167, 44, 0.25);
+  --glass-inset-gold: inset 0 1px 0 0 rgba(255, 255, 255, 0.60);
+
+  /* 4. Diffused Ambient Elevation Shadows */
+  --glass-shadow-sm: 0 4px 16px -2px rgba(6, 78, 59, 0.06);
+  --glass-shadow-md: 0 10px 30px -4px rgba(6, 78, 59, 0.08);
+  --glass-shadow-lg: 0 20px 48px -8px rgba(6, 78, 59, 0.16);
+  --glass-shadow-dark: 0 16px 40px -6px rgba(0, 0, 0, 0.40);
+}
+
+/* Glass Utility Classes */
+.glass-navbar {
+  background: var(--glass-bg-nav);
+  backdrop-filter: blur(var(--glass-blur-strong));
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+  border-bottom: var(--glass-border-light);
+  box-shadow: var(--glass-shadow-sm);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              backdrop-filter 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-light {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+  border: var(--glass-border-light);
+  box-shadow: var(--glass-shadow-md), var(--glass-inset-light);
+}
+
+.glass-card-dark {
+  background: var(--glass-bg-dark);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+  border: var(--glass-border-dark);
+  box-shadow: var(--glass-shadow-dark), var(--glass-inset-dark);
+}
+
+.glass-gold {
+  background: var(--glass-bg-gold);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+  border: var(--glass-border-gold);
+  box-shadow: var(--glass-shadow-md), var(--glass-inset-gold);
+}
+
+.glass-badge {
+  background: var(--glass-bg-emerald);
+  backdrop-filter: blur(var(--glass-blur-subtle));
+  -webkit-backdrop-filter: blur(var(--glass-blur-subtle));
+  border: var(--glass-border-emerald);
+  box-shadow: var(--glass-shadow-sm);
+}
+
+.glass-floating {
+  background: var(--glass-bg-floating);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+  border: var(--glass-border-gold);
+  box-shadow: var(--glass-shadow-lg), var(--glass-inset-light);
+}
+
+/* Backward Compatibility & Fallbacks */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+  border: var(--glass-border-light);
+  box-shadow: var(--glass-shadow-sm);
+}
+
+.glass-panel-dark {
+  background: var(--glass-bg-dark);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+  border: var(--glass-border-dark);
+  box-shadow: var(--glass-shadow-dark);
+}
+
+@supports not (backdrop-filter: blur(16px)) {
+  .glass-navbar { background: #FFFFFF; }
+  .glass-card-light { background: #FFFFFF; }
+  .glass-card-dark { background: #032B21; }
+  .glass-gold { background: #FBF3D5; }
+  .glass-badge { background: #ECFDF5; }
+  .glass-floating { background: #FFFFFF; }
+  .glass-panel { background: #FFFFFF; }
+  .glass-panel-dark { background: #032B21; }
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #D4A72C 0%, #F5D77F 50%, #B48A1E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-btn {
+  background: linear-gradient(135deg, #D4A72C 0%, #E6C25E 50%, #B48A1E 100%);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gold-gradient-btn:hover {
+  background: linear-gradient(135deg, #E6C25E 0%, #F5D77F 50%, #C49826 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px -5px rgba(212, 167, 44, 0.35);
+}
+
+/* Purposeful blank states for photography */
+.academy-media-slot {
+  min-width: 0;
+}
+
+.academy-media-slot:hover {
+  border-color: rgba(212, 167, 44, 0.95);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F1ED;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #064E3B;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #043629;
+}

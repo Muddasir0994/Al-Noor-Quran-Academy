@@ -1,0 +1,16 @@
+{
+  "name": "Al-Noor Quraan Academy",
+  "short_name": "Al-Noor Quran",
+  "description": "Learn Holy Quran with Tajweed from certified male and female tutors worldwide.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAF7",
+  "theme_color": "#064E3B",
+  "icons": [
+    {
+      "src": "/logo.webp",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

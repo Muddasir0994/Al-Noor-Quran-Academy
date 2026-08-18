@@ -1,0 +1,175 @@
+{
+  "entities": {
+    "leads": {
+      "title": "Leads",
+      "description": "Free trial leads and prospective students",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentName": { "type": "string" },
+        "parentName": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "country": { "type": "string" },
+        "courseId": { "type": "string" },
+        "courseName": { "type": "string" },
+        "tutorGender": { "type": "string" },
+        "timeSlot": { "type": "string" },
+        "learningPace": { "type": "string" },
+        "notes": { "type": "array" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "studentName", "parentName", "email", "phone", "courseName", "status", "createdAt"]
+    },
+    "enrollments": {
+      "title": "Enrollments",
+      "description": "Student course enrollment applications",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentName": { "type": "string" },
+        "parentName": { "type": "string" },
+        "parentEmail": { "type": "string" },
+        "parentPhone": { "type": "string" },
+        "courseName": { "type": "string" },
+        "packageName": { "type": "string" },
+        "timeSlot": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "studentName", "parentName", "parentEmail", "parentPhone", "courseName", "status", "createdAt"]
+    },
+    "students": {
+      "title": "Students",
+      "description": "Enrolled active students records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentName": { "type": "string" },
+        "parentName": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "country": { "type": "string" },
+        "courseName": { "type": "string" },
+        "packageName": { "type": "string" },
+        "tutorName": { "type": "string" },
+        "preferredTime": { "type": "string" },
+        "status": { "type": "string" },
+        "currentSurahOrLesson": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "studentName", "parentName", "courseName", "status", "createdAt"]
+    },
+    "progressReports": {
+      "title": "Class Progress Reports",
+      "description": "Daily sabaq evaluation and feedback logs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "tutorId": { "type": "string" },
+        "tutorName": { "type": "string" },
+        "date": { "type": "string" },
+        "lessonCovered": { "type": "string" },
+        "pronunciationScore": { "type": "number" },
+        "tajweedScore": { "type": "number" },
+        "retentionScore": { "type": "number" },
+        "attendance": { "type": "string" },
+        "mistakesAndDifficulties": { "type": "string" },
+        "homework": { "type": "string" },
+        "nextLessonGoal": { "type": "string" },
+        "tutorRemarks": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "studentId", "studentName", "lessonCovered", "createdAt"]
+    },
+    "contactMessages": {
+      "title": "Contact Inquiries",
+      "description": "Inbound contact form messages from parents",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "email", "message", "status", "createdAt"]
+    },
+    "courses": {
+      "title": "Courses",
+      "description": "Academy course catalog and syllabi",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "shortDescription": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "status"]
+    },
+    "tutors": {
+      "title": "Tutors",
+      "description": "Academy faculty directory",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "gender": { "type": "string" },
+        "qualification": { "type": "string" },
+        "specialization": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "name", "gender", "qualification", "status"]
+    },
+    "testimonials": {
+      "title": "Testimonials",
+      "description": "Parent and student reviews",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "courseName": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "name", "rating", "comment", "status"]
+    },
+    "users": {
+      "title": "Users",
+      "description": "Student, Teacher, and Admin user accounts and profiles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "phone": { "type": "string" },
+        "country": { "type": "string" },
+        "parentName": { "type": "string" },
+        "courseName": { "type": "string" },
+        "tutorId": { "type": "string" },
+        "tutorName": { "type": "string" },
+        "specialization": { "type": "string" },
+        "qualification": { "type": "string" },
+        "gender": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "displayName", "role", "status", "createdAt"]
+    }
+  }
+}
