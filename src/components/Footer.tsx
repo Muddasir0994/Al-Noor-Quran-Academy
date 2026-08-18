@@ -226,7 +226,7 @@ export const Footer: React.FC<FooterProps> = ({
             <address className="not-italic space-y-2.5 text-xs sm:text-sm text-emerald-100/90">
               <a
                 href="tel:03274496163"
-                aria-label="Call Admissions at 03274496163"
+                aria-label="Call +92 327 4496163 (Helpline)"
                 className="flex items-center gap-2 hover:text-[#F3C64D] transition-colors font-medium"
               >
                 <Phone className="w-4 h-4 text-[#F3C64D] shrink-0" weight="duotone" />
@@ -234,7 +234,7 @@ export const Footer: React.FC<FooterProps> = ({
               </a>
               <a
                 href="tel:03360796786"
-                aria-label="Call Support Line at 03360796786"
+                aria-label="Call +92 336 0796786 (Support Line)"
                 className="flex items-center gap-2 hover:text-[#F3C64D] transition-colors font-medium"
               >
                 <Phone className="w-4 h-4 text-[#F3C64D] shrink-0" weight="duotone" />
@@ -242,7 +242,7 @@ export const Footer: React.FC<FooterProps> = ({
               </a>
               <a
                 href="mailto:hameedmuddasir0786@gmail.com"
-                aria-label="Email Admissions at hameedmuddasir0786@gmail.com"
+                aria-label="Email hameedmuddasir0786@gmail.com"
                 className="flex items-center gap-2 hover:text-[#F3C64D] transition-colors font-medium break-all"
               >
                 <Envelope className="w-4 h-4 text-[#F3C64D] shrink-0" weight="duotone" />
@@ -252,7 +252,7 @@ export const Footer: React.FC<FooterProps> = ({
                 href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Al-Noor%20Quran%20Academy"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Chat with WhatsApp Coordinator 24/7"
+                aria-label="WhatsApp Coordinator (24/7)"
                 className="flex items-center gap-2 text-[#25D366] hover:text-white font-bold transition-colors"
               >
                 <WhatsappLogo className="w-4 h-4 shrink-0" weight="fill" />

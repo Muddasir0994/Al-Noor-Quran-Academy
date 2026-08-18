@@ -81,7 +81,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onOpenEnroll, onViewCou
           <div className="lg:col-span-8 bg-gradient-to-br from-[#064E3B] via-[#043E2F] to-[#032B21] text-white rounded-3xl p-6 sm:p-8 md:p-10 flex flex-col justify-between relative overflow-hidden shadow-2xl border border-emerald-700/40 bg-islamic-pattern min-h-[490px]">
             {/* Ambient Watermark */}
             <div className="absolute top-0 right-0 w-96 h-96 opacity-10 pointer-events-none transform translate-x-20 -translate-y-20">
-              <svg viewBox="0 0 100 100" fill="currentColor" className="text-[#D4A72C]">
+              <svg viewBox="0 0 100 100" fill="currentColor" className="text-[#F3C64D]">
                 <path d="M50 0L61.2 38.8H100L68.5 61.2L79.7 100L50 77.6L20.3 100L31.5 61.2L0 38.8H38.8L50 0Z" />
               </svg>
             </div>
@@ -89,12 +89,12 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onOpenEnroll, onViewCou
             {/* Top Tag & Arabic Bismillah */}
             <div className="relative z-10 flex items-center justify-between gap-2 mb-4 h-8">
               <div className="inline-flex items-center gap-1.5 sm:gap-2 py-1 px-2.5 sm:px-3.5 rounded-full glass-card-dark shadow-inner h-8">
-                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#D4A72C] animate-pulse"></span>
-                <span className="font-arabic text-xs sm:text-base text-[#D4A72C] tracking-wide font-bold leading-none">
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#F3C64D] animate-pulse"></span>
+                <span className="font-arabic text-xs sm:text-base text-[#F3C64D] tracking-wide font-bold leading-none">
                   بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                 </span>
               </div>
-              <span className="text-[10px] sm:text-[11px] uppercase tracking-wider font-extrabold bg-[#D4A72C] text-[#064E3B] px-2.5 sm:px-3.5 py-1 rounded-full shadow-md h-7 flex items-center shrink-0">
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-wider font-extrabold bg-[#F3C64D] text-[#032B21] px-2.5 sm:px-3.5 py-1 rounded-full shadow-md h-7 flex items-center shrink-0">
                 100% Free 3-Day Trial
               </span>
             </div>
@@ -110,13 +110,13 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onOpenEnroll, onViewCou
                 </p>
                 <div className="mt-5 flex flex-wrap gap-2 text-[11px] font-bold text-emerald-100">
                   <span className="rounded-full glass-card-dark px-3 py-1.5 flex items-center gap-1.5">
-                    <Check className="w-3 h-3 text-[#D4A72C]" weight="bold" /> 1-on-1 Private Classes
+                    <Check className="w-3 h-3 text-[#F3C64D]" weight="bold" /> 1-on-1 Private Classes
                   </span>
                   <span className="rounded-full glass-card-dark px-3 py-1.5 flex items-center gap-1.5">
-                    <Check className="w-3 h-3 text-[#D4A72C]" weight="bold" /> Male & Female Faculty
+                    <Check className="w-3 h-3 text-[#F3C64D]" weight="bold" /> Male & Female Faculty
                   </span>
                   <span className="rounded-full glass-card-dark px-3 py-1.5 flex items-center gap-1.5">
-                    <Check className="w-3 h-3 text-[#D4A72C]" weight="bold" /> Flexible Time Zones
+                    <Check className="w-3 h-3 text-[#F3C64D]" weight="bold" /> Flexible Time Zones
                   </span>
                 </div>
               </div>
@@ -142,7 +142,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onOpenEnroll, onViewCou
                 {/* Floating Glassmorphism Badge Overlay */}
                 <div className="absolute bottom-3 left-3 right-3 p-3 rounded-2xl glass-card-dark flex items-center justify-between text-white">
                   <div className="flex items-center gap-2.5">
-                    <span className="w-8 h-8 rounded-xl bg-[#D4A72C] text-[#064E3B] font-bold text-sm flex items-center justify-center shadow-xs">
+                    <span className="w-8 h-8 rounded-xl bg-[#F3C64D] text-[#032B21] font-bold text-sm flex items-center justify-center shadow-xs">
                       ن
                     </span>
                     <div>
@@ -150,7 +150,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onOpenEnroll, onViewCou
                       <p className="text-[10px] text-emerald-200">Personalized Makharij & Tajweed</p>
                     </div>
                   </div>
-                  <span className="bg-emerald-800/90 text-[#D4A72C] text-[10px] font-extrabold px-2.5 py-1 rounded-full border border-emerald-600">
+                  <span className="bg-emerald-800/90 text-[#F3C64D] text-[10px] font-extrabold px-2.5 py-1 rounded-full border border-emerald-600">
                     ● Live HD
                   </span>
                 </div>
@@ -163,9 +163,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onOpenEnroll, onViewCou
                 <button
                   id="hero-cta-trial"
                   onClick={() => onOpenTrial()}
-                  className="gold-gradient-btn text-[#064E3B] px-6 py-3.5 rounded-xl font-extrabold text-sm sm:text-base shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
+                  className="gold-gradient-btn text-[#032B21] px-6 py-3.5 rounded-xl font-extrabold text-sm sm:text-base shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <ArrowRight className="w-4.5 h-4.5 text-[#064E3B]" weight="bold" />
+                  <ArrowRight className="w-4.5 h-4.5 text-[#032B21]" weight="bold" />
                   <span>Start 3-Day Free Trial</span>
                 </button>
 
@@ -183,9 +183,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onOpenEnroll, onViewCou
 
               {/* Star Rating */}
               <div className="flex items-center gap-2 text-xs text-emerald-200">
-                <div className="flex text-[#D4A72C]">
+                <div className="flex text-[#F3C64D]">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 text-[#D4A72C]" weight="fill" />
+                    <Star key={i} className="w-3.5 h-3.5 text-[#F3C64D]" weight="fill" />
                   ))}
                 </div>
                 <span className="font-extrabold text-white">4.9/5.0</span>

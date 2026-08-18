@@ -37,7 +37,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#064E3B]/10 text-[#064E3B] text-[11px] font-bold uppercase tracking-widest mb-2.5 border border-[#064E3B]/20">
-            <BookOpen className="w-3.5 h-3.5 text-[#D4A72C]" weight="duotone" />
+            <BookOpen className="w-3.5 h-3.5 text-[#A16207]" weight="duotone" />
             <span>Comprehensive Academic Curriculum</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-[#064E3B] tracking-tight">
@@ -100,7 +100,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
           </div>
           <button
             onClick={() => onOpenTrial()}
-            className="bg-[#D4A72C] text-[#064E3B] px-5 py-2.5 rounded-xl font-bold text-xs hover:brightness-110 active:scale-95 transition-all shrink-0 cursor-pointer"
+            className="gold-gradient-btn text-[#032B21] px-5 py-2.5 rounded-xl font-bold text-xs hover:brightness-110 active:scale-95 transition-all shrink-0 cursor-pointer"
           >
             FREE ASSESSMENT TRIAL
           </button>
