@@ -6,4 +6,4 @@ Disallow: /student-portal/private/
 Disallow: /teacher-portal/private/
 
 # Sitemaps
-Sitemap: https://www.alnoorquranacademy.com/sitemap.xml
+Sitemap: https://al-noor-quran-academy.onrender.com/sitemap.xml
