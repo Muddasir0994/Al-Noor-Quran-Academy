@@ -1,5 +1,6 @@
 {
-  "name": "react-example",
+  "name": "noor-e-quran-institute",
+  "description": "Noor E Quran Institute - Premier Online Quran Learning Platform",
   "private": true,
   "version": "0.0.0",
   "type": "module",
