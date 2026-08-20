@@ -379,9 +379,8 @@ function AppContent() {
               path="/student"
               element={
                 <StudentPortal
-                  onClose={() => navigate('/')}
-                  onOpenTrial={() => handleOpenTrial()}
-                  onJoinClassroom={() => navigate('/classroom')}
+                  onBackToLanding={() => navigate('/')}
+                  onOpenClassroom={(surah) => navigate(`/classroom/${surah || 1}`)}
                 />
               }
             />
@@ -389,9 +388,8 @@ function AppContent() {
               path="/student-portal"
               element={
                 <StudentPortal
-                  onClose={() => navigate('/')}
-                  onOpenTrial={() => handleOpenTrial()}
-                  onJoinClassroom={() => navigate('/classroom')}
+                  onBackToLanding={() => navigate('/')}
+                  onOpenClassroom={(surah) => navigate(`/classroom/${surah || 1}`)}
                 />
               }
             />
@@ -400,8 +398,8 @@ function AppContent() {
               path="/teacher"
               element={
                 <TeacherPortal
-                  onClose={() => navigate('/')}
-                  onStartClassroom={() => navigate('/classroom')}
+                  onBackToLanding={() => navigate('/')}
+                  onOpenClassroom={(surah) => navigate(`/classroom/${surah || 1}`)}
                 />
               }
             />
@@ -409,8 +407,8 @@ function AppContent() {
               path="/teacher-portal"
               element={
                 <TeacherPortal
-                  onClose={() => navigate('/')}
-                  onStartClassroom={() => navigate('/classroom')}
+                  onBackToLanding={() => navigate('/')}
+                  onOpenClassroom={(surah) => navigate(`/classroom/${surah || 1}`)}
                 />
               }
             />
@@ -419,9 +417,18 @@ function AppContent() {
               path="/admin"
               element={
                 <AdminPortal
+                  isOpen={true}
                   onClose={() => navigate('/')}
                   courses={courses}
-                  onRefreshCourses={() => {}}
+                  onRefreshCourses={async () => {
+                    try {
+                      const res = await fetch('/api/courses');
+                      if (res.ok) {
+                        const data = await res.json();
+                        if (Array.isArray(data)) setCourses(data);
+                      }
+                    } catch (e) {}
+                  }}
                 />
               }
             />
@@ -429,9 +436,18 @@ function AppContent() {
               path="/admin-portal"
               element={
                 <AdminPortal
+                  isOpen={true}
                   onClose={() => navigate('/')}
                   courses={courses}
-                  onRefreshCourses={() => {}}
+                  onRefreshCourses={async () => {
+                    try {
+                      const res = await fetch('/api/courses');
+                      if (res.ok) {
+                        const data = await res.json();
+                        if (Array.isArray(data)) setCourses(data);
+                      }
+                    } catch (e) {}
+                  }}
                 />
               }
             />

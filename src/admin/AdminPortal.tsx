@@ -49,17 +49,17 @@ import { BlogEditor } from './BlogEditor';
 import { ImageCropModal } from '../components/ImageCropModal';
 
 interface AdminPortalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  courses: Course[];
-  onRefreshCourses: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
+  courses?: Course[];
+  onRefreshCourses?: () => void;
 }
 
 export const AdminPortal: React.FC<AdminPortalProps> = ({
-  isOpen,
+  isOpen = true,
   onClose,
-  courses,
-  onRefreshCourses
+  courses = [],
+  onRefreshCourses = () => {}
 }) => {
   // Auth state
   const [token, setToken] = useState<string>(() => {
@@ -491,7 +491,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
   };
 
-  if (!isOpen) return null;
+  if (isOpen === false) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
