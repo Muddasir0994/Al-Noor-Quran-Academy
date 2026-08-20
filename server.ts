@@ -1035,18 +1035,18 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Al-Noor Quraan Academy Server running on http://0.0.0.0:${PORT}`);
+    console.log(`Noor-e-Quran Institute Server running on http://0.0.0.0:${PORT}`);
 
     // Background Keep-Alive Worker (Every 4.5 minutes)
-    // Helps maintain active network heartbeat for cloud hosting like Render
+    // Pings live custom domain to keep Render instance awake and ensure 24/7 warm routing
     const PING_INTERVAL_MS = 4.5 * 60 * 1000; // 4.5 minutes (Render sleeps after 15 mins)
-    const externalUrl = process.env.RENDER_EXTERNAL_URL || process.env.PUBLIC_APP_URL || 'https://noorequraninstitute.me';
+    const externalUrl = 'https://noorequraninstitute.me';
 
     setInterval(async () => {
       try {
-        const pingTarget = `${externalUrl.replace(/\/$/, '')}/api/health`;
+        const pingTarget = `${externalUrl}/api/health`;
         const res = await fetch(pingTarget, {
-          headers: { 'User-Agent': 'AlNoor-KeepAlive-Heartbeat/1.0' }
+          headers: { 'User-Agent': 'NoorEQuran-KeepAlive-Heartbeat/1.0' }
         });
         if (res.ok) {
           console.log(`[KeepAlive] Heartbeat ping successful to ${pingTarget} at ${new Date().toLocaleTimeString()}`);
