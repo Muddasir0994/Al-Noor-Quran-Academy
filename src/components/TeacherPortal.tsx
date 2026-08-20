@@ -142,7 +142,7 @@ export const TeacherPortal: React.FC<TeacherPortalProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-base sm:text-lg font-heading font-bold text-white tracking-wide">
-                NOOR-E-QURAN FACULTY & TUTOR PORTAL
+                NOOR E QURAN FACULTY & TUTOR PORTAL
               </h1>
               <span className="bg-emerald-800 text-emerald-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-600">
                 Teacher Dashboard

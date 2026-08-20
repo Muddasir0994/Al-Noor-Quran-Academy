@@ -147,7 +147,7 @@ export async function createTeacherAccountByAdmin(data: {
     qualification: data.qualification,
     specialization: data.specialization,
     phone: data.phone,
-    bio: data.bio || `Certified ${data.gender === 'Female' ? 'Female' : 'Male'} Quran & Islamic Studies Faculty at Noor-e-Quran Institute.`,
+    bio: data.bio || `Certified ${data.gender === 'Female' ? 'Female' : 'Male'} Quran & Islamic Studies Faculty at Noor E Quran Institute.`,
     status: 'Active',
     assignedStudentIds: data.assignedStudentIds || [],
 

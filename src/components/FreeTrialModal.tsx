@@ -111,7 +111,7 @@ export const FreeTrialModal: React.FC<FreeTrialModalProps> = ({
         setSuccessLead(data);
       } catch {
         const waText = encodeURIComponent(
-          `Salam! I just booked a 3-Day Free Trial at Noor-e-Quran Institute for ${studentName}.\nCourse: ${courseName}\nCountry: ${country}\nPhone: ${phone}`
+          `Salam! I just booked a 3-Day Free Trial at Noor E Quran Institute for ${studentName}.\nCourse: ${courseName}\nCountry: ${country}\nPhone: ${phone}`
         );
         setSuccessLead({
           success: true,

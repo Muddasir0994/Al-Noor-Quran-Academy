@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   QURAN_SURAHS,
   QAIDA_ALPHABET,
@@ -38,13 +39,19 @@ import {
   ArrowRight,
   ArrowsOut,
   PhoneDisconnect,
-  ShieldCheck
+  ShieldCheck,
+  Lock,
+  User,
+  GraduationCap,
+  CalendarCheck
 } from '@phosphor-icons/react';
+import { useAuth } from '../context/AuthContext';
 
 interface ClassroomStudioProps {
   onBackToLanding?: () => void;
   onOpenEnroll?: () => void;
   onOpenTrial?: () => void;
+  onOpenAuth?: (role?: 'student' | 'teacher', mode?: 'login' | 'signup') => void;
   initialSurahNumber?: number;
   initialMode?: 'quran' | 'qaida' | 'whiteboard' | 'duas' | 'salah';
   portalOrigin?: 'student' | 'teacher' | null;
@@ -55,21 +62,67 @@ export const ClassroomStudio: React.FC<ClassroomStudioProps> = ({
   onBackToLanding,
   onOpenEnroll,
   onOpenTrial,
+  onOpenAuth,
   initialSurahNumber = 1,
   initialMode = 'whiteboard',
   portalOrigin,
   onReturnToPortal
 }) => {
+  const { currentUser, userProfile, logout } = useAuth();
+  const [guestPreviewMode, setGuestPreviewMode] = useState<boolean>(false);
+  const [classSessionSeconds, setClassSessionSeconds] = useState<number>(0);
+  const [isSessionTimerActive, setIsSessionTimerActive] = useState<boolean>(true);
+
+  // Timer counter
+  useEffect(() => {
+    let timer: any;
+    if (isSessionTimerActive) {
+      timer = setInterval(() => {
+        setClassSessionSeconds(prev => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isSessionTimerActive]);
+
+  const formatSessionTime = (totalSeconds: number) => {
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
+  // Assigned student & teacher details
+  const studentDisplayName = userProfile?.displayName || currentUser?.displayName || (currentUser?.email ? currentUser.email.split('@')[0] : 'Enrolled Student');
+  const assignedTutorName = userProfile?.tutorName || userProfile?.assignedTutorName || 'Ustadha Maryam Siddiqa';
+  const assignedCourseName = userProfile?.courseName || 'Quran Recitation with Tajweed';
+  const assignedScheduleDays = userProfile?.preferredDays && userProfile.preferredDays.length > 0 ? userProfile.preferredDays.join(', ') : 'Mon, Wed, Fri';
+  const assignedScheduleTime = userProfile?.preferredTime || '06:00 PM UK GMT';
+  const currentSabaq = userProfile?.currentSurahOrLesson || 'Surah Al-Baqarah (Ayah 142)';
+
+  const { surah } = useParams<{ surah?: string }>();
+  const targetSurahNum = surah ? parseInt(surah, 10) : initialSurahNumber;
+
   // Main Studio Mode: 'quran' | 'qaida' | 'whiteboard' | 'duas' | 'salah'
-  const [studioMode, setStudioMode] = useState<'quran' | 'qaida' | 'whiteboard' | 'duas' | 'salah'>(initialMode);
+  const [studioMode, setStudioMode] = useState<'quran' | 'qaida' | 'whiteboard' | 'duas' | 'salah'>(
+    surah ? 'quran' : initialMode
+  );
 
   // ------------------------------------------
   // 1. QURAN MUSHAF READER STATE
   // ------------------------------------------
   const [selectedSurahIndex, setSelectedSurahIndex] = useState<number>(() => {
-    const idx = QURAN_SURAHS.findIndex(s => s.number === initialSurahNumber);
+    const idx = QURAN_SURAHS.findIndex(s => s.number === targetSurahNum);
     return idx !== -1 ? idx : 0;
   });
+
+  useEffect(() => {
+    if (surah) {
+      const idx = QURAN_SURAHS.findIndex(s => s.number === parseInt(surah, 10));
+      if (idx !== -1) {
+        setSelectedSurahIndex(idx);
+        setStudioMode('quran');
+      }
+    }
+  }, [surah]);
   const currentSurah = QURAN_SURAHS[selectedSurahIndex];
 
   const [activeAyahNumber, setActiveAyahNumber] = useState<number | null>(null);
@@ -421,25 +474,119 @@ export const ClassroomStudio: React.FC<ClassroomStudioProps> = ({
   // ------------------------------------------
   // 5. SALAH GUIDE STATE
   // ------------------------------------------
+  // 5. SALAH GUIDE STATE
+  // ------------------------------------------
   const [activeSalahStep, setActiveSalahStep] = useState<number>(1);
   const currentSalahStep = SALAH_STEPS.find(s => s.stepNumber === activeSalahStep) || SALAH_STEPS[0];
+
+  // If user is not authenticated and hasn't selected guest demo mode, show Gateway
+  if (!currentUser && !guestPreviewMode) {
+    return (
+      <div className="min-h-screen bg-[#07221E] text-[#F8F5EE] flex items-center justify-center p-4 sm:p-6 font-sans">
+        <div className="w-full max-w-2xl bg-[#FCFBF8] text-[#0B332D] border border-[#B79A62]/30 rounded-sm shadow-2xl overflow-hidden flex flex-col">
+          
+          {/* Gateway Header */}
+          <div className="px-6 py-6 bg-[#0B332D] text-[#F8F5EE] border-b border-[#B79A62]/30 text-center space-y-2">
+            <div className="w-12 h-12 rounded-sm border border-[#B79A62]/40 bg-[#07221E] flex items-center justify-center text-[#B79A62] mx-auto shadow-sm">
+              <Lock className="w-6 h-6" />
+            </div>
+            <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#B79A62]">
+              NOOR E QURAN INSTITUTE • PRIVATE DIGITAL CLASSROOM
+            </p>
+            <h2 className="font-editorial text-2xl sm:text-3xl text-[#F8F5EE] font-bold">
+              Authenticated Classroom Access
+            </h2>
+            <p className="text-xs text-[#E8E0D1]/80 max-w-md mx-auto leading-relaxed">
+              Live 1-on-1 private lessons are strictly conducted in private rooms between verified students and their assigned scholars.
+            </p>
+          </div>
+
+          {/* Auth Cards */}
+          <div className="p-6 space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              
+              {/* Card 1: Student Login */}
+              <div className="p-5 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm flex flex-col justify-between space-y-4 hover:border-[#B79A62] transition-colors">
+                <div className="space-y-2">
+                  <div className="w-8 h-8 rounded-sm bg-[#0B332D] text-[#B79A62] flex items-center justify-center">
+                    <GraduationCap className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-editorial text-lg font-bold text-[#0B332D]">Student & Parent Portal</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Join your assigned teacher's live room, access your active Sabaq, and open the interactive Mushaf.
+                  </p>
+                </div>
+                <button
+                  onClick={() => onOpenAuth ? onOpenAuth('student', 'login') : window.location.href = '/login'}
+                  className="w-full py-2.5 bg-[#0B332D] text-[#F8F5EE] text-xs font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] transition-colors cursor-pointer"
+                >
+                  Sign In as Student
+                </button>
+              </div>
+
+              {/* Card 2: Teacher Login */}
+              <div className="p-5 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm flex flex-col justify-between space-y-4 hover:border-[#B79A62] transition-colors">
+                <div className="space-y-2">
+                  <div className="w-8 h-8 rounded-sm bg-[#0B332D] text-[#B79A62] flex items-center justify-center">
+                    <Certificate className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-editorial text-lg font-bold text-[#0B332D]">Faculty & Tutor Portal</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Open your active timetable roster, start student sessions, mark attendance, and evaluate recitation.
+                  </p>
+                </div>
+                <button
+                  onClick={() => onOpenAuth ? onOpenAuth('teacher', 'login') : window.location.href = '/login'}
+                  className="w-full py-2.5 bg-[#B79A62] text-[#07221E] text-xs font-bold uppercase tracking-wider rounded-sm hover:bg-[#C5AA73] transition-colors cursor-pointer"
+                >
+                  Sign In as Teacher
+                </button>
+              </div>
+
+            </div>
+
+            {/* Bottom Actions: Demo Mode & Home */}
+            <div className="pt-4 border-t border-[#E8E0D1] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <button
+                onClick={() => setGuestPreviewMode(true)}
+                className="text-[#0B332D] font-semibold hover:text-[#B79A62] flex items-center gap-1.5 cursor-pointer"
+              >
+                <BookOpen className="w-4 h-4" />
+                <span>Explore Interactive Studio Tools (Guest Preview)</span>
+              </button>
+
+              {onBackToLanding && (
+                <button
+                  onClick={onBackToLanding}
+                  className="text-gray-500 hover:text-gray-900 cursor-pointer"
+                >
+                  ← Return to Homepage
+                </button>
+              )}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F4F6F4] text-[#17201B] flex flex-col font-body">
       
       {/* Studio Header Bar */}
-      <div className="bg-[#064E3B] text-white px-4 sm:px-8 py-3.5 flex flex-wrap justify-between items-center border-b border-[#D4A72C]/40 shadow-sm">
+      <div className="bg-[#0B332D] text-white px-4 sm:px-8 py-3.5 flex flex-wrap justify-between items-center border-b border-[#B79A62]/40 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-[#D4A72C] text-[#064E3B] rounded-xl flex items-center justify-center font-bold text-lg shadow-sm">
+          <div className="w-9 h-9 bg-[#07221E] border border-[#B79A62]/40 text-[#B79A62] rounded-xs flex items-center justify-center font-bold text-lg shadow-sm">
             ن
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base sm:text-lg font-heading font-bold text-white tracking-wide">
-                NOOR-E-QURAN DIGITAL QURAN STUDIO & CLASSROOM
+              <h1 className="text-base sm:text-lg font-editorial font-bold text-[#F8F5EE] tracking-wide">
+                NOOR E QURAN DIGITAL QURAN STUDIO &amp; CLASSROOM
               </h1>
-              <span className="bg-[#D4A72C] text-[#064E3B] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                Live Interactive Lab
+              <span className="bg-[#B79A62] text-[#07221E] text-[10px] font-extrabold px-2 py-0.5 rounded-xs uppercase tracking-wider">
+                {currentUser ? 'Live Active Session' : 'Demo Lab Mode'}
               </span>
             </div>
             <p className="text-xs text-emerald-200 font-arabic">
@@ -453,7 +600,7 @@ export const ClassroomStudio: React.FC<ClassroomStudioProps> = ({
           {onReturnToPortal && (
             <button
               onClick={onReturnToPortal}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-[#D4A72C] hover:brightness-110 text-[#064E3B] shadow-md transition-transform active:scale-95 flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-xs text-xs font-bold bg-[#B79A62] hover:brightness-110 text-[#07221E] shadow-xs transition-transform active:scale-95 flex items-center gap-1.5 cursor-pointer"
             >
               <span>←</span>
               <span>Return to {portalOrigin === 'teacher' ? 'Teacher Portal' : 'Student Portal'}</span>
@@ -463,21 +610,65 @@ export const ClassroomStudio: React.FC<ClassroomStudioProps> = ({
           {onBackToLanding && (
             <button
               onClick={onBackToLanding}
-              className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-900/60 hover:bg-emerald-900 text-white border border-emerald-700/60 transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="px-3.5 py-2 rounded-xs text-xs font-semibold bg-[#07221E] hover:bg-black/50 text-[#F8F5EE] border border-[#B79A62]/30 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <span>←</span>
               <span>Home</span>
             </button>
           )}
 
-          {onOpenTrial && (
+          {onOpenTrial && !currentUser && (
             <button
               onClick={onOpenTrial}
-              className="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 shadow-sm transition-transform active:scale-95 cursor-pointer"
+              className="px-3.5 py-2 rounded-xs text-xs font-bold bg-[#B79A62] hover:brightness-110 text-[#07221E] shadow-xs transition-transform active:scale-95 cursor-pointer"
             >
               Book 1-on-1 Trial
             </button>
           )}
+        </div>
+      </div>
+
+      {/* Dynamic Class Session Ribbon (Showing Assigned Student, Teacher, Timetable & Sabaq) */}
+      <div className="bg-[#07221E] text-[#E8E0D1] px-4 sm:px-8 py-2.5 border-b border-[#B79A62]/20 font-sans text-xs flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="text-[#F8F5EE] font-bold">Room: CLS-{(currentUser?.uid || 'DEMO').slice(0, 6).toUpperCase()}</span>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#B79A62] font-semibold">Student:</span>
+            <span className="text-white font-bold">{studentDisplayName}</span>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#B79A62] font-semibold">Assigned Scholar:</span>
+            <span className="text-white font-bold">{assignedTutorName}</span>
+          </div>
+
+          <div className="hidden md:flex items-center gap-1.5">
+            <span className="text-[#B79A62] font-semibold">Timetable:</span>
+            <span className="text-emerald-200">{assignedScheduleDays} @ {assignedScheduleTime}</span>
+          </div>
+
+          <div className="hidden lg:flex items-center gap-1.5">
+            <span className="text-[#B79A62] font-semibold">Course &amp; Sabaq:</span>
+            <span className="text-[#F8F5EE]">{assignedCourseName} ({currentSabaq})</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 bg-[#0B332D] border border-[#B79A62]/30 px-2.5 py-1 rounded-xs">
+            <Clock className="w-3.5 h-3.5 text-[#B79A62]" />
+            <span className="text-[#F8F5EE] font-bold font-mono">{formatSessionTime(classSessionSeconds)} / 30:00</span>
+          </div>
+
+          <button
+            onClick={() => setIsSessionTimerActive(!isSessionTimerActive)}
+            className="text-[11px] text-[#B79A62] hover:underline cursor-pointer"
+          >
+            {isSessionTimerActive ? 'Pause' : 'Resume'}
+          </button>
         </div>
       </div>
 

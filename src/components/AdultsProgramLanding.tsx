@@ -72,7 +72,7 @@ export const AdultsProgramLanding: React.FC<AdultsProgramLandingProps> = ({
                 </button>
 
                 <a
-                  href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute.%20I%20am%20an%20adult%20learner%20interested%20in%20private%20Quran%20classes."
+                  href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor%20E%20Quran%20Institute.%20I%20am%20an%20adult%20learner%20interested%20in%20private%20Quran%20classes."
                   target="_blank"
                   rel="noreferrer"
                   className="px-5 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-sm transition-all shadow-md flex items-center gap-2"

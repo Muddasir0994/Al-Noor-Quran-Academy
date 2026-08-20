@@ -77,7 +77,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenTrial, onOpenE
             <span>About The Academy</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-[#064E3B] tracking-tight">
-            About Noor-e-Quran Institute
+            About Noor E Quran Institute
           </h2>
           <p className="mt-3 text-sm sm:text-base text-gray-600">
             A trusted global sanctuary dedicated to authentic Quran recitation, Tajweed mastery, and Islamic character nurturing from home.
@@ -95,7 +95,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenTrial, onOpenE
                 Connecting Families Worldwide With God-Fearing Quran Teachers
               </h3>
               <p className="text-sm text-gray-700 leading-relaxed">
-                Founded with a sacred vision, <strong>Noor-e-Quran Institute</strong> bridges the gap for Muslims living in the West and across the globe who seek authentic, high-caliber Islamic education for their children and themselves.
+                Founded with a sacred vision, <strong>Noor E Quran Institute</strong> bridges the gap for Muslims living in the West and across the globe who seek authentic, high-caliber Islamic education for their children and themselves.
               </p>
               <p className="text-sm text-gray-700 leading-relaxed">
                 We believe that learning the Quran should be an uplifting, spiritually fulfilling experience. By utilizing modern interactive digital classroom tools paired with traditional Ijazah-certified pedagogy, we provide one-on-one personalized guidance at times that fit seamlessly into busy family routines.
@@ -105,7 +105,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenTrial, onOpenE
             <div className="lg:col-span-5 relative group rounded-3xl overflow-hidden border-2 border-[#D4A72C]/40 shadow-xl bg-emerald-950 aspect-[4/3] sm:aspect-[3/2] lg:aspect-auto lg:h-72 w-full">
               <img
                 src="/images/academy-about-banner.webp"
-                alt="Noor-e-Quran Institute library and scholars in traditional study setting"
+                alt="Noor E Quran Institute library and scholars in traditional study setting"
                 width={1200}
                 height={800}
                 loading="lazy"
@@ -171,7 +171,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenTrial, onOpenE
               Guiding Principles
             </span>
             <h2 className="text-2xl sm:text-3xl font-heading font-extrabold text-[#064E3B] mt-2">
-              The Values Behind Noor-e-Quran Institute
+              The Values Behind Noor E Quran Institute
             </h2>
           </div>
 

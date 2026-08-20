@@ -63,7 +63,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({
   // Dynamically constructed active student from authenticated profile or verified record
   const currentStudent = {
     id: currentUser?.uid || userProfile?.uid || 'stu-live-1',
-    studentName: userProfile?.displayName || 'Learner (Noor-e-Quran Student)',
+    studentName: userProfile?.displayName || 'Learner (Noor E Quran Student)',
     parentName: userProfile?.parentName || 'Parent / Guardian',
     email: currentUser?.email || userProfile?.email || 'student@noorequraninstitute.me',
     phone: userProfile?.phone || '+92 327 4496163',
@@ -186,7 +186,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-base sm:text-lg font-heading font-bold text-white tracking-wide">
-                NOOR-E-QURAN STUDENT & PARENT LEARNING PORTAL
+                NOOR E QURAN STUDENT & PARENT LEARNING PORTAL
               </h1>
               <span className="bg-emerald-800 text-emerald-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-600">
                 Live Portal
@@ -738,7 +738,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({
                     Monthly Fee Invoice & Receipt
                   </h3>
                   <p className="text-xs text-gray-500">
-                    Official payment record for Noor-e-Quran Institute
+                    Official payment record for Noor E Quran Institute
                   </p>
                 </div>
                 <span className="bg-emerald-100 text-emerald-900 font-bold text-xs px-3 py-1 rounded-full border border-emerald-300">

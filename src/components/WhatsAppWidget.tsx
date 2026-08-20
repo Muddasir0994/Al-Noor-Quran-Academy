@@ -16,7 +16,7 @@ export const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({ onOpenTrial }) =
   ];
 
   const handleSend = (text: string) => {
-    const message = encodeURIComponent(text.trim() || 'Assalam-o-Alaikum Noor-e-Quran Institute');
+    const message = encodeURIComponent(text.trim() || 'Assalam-o-Alaikum Noor E Quran Institute');
     window.open(`https://wa.me/923274496163?text=${message}`, '_blank');
     setIsOpen(false);
   };
@@ -34,7 +34,7 @@ export const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({ onOpenTrial }) =
                 <WhatsappLogo className="w-6 h-6" weight="fill" />
               </div>
               <div>
-                <h4 className="font-heading font-bold text-sm text-white">Noor-e-Quran Support</h4>
+                <h4 className="font-heading font-bold text-sm text-white">Noor E Quran Support</h4>
                 <p className="text-[11px] text-emerald-200 flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
                   Online • WhatsApp Coordinator
@@ -53,7 +53,7 @@ export const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({ onOpenTrial }) =
           <div className="p-4 bg-emerald-50/40 space-y-3 text-xs">
             <div className="bg-white p-3 rounded-xl rounded-tl-none border border-gray-200/80 shadow-xs text-gray-800 space-y-1">
               <p className="font-semibold text-[#064E3B]">Assalam-o-Alaikum!</p>
-              <p>Welcome to Noor-e-Quran Institute. How can we help you today with your Quran learning goals?</p>
+              <p>Welcome to Noor E Quran Institute. How can we help you today with your Quran learning goals?</p>
             </div>
 
             <div className="space-y-1.5 pt-1">

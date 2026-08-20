@@ -82,7 +82,7 @@ export const KidsProgramLanding: React.FC<KidsProgramLandingProps> = ({
                 </button>
 
                 <a
-                  href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute.%20I%20want%20to%20inquire%20about%20Quran%20classes%20for%20my%20child."
+                  href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor%20E%20Quran%20Institute.%20I%20want%20to%20inquire%20about%20Quran%20classes%20for%20my%20child."
                   target="_blank"
                   rel="noreferrer"
                   className="px-5 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-sm transition-all shadow-md flex items-center gap-2"
@@ -97,7 +97,7 @@ export const KidsProgramLanding: React.FC<KidsProgramLandingProps> = ({
             <div className="lg:col-span-5 relative group rounded-3xl overflow-hidden border-2 border-[#D4A72C]/40 shadow-2xl bg-emerald-950">
               <img
                 src="/images/kids-program-banner.webp"
-                alt="Muslim children learning Quran online happily at Noor-e-Quran Institute"
+                alt="Muslim children learning Quran online happily at Noor E Quran Institute"
                 width={1200}
                 height={800}
                 loading="lazy"
@@ -130,7 +130,7 @@ export const KidsProgramLanding: React.FC<KidsProgramLandingProps> = ({
               Child-Centered Pedagogy
             </span>
             <h2 className="text-2xl sm:text-3xl font-heading font-extrabold text-[#064E3B] mt-2">
-              Why Parents Choose Noor-e-Quran for Their Children
+              Why Parents Choose Noor E Quran for Their Children
             </h2>
           </div>
 

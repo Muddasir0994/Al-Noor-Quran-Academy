@@ -357,9 +357,11 @@ function AppContent() {
               path="/classroom"
               element={
                 <ClassroomStudio
-                  user={currentUser}
-                  onClose={() => navigate('/')}
-                  initialSurah={1}
+                  onBackToLanding={() => navigate('/')}
+                  onOpenAuth={(role, mode) => handleOpenAuth(role, mode)}
+                  onOpenTrial={() => handleOpenTrial()}
+                  onOpenEnroll={() => handleOpenEnroll()}
+                  initialSurahNumber={1}
                 />
               }
             />
@@ -367,9 +369,11 @@ function AppContent() {
               path="/classroom/:surah"
               element={
                 <ClassroomStudio
-                  user={currentUser}
-                  onClose={() => navigate('/')}
-                  initialSurah={1}
+                  onBackToLanding={() => navigate('/')}
+                  onOpenAuth={(role, mode) => handleOpenAuth(role, mode)}
+                  onOpenTrial={() => handleOpenTrial()}
+                  onOpenEnroll={() => handleOpenEnroll()}
+                  initialSurahNumber={1}
                 />
               }
             />

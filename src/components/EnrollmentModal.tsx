@@ -115,7 +115,7 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
         setSuccessApp(data);
       } catch {
         const waText = encodeURIComponent(
-          `Salam! I submitted an enrollment application at Noor-e-Quran Institute.\nStudent: ${studentName}\nCourse: ${courseName}\nPackage: ${currentPkg.name}\nPhone: ${phone}`
+          `Salam! I submitted an enrollment application at Noor E Quran Institute.\nStudent: ${studentName}\nCourse: ${courseName}\nPackage: ${currentPkg.name}\nPhone: ${phone}`
         );
         setSuccessApp({
           success: true,
@@ -154,7 +154,7 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
             Academy Admission Application
           </div>
           <h2 className="text-2xl font-heading font-extrabold tracking-tight">
-            Enroll in Noor-e-Quran Institute
+            Enroll in Noor E Quran Institute
           </h2>
           <p className="text-xs sm:text-sm text-emerald-100 mt-1">
             Complete your admission profile. Your designated tutor will be assigned with custom timing and learning pace.

@@ -24,7 +24,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
 
           <div className="flex items-center gap-2 mb-1 text-[#D4A72C] text-xs font-bold uppercase tracking-wider">
             {type === 'privacy' ? <ShieldCheck className="w-4 h-4" /> : <FileText className="w-4 h-4" />}
-            <span>Noor-e-Quran Institute Legal</span>
+            <span>Noor E Quran Institute Legal</span>
           </div>
 
           <h2 className="text-xl sm:text-2xl font-heading font-bold text-white">
@@ -38,7 +38,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
             <>
               <p className="font-semibold text-gray-900">Effective Date: 15 August 2026</p>
               <p>
-                At <strong>Noor-e-Quran Institute</strong> (`noorequraninstitute.me`), we hold our students' and families' privacy with utmost sanctity and trust.
+                At <strong>Noor E Quran Institute</strong> (`noorequraninstitute.me`), we hold our students' and families' privacy with utmost sanctity and trust.
               </p>
               <h4 className="font-bold text-gray-900 text-sm pt-2">1. Information We Collect</h4>
               <p>
@@ -61,7 +61,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
             <>
               <p className="font-semibold text-gray-900">Effective Date: 15 August 2026</p>
               <p>
-                Welcome to <strong>Noor-e-Quran Institute</strong>. By using our website, booking trial classes, or enrolling in our academic courses, you agree to the following terms:
+                Welcome to <strong>Noor E Quran Institute</strong>. By using our website, booking trial classes, or enrolling in our academic courses, you agree to the following terms:
               </p>
               <h4 className="font-bold text-gray-900 text-sm pt-2">1. 3-Day Free Trial</h4>
               <p>

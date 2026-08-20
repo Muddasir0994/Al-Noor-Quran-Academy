@@ -96,7 +96,7 @@ export const ContactSection: React.FC = () => {
                 Official Channels
               </span>
               <h3 className="text-xl sm:text-2xl font-heading font-bold text-white">
-                Noor-e-Quran Institute
+                Noor E Quran Institute
               </h3>
               <p className="text-xs text-emerald-200 mt-1">
                 Global Online Quran Learning System
@@ -107,7 +107,7 @@ export const ContactSection: React.FC = () => {
               
               {/* Primary WhatsApp */}
               <a
-                href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute"
+                href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor%20E%20Quran%20Institute"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-start gap-3.5 p-3 rounded-2xl bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-700/60 transition-colors group"

@@ -96,6 +96,24 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [newNoteText, setNewNoteText] = useState('');
 
+  // Student Assignment & Timetable Modal State
+  const [assigningStudent, setAssigningStudent] = useState<Student | null>(null);
+  const [assignmentForm, setAssignmentForm] = useState<{
+    tutorId: string;
+    tutorName: string;
+    preferredDays: string[];
+    preferredTime: TimeSlot;
+    currentSurahOrLesson: string;
+    status: StudentStatus;
+  }>({
+    tutorId: '',
+    tutorName: '',
+    preferredDays: ['Monday', 'Wednesday', 'Friday'],
+    preferredTime: 'Evening',
+    currentSurahOrLesson: 'Surah Al-Baqarah (Ayah 142)',
+    status: 'Active'
+  });
+
   // Image Cropper State for Tutor Photos
   const [isTutorCropOpen, setIsTutorCropOpen] = useState(false);
   const [rawTutorImage, setRawTutorImage] = useState<string>('');
@@ -485,6 +503,61 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     onRefreshCourses();
   };
 
+  const handleOpenAssignModal = (student: Student) => {
+    setAssigningStudent(student);
+    setAssignmentForm({
+      tutorId: student.tutorId || (tutors.length > 0 ? tutors[0].id : ''),
+      tutorName: student.tutorName || (tutors.length > 0 ? tutors[0].name : ''),
+      preferredDays: student.preferredDays && student.preferredDays.length > 0 ? student.preferredDays : ['Monday', 'Wednesday', 'Friday'],
+      preferredTime: student.preferredTime || 'Evening',
+      currentSurahOrLesson: student.currentSurahOrLesson || 'Surah Al-Baqarah (Ayah 142)',
+      status: student.status || 'Active'
+    });
+  };
+
+  const handleSaveStudentAssignment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!assigningStudent) return;
+
+    const matchedTutor = tutors.find(t => t.id === assignmentForm.tutorId);
+    const tutorName = matchedTutor ? matchedTutor.name : assignmentForm.tutorName;
+
+    const updatedStudent: Student = {
+      ...assigningStudent,
+      tutorId: assignmentForm.tutorId,
+      tutorName: tutorName,
+      preferredDays: assignmentForm.preferredDays,
+      preferredTime: assignmentForm.preferredTime,
+      currentSurahOrLesson: assignmentForm.currentSurahOrLesson,
+      status: assignmentForm.status,
+      updatedAt: new Date().toISOString()
+    };
+
+    setStudents(prev => prev.map(s => s.id === assigningStudent.id ? updatedStudent : s));
+
+    try {
+      await fetch(`/api/admin/students/${assigningStudent.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          tutorId: assignmentForm.tutorId,
+          tutorName: tutorName,
+          preferredDays: assignmentForm.preferredDays,
+          preferredTime: assignmentForm.preferredTime,
+          currentSurahOrLesson: assignmentForm.currentSurahOrLesson,
+          status: assignmentForm.status
+        })
+      });
+    } catch (err) {
+      console.warn('Persist to backend notice:', err);
+    }
+
+    setAssigningStudent(null);
+  };
+
   const openWhatsAppForLead = (lead: Lead) => {
     const cleanPhone = lead.phone.replace(/[^0-9+]/g, '').replace('+', '');
     const msg = encodeURIComponent(`Assalam-o-Alaikum ${lead.parentName || lead.studentName}! This is Noor E Quran Institute regarding your free trial inquiry for ${lead.courseName}.`);
@@ -864,22 +937,50 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                       <table className="w-full text-left text-xs font-sans">
                         <thead className="bg-[#F8F5EE] text-[#0B332D] font-bold uppercase tracking-wider border-b border-[#E8E0D1] text-[10px]">
                           <tr>
-                            <th className="p-3.5">Student</th>
-                            <th className="p-3.5">Course</th>
-                            <th className="p-3.5">Assigned Tutor</th>
+                            <th className="p-3.5">Student / Parent</th>
+                            <th className="p-3.5">Course &amp; Sabaq</th>
+                            <th className="p-3.5">Assigned Scholar</th>
+                            <th className="p-3.5">Timetable Schedule</th>
                             <th className="p-3.5">Status</th>
+                            <th className="p-3.5 text-right">Actions</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-[#E8E0D1]/60">
                           {students.map(stu => (
                             <tr key={stu.id} className="hover:bg-[#F8F5EE]/50 transition-colors">
-                              <td className="p-3.5 font-bold text-[#0B332D]">{stu.studentName}</td>
-                              <td className="p-3.5 text-gray-700">{stu.courseName}</td>
-                              <td className="p-3.5 text-gray-700">{stu.tutorName || 'Not Assigned'}</td>
+                              <td className="p-3.5">
+                                <p className="font-bold text-[#0B332D]">{stu.studentName}</p>
+                                <p className="text-[11px] text-gray-500">{stu.parentName || stu.email}</p>
+                              </td>
+                              <td className="p-3.5 text-gray-700">
+                                <p className="font-semibold">{stu.courseName}</p>
+                                <p className="text-[11px] text-emerald-800">{stu.currentSurahOrLesson || 'Noorani Qaida / Tajweed'}</p>
+                              </td>
+                              <td className="p-3.5 text-gray-700">
+                                {stu.tutorName ? (
+                                  <span className="font-semibold text-[#0B332D]">{stu.tutorName}</span>
+                                ) : (
+                                  <span className="text-amber-700 italic">Pending Assignment</span>
+                                )}
+                              </td>
+                              <td className="p-3.5 text-gray-700">
+                                <span className="font-mono text-[11px] bg-[#F8F5EE] px-2 py-0.5 rounded-xs border border-[#E8E0D1]">
+                                  {stu.preferredDays && stu.preferredDays.length > 0 ? stu.preferredDays.join(', ') : 'Mon, Wed, Fri'} • {stu.preferredTime || 'Evening'}
+                                </span>
+                              </td>
                               <td className="p-3.5">
                                 <span className="px-2 py-0.5 text-[10px] font-bold rounded-xs bg-emerald-50 text-emerald-800 border border-emerald-200">
                                   {stu.status}
                                 </span>
+                              </td>
+                              <td className="p-3.5 text-right">
+                                <button
+                                  onClick={() => handleOpenAssignModal(stu)}
+                                  className="px-3 py-1.5 bg-[#0B332D] text-[#F8F5EE] hover:bg-[#07221E] text-[11px] font-semibold rounded-xs transition-colors cursor-pointer inline-flex items-center gap-1 shadow-xs"
+                                >
+                                  <PencilSimple className="w-3.5 h-3.5 text-[#B79A62]" />
+                                  <span>Assign / Edit Timetable</span>
+                                </button>
                               </td>
                             </tr>
                           ))}
@@ -1350,6 +1451,137 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                     className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] cursor-pointer"
                   >
                     Save Course
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Assign Scholar & Timetable Modal */}
+        {assigningStudent && (
+          <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-lg bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="px-6 py-4 bg-[#0B332D] text-[#F8F5EE] flex items-center justify-between border-b border-[#B79A62]/30">
+                <div>
+                  <h3 className="font-editorial text-xl font-semibold">
+                    Assign Scholar &amp; Set Class Timetable
+                  </h3>
+                  <p className="text-[11px] text-[#B79A62]">
+                    Student: {assigningStudent.studentName} • {assigningStudent.courseName}
+                  </p>
+                </div>
+                <button onClick={() => setAssigningStudent(null)} className="text-gray-300 hover:text-white cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveStudentAssignment} className="p-6 space-y-4 overflow-y-auto text-xs font-sans">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Select Certified Scholar / Tutor *</label>
+                  <select
+                    value={assignmentForm.tutorId}
+                    onChange={e => {
+                      const selTut = tutors.find(t => t.id === e.target.value);
+                      setAssignmentForm({
+                        ...assignmentForm,
+                        tutorId: e.target.value,
+                        tutorName: selTut ? selTut.name : ''
+                      });
+                    }}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  >
+                    <option value="">-- Choose Faculty Member --</option>
+                    {tutors.map(t => (
+                      <option key={t.id} value={t.id}>
+                        {t.name} ({t.gender} • {t.specialization})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Class Schedule Days</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => {
+                      const isSelected = assignmentForm.preferredDays.includes(day);
+                      return (
+                        <button
+                          key={day}
+                          type="button"
+                          onClick={() => {
+                            const newDays = isSelected
+                              ? assignmentForm.preferredDays.filter(d => d !== day)
+                              : [...assignmentForm.preferredDays, day];
+                            setAssignmentForm({ ...assignmentForm, preferredDays: newDays });
+                          }}
+                          className={`py-1.5 px-2 text-[11px] rounded-xs border text-center font-medium transition-colors cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#0B332D] text-[#F8F5EE] border-[#0B332D]'
+                              : 'bg-[#F8F5EE] text-gray-700 border-[#E8E0D1] hover:border-[#B79A62]'
+                          }`}
+                        >
+                          {day.slice(0, 3)}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Time Slot Preference</label>
+                    <select
+                      value={assignmentForm.preferredTime}
+                      onChange={e => setAssignmentForm({ ...assignmentForm, preferredTime: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    >
+                      <option value="Morning">Morning (08:00 AM - 12:00 PM)</option>
+                      <option value="Afternoon">Afternoon (12:00 PM - 04:00 PM)</option>
+                      <option value="Evening">Evening (04:00 PM - 08:00 PM)</option>
+                      <option value="Night">Night (08:00 PM - 11:00 PM)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Student Status</label>
+                    <select
+                      value={assignmentForm.status}
+                      onChange={e => setAssignmentForm({ ...assignmentForm, status: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    >
+                      <option value="Active">Active</option>
+                      <option value="On Trial">On Trial</option>
+                      <option value="Paused">Paused</option>
+                      <option value="Graduated">Graduated</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Current Lesson / Sabaq Milestone</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Surah Al-Baqarah (Ayah 142) or Qaida Lesson 4"
+                    value={assignmentForm.currentSurahOrLesson}
+                    onChange={e => setAssignmentForm({ ...assignmentForm, currentSurahOrLesson: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  />
+                </div>
+
+                <div className="pt-4 border-t border-[#E8E0D1] flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setAssigningStudent(null)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-900 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] cursor-pointer"
+                  >
+                    Save Assignment &amp; Timetable
                   </button>
                 </div>
               </form>

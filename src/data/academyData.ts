@@ -141,7 +141,7 @@ export const ALL_COURSES: Course[] = [
     learningOutcomes: [
       'Rock-solid retention of memorized Paras with zero doubts',
       'Recitation from memory during daily Salah and Taraweeh',
-      'Official Noor-e-Quran Institute Hifz Certificate & Sanad'
+      'Official Noor E Quran Institute Hifz Certificate & Sanad'
     ]
   },
   {
