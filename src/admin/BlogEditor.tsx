@@ -45,23 +45,31 @@ interface BlogEditorProps {
   onViewPost?: (slug: string) => void;
 }
 
-// Error Boundary for resilient rendering
-class BlogEditorErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
-  override state = { hasError: false, error: null as Error | null };
+interface BlogErrorBoundaryProps {
+  children: React.ReactNode;
+}
 
-  constructor(props: { children: React.ReactNode }) {
+interface BlogErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+// Error Boundary for resilient rendering
+class BlogEditorErrorBoundary extends React.Component<BlogErrorBoundaryProps, BlogErrorBoundaryState> {
+  constructor(props: BlogErrorBoundaryProps) {
     super(props);
+    this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(error: Error): BlogErrorBoundaryState {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('BlogEditor runtime error:', error, errorInfo);
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       return (
         <div className="bg-red-50 border border-red-200 rounded-sm p-6 text-red-900 space-y-4 max-w-xl mx-auto my-8 text-center">
