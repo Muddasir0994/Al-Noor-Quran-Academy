@@ -45,52 +45,7 @@ interface BlogEditorProps {
   onViewPost?: (slug: string) => void;
 }
 
-interface BlogErrorBoundaryProps {
-  children: React.ReactNode;
-}
-
-interface BlogErrorBoundaryState {
-  hasError: boolean;
-  error: Error | null;
-}
-
-// Error Boundary for resilient rendering
-class BlogEditorErrorBoundary extends React.Component<BlogErrorBoundaryProps, BlogErrorBoundaryState> {
-  constructor(props: BlogErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error: Error): BlogErrorBoundaryState {
-    return { hasError: true, error };
-  }
-
-  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('BlogEditor runtime error:', error, errorInfo);
-  }
-
-  override render() {
-    if (this.state.hasError) {
-      return (
-        <div className="bg-red-50 border border-red-200 rounded-sm p-6 text-red-900 space-y-4 max-w-xl mx-auto my-8 text-center">
-          <h3 className="font-editorial font-bold text-lg text-red-700">Editor Encountered an Issue</h3>
-          <p className="text-xs text-red-600 font-sans">
-            {this.state.error?.message || 'An unexpected rendering error occurred.'}
-          </p>
-          <button
-            onClick={() => this.setState({ hasError: false, error: null })}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-sm text-xs font-bold transition-colors cursor-pointer font-sans"
-          >
-            Reload Editor
-          </button>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
-const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
+export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -875,9 +830,3 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     </div>
   );
 };
-
-export const BlogEditor: React.FC<BlogEditorProps> = (props) => (
-  <BlogEditorErrorBoundary>
-    <BlogEditorContent {...props} />
-  </BlogEditorErrorBoundary>
-);
