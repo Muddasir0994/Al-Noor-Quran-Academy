@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BlogPost } from '../types';
 import { INITIAL_ARTICLES } from '../data/academyData';
 import { getPublishedBlogPosts } from '../lib/firestoreService';
-import { ArrowRight, MagnifyingGlass, User, Calendar, Clock, BookOpen } from '@phosphor-icons/react';
+import { ArrowRight, MagnifyingGlass, BookOpen, Clock, Calendar, User } from '@phosphor-icons/react';
 
 interface BlogListPageProps {
   onNavigate: (slug: string) => void;
@@ -63,8 +63,10 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
     return matchCat && matchSearch;
   });
 
+  // 3-Tier Editorial Magazine Architecture
   const featuredPost = filtered.length > 0 ? filtered[0] : null;
-  const supportingPosts = filtered.length > 1 ? filtered.slice(1) : [];
+  const secondaryPosts = filtered.length > 1 ? filtered.slice(1, 3) : [];
+  const listPosts = filtered.length > 3 ? filtered.slice(3) : [];
 
   const stripHtml = (html: string) => {
     const tmp = document.createElement('div');
@@ -73,12 +75,12 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-[#FCFBF8] border-b border-[#E8E0D1] min-h-screen">
+    <section className="py-24 lg:py-32 bg-[#FCFBF8] border-b border-[#E8E0D1]/70 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Editorial Section Header */}
-        <div className="max-w-3xl mb-12 lg:mb-16">
-          <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest mb-3">
+        {/* Section Header */}
+        <div className="max-w-2xl mb-14 lg:mb-18">
+          <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest mb-3.5">
             ESSAYS &amp; GUIDES
           </p>
           <h1 className="font-editorial text-4xl sm:text-5xl text-[#0B332D] leading-[1.12] font-semibold tracking-tight">
@@ -89,9 +91,9 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
           </p>
         </div>
 
-        {/* Search & Filter Bar: Clean & Minimal */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-14 pb-6 border-b border-[#E8E0D1]">
-          <div className="relative flex-1 max-w-sm">
+        {/* Filter Pills */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-16 pb-6 border-b border-[#E8E0D1]/60">
+          <div className="relative flex-1 max-w-xs">
             <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#B79A62]" />
             <input
               type="search"
@@ -110,7 +112,7 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
                 className={`px-3 py-1.5 rounded-sm text-xs font-sans transition-all cursor-pointer ${
                   activeCategory === cat
                     ? 'bg-[#0B332D] text-[#F8F5EE] font-semibold'
-                    : 'bg-[#F8F5EE] text-gray-600 hover:text-[#0B332D] border border-[#E8E0D1]'
+                    : 'bg-[#F8F5EE] text-gray-600 hover:text-[#0B332D] border border-[#E8E0D1]/70'
                 }`}
               >
                 {cat}
@@ -119,32 +121,31 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
           </div>
         </div>
 
-        {/* Loading Pulse */}
+        {/* Loading State */}
         {loading ? (
           <div className="space-y-8">
-            <div className="h-72 bg-[#F8F5EE] rounded-sm animate-pulse" />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3].map(i => (
+            <div className="h-80 bg-[#F8F5EE] rounded-sm animate-pulse" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[1, 2].map(i => (
                 <div key={i} className="h-64 bg-[#F8F5EE] rounded-sm animate-pulse" />
               ))}
             </div>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-20 bg-[#F8F5EE] rounded-sm border border-[#E8E0D1]">
+          <div className="text-center py-20 bg-[#F8F5EE] rounded-sm border border-[#E8E0D1]/70">
             <BookOpen className="w-10 h-10 text-[#B79A62] mx-auto mb-3" weight="regular" />
             <p className="text-gray-600 text-sm font-sans font-medium">No articles published yet in this category.</p>
           </div>
         ) : (
-          <div className="space-y-16">
+          <div className="space-y-20">
             
-            {/* 1. Large Featured Article (Magazine Style) */}
+            {/* LAYER 1: Large Featured Article (Full-Width Editorial) */}
             {featuredPost && (
               <article
                 onClick={() => onNavigate(featuredPost.slug)}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center group cursor-pointer p-6 sm:p-8 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm hover:border-[#B79A62] transition-colors"
+                className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center group cursor-pointer p-6 sm:p-10 bg-[#F8F5EE] border border-[#E8E0D1]/80 rounded-sm hover:border-[#B79A62] transition-colors"
               >
-                {/* Featured Image */}
-                <div className="lg:col-span-6 relative aspect-[16/10] overflow-hidden rounded-sm bg-[#FCFBF8]">
+                <div className="lg:col-span-6 relative aspect-[16/10] overflow-hidden rounded-sm bg-[#FCFBF8] border border-[#E8E0D1]/60">
                   {featuredPost.featuredImage ? (
                     <img
                       src={featuredPost.featuredImage}
@@ -162,8 +163,7 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
                   </span>
                 </div>
 
-                {/* Editorial Content */}
-                <div className="lg:col-span-6 space-y-4">
+                <div className="lg:col-span-6 space-y-4 max-w-xl">
                   <div className="flex items-center gap-3 text-xs text-gray-500 font-sans">
                     <span>{featuredPost.author}</span>
                     <span>•</span>
@@ -175,12 +175,12 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
                   </h2>
 
                   <p className="text-xs sm:text-sm text-gray-600 font-sans leading-relaxed line-clamp-3">
-                    {featuredPost.metaDescription || stripHtml(featuredPost.content).slice(0, 160) + '...'}
+                    {featuredPost.metaDescription || stripHtml(featuredPost.content).slice(0, 180) + '...'}
                   </p>
 
                   <div className="pt-2">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#0B332D] group-hover:text-[#B79A62] transition-colors">
-                      <span>Read Article</span>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#0B332D] group-hover:text-[#B79A62] transition-colors border-b border-[#0B332D]/20 pb-0.5">
+                      <span>Read Full Article</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
@@ -188,22 +188,22 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
               </article>
             )}
 
-            {/* 2. Supporting Articles Grid */}
-            {supportingPosts.length > 0 && (
+            {/* LAYER 2: Secondary Posts (2-Column Editorial Grid) */}
+            {secondaryPosts.length > 0 && (
               <div className="space-y-6">
                 <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest">
-                  RECENT ARTICLES
+                  FEATURED GUIDES
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {supportingPosts.map(post => (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  {secondaryPosts.map(post => (
                     <article
                       key={post.id}
                       onClick={() => onNavigate(post.slug)}
-                      className="group flex flex-col justify-between space-y-4 pt-4 border-t border-[#E8E0D1] cursor-pointer hover:border-[#B79A62] transition-colors"
+                      className="group flex flex-col justify-between space-y-5 p-6 bg-[#F8F5EE] border border-[#E8E0D1]/70 rounded-sm cursor-pointer hover:border-[#B79A62] transition-colors"
                     >
-                      <div className="space-y-3">
-                        <div className="aspect-[16/10] overflow-hidden rounded-sm bg-[#F8F5EE] border border-[#E8E0D1]">
+                      <div className="space-y-4">
+                        <div className="aspect-[16/9] overflow-hidden rounded-sm bg-[#FCFBF8] border border-[#E8E0D1]/60">
                           {post.featuredImage ? (
                             <img
                               src={post.featuredImage}
@@ -222,18 +222,58 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
                           {post.category}
                         </span>
 
-                        <h3 className="font-editorial text-xl text-[#0B332D] font-semibold leading-snug group-hover:text-[#07221E] transition-colors line-clamp-2">
+                        <h3 className="font-editorial text-2xl text-[#0B332D] font-semibold leading-snug group-hover:text-[#07221E] transition-colors line-clamp-2">
                           {post.title}
                         </h3>
 
                         <p className="text-xs text-gray-600 font-sans line-clamp-2 leading-relaxed">
-                          {post.metaDescription || stripHtml(post.content).slice(0, 100) + '...'}
+                          {post.metaDescription || stripHtml(post.content).slice(0, 120) + '...'}
                         </p>
                       </div>
 
-                      <div className="flex items-center justify-between text-xs font-sans text-gray-500 pt-2">
+                      <div className="flex items-center justify-between text-xs font-sans text-gray-500 pt-3 border-t border-[#E8E0D1]/50">
                         <span>{post.readTime}</span>
                         <span className="inline-flex items-center gap-1 font-bold text-[#0B332D] group-hover:text-[#B79A62] transition-colors">
+                          <span>Read</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </span>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* LAYER 3: List Posts (Clean Editorial Rows) */}
+            {listPosts.length > 0 && (
+              <div className="space-y-6">
+                <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest">
+                  RECENT ARTICLES
+                </p>
+
+                <div className="divide-y divide-[#E8E0D1]/60 border-t border-b border-[#E8E0D1]/60">
+                  {listPosts.map(post => (
+                    <article
+                      key={post.id}
+                      onClick={() => onNavigate(post.slug)}
+                      className="py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-center group cursor-pointer hover:bg-[#F8F5EE]/40 transition-colors px-3"
+                    >
+                      <div className="md:col-span-2">
+                        <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#B79A62]">
+                          {post.category}
+                        </span>
+                      </div>
+
+                      <div className="md:col-span-7">
+                        <h4 className="font-editorial text-xl text-[#0B332D] font-semibold group-hover:text-[#B79A62] transition-colors line-clamp-1">
+                          {post.title}
+                        </h4>
+                      </div>
+
+                      <div className="md:col-span-3 flex md:justify-end items-center gap-3 text-xs text-gray-500 font-sans">
+                        <span>{post.readTime}</span>
+                        <span>•</span>
+                        <span className="font-semibold text-[#0B332D] group-hover:text-[#B79A62] inline-flex items-center gap-1">
                           <span>Read</span>
                           <ArrowRight className="w-3 h-3" />
                         </span>

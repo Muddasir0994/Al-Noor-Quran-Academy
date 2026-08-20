@@ -13,10 +13,11 @@ export const TutorsSection: React.FC<TutorsSectionProps> = ({
   onOpenTrialWithGender,
   onOpenTrial
 }) => {
-  // Display top certified faculty members from real database records
-  const displayTutors = tutors.length > 0 ? tutors.slice(0, 3) : [];
+  const displayTutors = tutors.length > 0 ? tutors : [];
+  const featuredTutor = displayTutors.length > 0 ? displayTutors[0] : null;
+  const secondaryTutors = displayTutors.length > 1 ? displayTutors.slice(1, 3) : [];
 
-  const handleSelectTeacher = (gender: 'Male' | 'Female', tutorName?: string) => {
+  const handleSelectTeacher = (gender: 'Male' | 'Female' | 'No Preference', tutorName?: string) => {
     if (onOpenTrialWithGender) {
       onOpenTrialWithGender(gender);
     } else if (onOpenTrial) {
@@ -25,13 +26,13 @@ export const TutorsSection: React.FC<TutorsSectionProps> = ({
   };
 
   return (
-    <section id="tutors" className="py-20 lg:py-28 bg-[#F8F5EE] border-b border-[#E8E0D1]">
+    <section id="tutors" className="py-24 lg:py-32 bg-[#F8F5EE] border-b border-[#E8E0D1]/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header: Editorial & Restrained */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 lg:mb-20 gap-6">
-          <div>
-            <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest mb-3">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 lg:mb-24 gap-6">
+          <div className="max-w-2xl">
+            <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest mb-3.5">
               OUR TEACHERS
             </p>
             <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl text-[#0B332D] leading-[1.1] font-semibold tracking-tight">
@@ -43,90 +44,136 @@ export const TutorsSection: React.FC<TutorsSectionProps> = ({
 
           <div className="text-right">
             <button
-              onClick={() => handleSelectTeacher('No Preference' as any)}
-              className="inline-flex items-center gap-2 text-xs font-sans font-semibold text-[#0B332D] hover:text-[#B79A62] transition-colors py-1 border-b border-[#0B332D]/30 hover:border-[#B79A62] cursor-pointer"
+              onClick={() => handleSelectTeacher('No Preference')}
+              className="inline-flex items-center gap-2 text-xs font-sans font-semibold text-[#0B332D] hover:text-[#B79A62] transition-colors py-1 border-b border-[#0B332D]/20 hover:border-[#B79A62] cursor-pointer"
             >
-              <span>View All Teachers ({tutors.length || 4})</span>
+              <span>Explore All Verified Faculty ({tutors.length || 4})</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
-        {/* Teachers Showcase Grid: Dynamic Data from Database */}
+        {/* Editorial Asymmetrical Hierarchy Grid */}
         {displayTutors.length === 0 ? (
-          <div className="text-center py-12 text-gray-500 text-sm font-sans">
-            Verified faculty directory is loading...
+          <div className="text-center py-16 text-gray-500 text-sm font-sans">
+            Faculty directory is loading...
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12">
-            {displayTutors.map((tutor) => {
-              const firstName = tutor.name.replace(/^(Ustadha|Ustadh|Qari|Shaykh|Maulana)\s+/i, '');
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
+            
+            {/* 1. Featured Senior Faculty (Large Column - 7 cols) */}
+            {featuredTutor && (
+              <div className="lg:col-span-7 bg-[#FCFBF8] border border-[#E8E0D1]/80 rounded-sm p-6 sm:p-8 space-y-6">
+                <div className="relative aspect-[16/11] rounded-sm overflow-hidden border border-[#E8E0D1]/60 bg-[#F8F5EE]">
+                  {featuredTutor.photoUrl ? (
+                    <img
+                      src={featuredTutor.photoUrl}
+                      alt={featuredTutor.name}
+                      className="w-full h-full object-cover filter brightness-[0.98]"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-[#0B332D]/40">
+                      <User className="w-16 h-16 mb-2" weight="thin" />
+                    </div>
+                  )}
+                  <span className="absolute top-3 left-3 px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-wider bg-[#0B332D] text-[#B79A62]">
+                    Senior Faculty • {featuredTutor.experienceYears}+ Years
+                  </span>
+                </div>
 
-              return (
-                <div key={tutor.id} className="group space-y-5">
-                  
-                  {/* Portrait Photography with Warm Natural Light & Architectural Frame */}
-                  <div className="relative rounded-sm overflow-hidden border border-[#E8E0D1] bg-[#FCFBF8] aspect-[4/5]">
-                    {tutor.photoUrl ? (
-                      <img
-                        src={tutor.photoUrl}
-                        alt={tutor.name}
-                        className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500 filter brightness-[0.98]"
-                        loading="lazy"
-                        onError={(e) => {
-                          // Clean neutral fallback if image is unreachable
-                          (e.target as HTMLElement).style.display = 'none';
-                        }}
-                      />
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center bg-[#F8F5EE] text-[#0B332D]/40">
-                        <User className="w-16 h-16 mb-2" weight="thin" />
-                        <span className="text-xs font-sans font-medium text-gray-400">Certified Faculty</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B332D]/35 via-transparent to-transparent pointer-events-none" />
+                <div className="space-y-3">
+                  <div className="w-8 h-[1.5px] bg-[#B79A62]" />
+
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                    <h3 className="font-editorial text-3xl text-[#0B332D] font-semibold">
+                      {featuredTutor.name}
+                    </h3>
+                    <span className="text-xs font-sans font-semibold text-[#B79A62] uppercase tracking-wider">
+                      {featuredTutor.specialization}
+                    </span>
                   </div>
 
-                  {/* Text Layout with Small Brass Underline */}
-                  <div className="space-y-2.5">
-                    <div className="w-8 h-[1.5px] bg-[#B79A62]" />
+                  <p className="text-xs text-gray-500 font-sans">
+                    {Array.isArray(featuredTutor.languages) ? featuredTutor.languages.join(', ') : featuredTutor.languages} • {featuredTutor.qualification}
+                  </p>
 
-                    <div className="flex items-baseline justify-between gap-2">
-                      <h3 className="font-editorial text-2xl text-[#0B332D] font-semibold">
-                        {tutor.name}
-                      </h3>
-                    </div>
+                  <p className="text-xs sm:text-sm text-gray-600 font-sans leading-relaxed pt-1 max-w-xl">
+                    {featuredTutor.bio}
+                  </p>
 
-                    <p className="text-[11px] font-sans font-semibold text-[#B79A62] uppercase tracking-wider">
-                      {tutor.specialization}
-                    </p>
+                  <div className="pt-3">
+                    <button
+                      onClick={() => handleSelectTeacher(featuredTutor.gender, featuredTutor.name)}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0B332D] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] transition-all cursor-pointer shadow-xs"
+                    >
+                      <span>Request Trial with {featuredTutor.name.split(' ')[0]}</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#B79A62]" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
-                    <div className="flex items-center gap-3 text-xs text-gray-500 font-sans">
-                      <span>{tutor.experienceYears}+ Years Experience</span>
-                      <span>•</span>
-                      <span>{Array.isArray(tutor.languages) ? tutor.languages.join(', ') : tutor.languages}</span>
+            {/* 2. Secondary Faculty Stack (5 cols) */}
+            <div className="lg:col-span-5 space-y-8">
+              {secondaryTutors.map((tutor) => {
+                const firstName = tutor.name.replace(/^(Ustadha|Ustadh|Qari|Shaykh|Maulana)\s+/i, '');
+
+                return (
+                  <div
+                    key={tutor.id}
+                    className="p-6 bg-[#FCFBF8] border border-[#E8E0D1]/80 rounded-sm space-y-4 group hover:border-[#B79A62] transition-colors"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-20 rounded-sm overflow-hidden border border-[#E8E0D1]/60 bg-[#F8F5EE] shrink-0">
+                        {tutor.photoUrl ? (
+                          <img
+                            src={tutor.photoUrl}
+                            alt={tutor.name}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-[#0B332D]/40">
+                            <User className="w-8 h-8" weight="thin" />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="space-y-1">
+                        <h4 className="font-editorial text-2xl text-[#0B332D] font-semibold">
+                          {tutor.name}
+                        </h4>
+                        <p className="text-[10px] font-sans font-bold text-[#B79A62] uppercase tracking-wider">
+                          {tutor.specialization}
+                        </p>
+                        <p className="text-xs text-gray-500 font-sans">
+                          {tutor.experienceYears}+ Years • {Array.isArray(tutor.languages) ? tutor.languages.join(', ') : tutor.languages}
+                        </p>
+                      </div>
                     </div>
 
                     {tutor.bio && (
-                      <p className="text-xs text-gray-600 font-sans leading-relaxed pt-1 line-clamp-3">
+                      <p className="text-xs text-gray-600 font-sans leading-relaxed line-clamp-2">
                         {tutor.bio}
                       </p>
                     )}
 
-                    <div className="pt-2">
+                    <div className="pt-1">
                       <button
                         onClick={() => handleSelectTeacher(tutor.gender, tutor.name)}
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0B332D] hover:text-[#B79A62] transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0B332D] hover:text-[#B79A62] transition-colors cursor-pointer border-b border-[#0B332D]/20 pb-0.5"
                       >
                         <span>Request Trial with {firstName}</span>
                         <ArrowRight className="w-3 h-3" />
                       </button>
                     </div>
                   </div>
+                );
+              })}
+            </div>
 
-                </div>
-              );
-            })}
           </div>
         )}
 

@@ -40,9 +40,9 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenTrial }) => {
   ];
 
   return (
-    <section className="relative py-20 lg:py-28 bg-[#0B332D] text-[#F8F5EE] overflow-hidden">
+    <section className="relative py-24 lg:py-32 bg-[#0B332D] text-[#F8F5EE] overflow-hidden">
       
-      {/* Subtle Islamic Geometric Accent */}
+      {/* Subtle Geometric Accent */}
       <div 
         className="absolute inset-0 opacity-15 pointer-events-none"
         style={{
@@ -59,49 +59,51 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenTrial }) => {
           {/* Left Column: Powerful Editorial Statement */}
           <div className="lg:col-span-5 space-y-6">
             <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest">
-              WHY CHOOSE US
+              WHY NOOR AL-QURAN
             </p>
+
             <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl text-[#F8F5EE] leading-[1.12] font-semibold tracking-tight">
               More than classes.<br />
               <span className="italic font-normal text-[#E8E0D1]">A relationship that lasts.</span>
             </h2>
-            <p className="text-sm sm:text-base text-[#E8E0D1]/80 font-sans leading-relaxed max-w-md">
-              We focus on cultivating sincere reverence, proper pronunciation, and enduring attachment to the Quran through patient, accredited educators.
+
+            <p className="text-sm sm:text-base text-[#E8E0D1]/85 font-sans leading-relaxed max-w-md">
+              We focus on building a deep, personal connection between teacher and student. Learning the Quran is a sacred journey that requires patience, respect, and sincere care.
             </p>
 
             {onOpenTrial && (
-              <div className="pt-4">
+              <div className="pt-2">
                 <button
                   onClick={onOpenTrial}
-                  className="px-6 py-3 bg-[#B79A62] text-[#07221E] text-xs font-semibold uppercase tracking-wider rounded-sm hover:bg-[#D8C7A3] transition-colors shadow-xs cursor-pointer inline-flex items-center gap-2"
+                  className="inline-flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-[#B79A62] hover:text-[#D8C7A3] transition-colors py-2 border-b border-[#B79A62]/40 hover:border-[#D8C7A3] cursor-pointer"
                 >
-                  <span>Experience A Free Class</span>
+                  <span>Experience the Difference</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             )}
           </div>
 
-          {/* Right Column: 4 Trust Principles with Fine Brass Details */}
+          {/* Right Column: 4 Editorial Principles (Ivory + Muted Brass Icons) */}
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-10">
             {principles.map((item) => {
               const Icon = item.icon;
               return (
-                <div key={item.number} className="space-y-3 pt-4 border-t border-[#B79A62]/25">
+                <div key={item.number} className="space-y-3.5">
                   <div className="flex items-center justify-between">
-                    <div className="w-8 h-8 rounded-sm bg-[#07221E] border border-[#B79A62]/30 flex items-center justify-center text-[#B79A62]">
+                    <div className="w-9 h-9 rounded-sm border border-[#B79A62]/40 bg-[#07221E] flex items-center justify-center text-[#B79A62]">
                       <Icon className="w-4 h-4" weight="regular" />
                     </div>
-                    <span className="font-editorial text-sm text-[#B79A62]/60 font-light">
+                    <span className="font-editorial text-xl text-[#B79A62]/40 font-light select-none">
                       {item.number}
                     </span>
                   </div>
 
-                  <h3 className="font-editorial text-xl sm:text-2xl text-[#F8F5EE] font-semibold">
+                  <h3 className="font-editorial text-xl text-[#F8F5EE] font-semibold">
                     {item.title}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-[#E8E0D1]/80 font-sans leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#E8E0D1]/75 font-sans leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -112,7 +114,6 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenTrial }) => {
         </div>
 
       </div>
-
     </section>
   );
 };

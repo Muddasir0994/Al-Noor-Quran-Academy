@@ -62,11 +62,21 @@ export const Navbar: React.FC<NavbarProps> = ({
     { path: '/', label: 'Home' },
     { path: '/courses', label: 'Courses' },
     { path: '/teachers', label: 'Teachers' },
-    { path: '/packages', label: 'Tuition & Plans' },
-    { path: '/how-it-works', label: 'How It Works' },
-    { path: '/about', label: 'About Us' },
+    { path: '/packages', label: 'Pricing' },
     { path: '/blog', label: 'Blog' },
-    { path: '/contact', label: 'Contact' }
+    { path: '/about', label: 'About' }
+  ];
+
+  const mobileNavLinks = [
+    { path: '/', label: 'Home' },
+    { path: '/courses', label: 'Courses' },
+    { path: '/teachers', label: 'Teachers' },
+    { path: '/packages', label: 'Pricing & Tuition Plans' },
+    { path: '/how-it-works', label: 'How It Works' },
+    { path: '/blog', label: 'Blog & Articles' },
+    { path: '/about', label: 'About Us' },
+    { path: '/contact', label: 'Contact Us' },
+    { path: '/faq', label: 'FAQ' }
   ];
 
   const isLinkActive = (path: string) => {
@@ -248,14 +258,14 @@ export const Navbar: React.FC<NavbarProps> = ({
       {mobileMenuOpen && (
         <div className="lg:hidden bg-[#FCFBF8] border-b border-[#E8E0D1] px-4 py-6 shadow-lg space-y-4">
           <div className="space-y-1">
-            {navLinks.map((link) => {
+            {mobileNavLinks.map((link) => {
               const active = isLinkActive(link.path);
               return (
                 <Link
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-2.5 text-sm font-sans rounded-sm transition-colors ${
+                  className={`block px-3 py-2 text-sm font-sans rounded-sm transition-colors ${
                     active
                       ? 'bg-[#F8F5EE] text-[#0B332D] font-bold border-l-2 border-[#B79A62]'
                       : 'text-gray-700 hover:bg-[#F8F5EE]'
