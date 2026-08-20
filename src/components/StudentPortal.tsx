@@ -63,7 +63,7 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({
   // Dynamically constructed active student from authenticated profile or verified record
   const currentStudent = {
     id: currentUser?.uid || userProfile?.uid || 'stu-live-1',
-    studentName: userProfile?.displayName || userProfile?.studentName || 'Learner (Noor-e-Quran Student)',
+    studentName: userProfile?.displayName || 'Learner (Noor-e-Quran Student)',
     parentName: userProfile?.parentName || 'Parent / Guardian',
     email: currentUser?.email || userProfile?.email || 'student@noorequraninstitute.me',
     phone: userProfile?.phone || '+92 327 4496163',

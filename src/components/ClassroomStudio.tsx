@@ -206,7 +206,7 @@ export const ClassroomStudio: React.FC<ClassroomStudioProps> = ({
       time: timeStr,
       duration: durationText,
       durationSeconds: classTimer,
-      lessonCovered: currentSurah ? `${currentSurah.nameEnglish} (Surah ${currentSurah.number})` : 'Quran Recitation & Tajweed Drill',
+      lessonCovered: currentSurah ? `${currentSurah.name} (Surah ${currentSurah.number})` : 'Quran Recitation & Tajweed Drill',
       tutorName: 'Ustadha Maryam Siddiqa',
       studentName: 'Ayaan Mahmood',
       status: 'Completed',

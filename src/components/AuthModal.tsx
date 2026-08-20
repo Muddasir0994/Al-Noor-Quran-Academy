@@ -417,14 +417,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           {/* Status Notifications */}
           {errorMsg && (
             <div className="mb-4 p-3.5 bg-rose-50 border border-rose-200/80 rounded-2xl flex items-start text-xs text-rose-800 animate-in fade-in duration-150">
-              <AlertCircle className="w-4 h-4 mr-2 text-rose-600 shrink-0 mt-0.5" />
+              <WarningCircle className="w-4 h-4 mr-2 text-rose-600 shrink-0 mt-0.5" />
               <span className="font-medium leading-relaxed">{errorMsg}</span>
             </div>
           )}
 
           {successMsg && (
             <div className="mb-4 p-3.5 bg-emerald-50 border border-emerald-200/80 rounded-2xl flex items-start text-xs text-emerald-900 animate-in fade-in duration-150">
-              <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-600 shrink-0 mt-0.5" />
+              <CheckCircle className="w-4 h-4 mr-2 text-emerald-600 shrink-0 mt-0.5" />
               <span className="font-medium leading-relaxed">{successMsg}</span>
             </div>
           )}
@@ -806,7 +806,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     >
                       {ALL_COURSES.map((c) => (
                         <option key={c.id} value={c.name}>
-                          {c.name} ({c.level})
+                          {c.name} ({c.audience})
                         </option>
                       ))}
                     </select>

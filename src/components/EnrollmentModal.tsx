@@ -76,13 +76,14 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
         courseName,
         packageId: currentPkg.id,
         packageName: currentPkg.name,
-        monthlyFee: country === 'Pakistan' ? currentPkg.pricePKR : currentPkg.priceUSD,
+        monthlyFee: country === 'Pakistan' ? currentPkg.monthlyFeePKR : currentPkg.monthlyFeeUSD,
         tutorPreference,
         timeSlot,
         preferredDays: selectedDays,
         preferredTimeRange,
         learningPace,
-        additionalNotes: additionalNotes ? [{ id: 'n-' + Date.now(), text: additionalNotes, author: 'Student/Parent', createdAt: new Date().toISOString() }] : [],
+        additionalNotes: additionalNotes || '',
+        notes: additionalNotes ? [{ id: 'n-' + Date.now(), text: additionalNotes, author: 'Student/Parent', createdAt: new Date().toISOString() }] : [],
         paymentStatus: 'Pending',
         status: 'Active'
       });
