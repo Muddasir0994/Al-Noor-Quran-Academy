@@ -58,27 +58,32 @@ export const ALL_COURSES: Course[] = [
     status: 'active',
     imageUrl: '/images/course-nazra-tajweed.webp',
     highlights: [
-      'Complete 30 Paras (Juz) Reading with continuous monitoring',
-      'Real-time error correction and recitation confidence',
-      'Breath control & rhythmic pace development',
-      'Daily Sabaq recording and progress tracking'
+      'Complete 30 Paras recitation under certified Qari supervision',
+      'Breathing techniques and stopping sign (Waqf) rules',
+      'Continuous daily reading fluency & rhythm',
+      'Daily revision and recitation milestones'
     ],
     syllabus: [
-      'Juz 30 (Juz Amma): Short Surahs fluency & basic pause rules',
-      'Juz 1-5: Building endurance & continuous reading speed',
-      'Juz 6-15: Complex vocabulary and longer verses',
-      'Juz 16-30: Complete Khatam al-Quran with final assessment'
+      'Phase 1: Juz 30 (Juz Amma) detailed recitation',
+      'Phase 2: Juz 1 to Juz 10 (Building stamina and speed)',
+      'Phase 3: Juz 11 to Juz 20 (Complex Surahs & rhythm)',
+      'Phase 4: Juz 21 to Juz 30 (Final Khatm-ul-Quran)'
+    ],
+    learningOutcomes: [
+      'Flawless reading directly from standard 13/15/16 line Mushaf',
+      'Complete Khatm of the Holy Quran',
+      'Confidence in reciting in front of family and gatherings'
     ]
   },
   {
     id: 'c-3',
     slug: 'quran-with-tajweed',
     name: 'Quran with Tajweed',
-    arabicName: 'تجويد القرآن الكريم',
+    arabicName: 'أحكام التجويد والإتقان',
     category: 'tajweed',
-    shortDescription: 'Master the science of Tajweed rules: Noon Sakin, Meem Sakin, Madd, and Stopping Signs (Waqf).',
-    description: 'Learn the theoretical principles and practical application of Tajweed. This course enables learners to beautify their voices while strictly adhering to classical rules taught by the Prophet (PBUH).',
-    audience: 'Kids, Teens, Adults & Advanced Reciters',
+    shortDescription: 'In-depth theoretical and practical Tajweed rules for beautiful, precise recitation.',
+    description: 'Elevate your recitation to the standard of classical Qira\'at. Learn essential rules: Noon Sakin & Tanween, Meem Sakin, Madd, Qalqalah, Ghunnah, Sifaat-ul-Huroof, and stopping marks with verified Ijazah holders.',
+    audience: 'Kids (Ages 7+), Teens, Adults & Converts',
     duration: '6 - 9 Months',
     classesPerWeek: '3 - 4 Days / Week',
     feePKR: 4500,
@@ -87,282 +92,91 @@ export const ALL_COURSES: Course[] = [
     status: 'active',
     imageUrl: '/images/course-nazra-tajweed.webp',
     highlights: [
-      'Theoretical & Practical Rules of Noon Sakinah & Tanween',
-      'Meem Sakinah, Qalqalah & Sifaat al-Huroof',
-      'Heavy and Light letters (Tafkheem & Tarqeeq)',
-      'Rules of Waqf (Stopping & Starting Signs in Quran)'
+      'Comprehensive Makharij & Sifaat rules',
+      'Rules of Noon Sakinah, Meem Sakinah & Madd',
+      'Practical application directly on Quranic Ayahs',
+      'Melodic recitation (Tarteel) training'
     ],
     syllabus: [
-      'Module 1: Makharij (5 major articulation areas)',
-      'Module 2: Noon Sakin & Tanween (Izhar, Idgham, Iqlab, Ikhfa)',
-      'Module 3: Meem Sakin (Ikhfa Shafawi, Idgham Shafawi, Izhar Shafawi)',
-      'Module 4: Madd rules (Asli, Muttasil, Munfasil, Lazim, Aaridh)',
-      'Module 5: Rules of Raa & Laam',
-      'Module 6: Stopping Signs (Meem, Taa, Jeem, Zaa, Saad, Qaf, Laa)'
+      'Module 1: Introduction to Tajweed & Makharij classification',
+      'Module 2: Rules of Noon Sakin & Tanween (Izhar, Idgham, Iqlab, Ikhfa)',
+      'Module 3: Rules of Meem Sakin (Ikhfa Shafawi, Idgham Shafawi, Izhar Shafawi)',
+      'Module 4: Rules of Madd (Asli, Wajib, Ja\'iz, Lazim)',
+      'Module 5: Rules of Raa & Laam (Tafkheem & Tarqeeq)',
+      'Module 6: Stopping Rules (Ahkam-ul-Waqf wal Ibtida)'
+    ],
+    learningOutcomes: [
+      'Mastery of all fundamental and intermediate Tajweed rules',
+      'Recitation free from major (Lahn Jali) and minor (Lahn Khafi) errors',
+      'Eligibility for advanced Ijazah certification'
     ]
   },
   {
     id: 'c-4',
     slug: 'quran-memorization-hifz',
     name: 'Quran Memorization / Hifz',
-    arabicName: 'حفظ القرآن الكريم',
+    arabicName: 'حفظ القرآن الكريم وتثبيته',
     category: 'hifz',
-    shortDescription: 'Full or selective Quran memorization with daily Sabaq, Sabqi, and Manzil retention methodology.',
-    description: 'A structured and spiritually uplifting memorization program led by certified Huffaz. Students follow an established retention system ensuring memorized Surahs remain permanently retained.',
-    audience: 'Dedicated Boys, Girls, and Adults',
-    duration: '2 - 3.5 Years (Flexible tracks available)',
-    classesPerWeek: '5 Days / Week',
+    shortDescription: 'Full or partial Quran memorization with a structured daily Sabaq, Sabqi, and Manzil system.',
+    description: 'Embark on the sacred journey of becoming a Hafiz-ul-Quran from the comfort of your home. Personalized daily memorization goals with rigorous revision cycles to guarantee long-term retention.',
+    audience: 'Dedicated Kids (Ages 6+), Youth & Adults',
+    duration: '2 - 3 Years (Customizable)',
+    classesPerWeek: '5 - 6 Days / Week',
     feePKR: 6000,
     feeUSD: 55,
     featured: true,
     status: 'active',
     imageUrl: '/images/course-hifz.webp',
     highlights: [
-      'Daily Sabaq (New Memorization Lesson)',
-      'Daily Sabqi (Recent 5-10 Pages Revision)',
-      'Manzil Retention Cycle (Previous Paras)',
-      'Monthly memorization examinations & certificates'
+      'Structured 3-tier daily cycle (Sabaq, Sabqi, Manzil)',
+      '1-on-1 dedicated Hafiz/Hafiza mentor',
+      'Weekly voice notes and memory retention checks',
+      'Comprehensive evaluation after every completed Para'
     ],
     syllabus: [
-      'Stage 1: Juz 30 (Juz Amma) & Juz 29 (Tabarak)',
-      'Stage 2: Selected Virtuous Surahs (Yaseen, Rahman, Waqiah, Mulk, Kahf)',
-      'Stage 3: Progressive Surah-by-Surah memorization from Surah Baqarah',
-      'Stage 4: Complete Quran Khatam with intensive Manzil revision'
+      'Track A: Partial Hifz (Selected Surahs: Yaseen, Mulk, Rahman, Kahf, Waqiah)',
+      'Track B: Short Surahs Track (Juz 30 & Juz 29)',
+      'Track C: Full 30 Paras Hifz-ul-Quran'
+    ],
+    learningOutcomes: [
+      'Rock-solid retention of memorized Paras with zero doubts',
+      'Recitation from memory during daily Salah and Taraweeh',
+      'Official Noor-e-Quran Institute Hifz Certificate & Sanad'
     ]
   },
   {
     id: 'c-5',
-    slug: 'quran-translation-tafseer',
-    name: 'Quran Translation & Tafseer',
-    arabicName: 'ترجمة القرآن والتفسير',
+    slug: 'islamic-studies',
+    name: 'Islamic Studies & Tafseer',
+    arabicName: 'الدراسات الإسلامية والتفسير',
     category: 'islamic_studies',
-    shortDescription: 'Word-by-word translation and authentic explanation of divine verses and their modern application.',
-    description: 'Understand what Allah SWT is speaking to you. Learn word-by-word Arabic vocabulary, context of revelation (Asbab al-Nuzul), legal rulings, and life lessons for spiritual enlightenment.',
-    audience: 'Teens, Adults, Parents, Seekers of Knowledge',
-    duration: '12 - 18 Months',
-    classesPerWeek: '3 Days / Week',
-    feePKR: 5000,
-    feeUSD: 50,
-    featured: true,
-    status: 'active',
-    imageUrl: '/images/academy-about-banner.webp',
-    highlights: [
-      'Word-by-word Translation in Urdu / English',
-      'Historical context and background (Asbab al-Nuzul)',
-      'Practical everyday takeaways and moral injunctions',
-      'Taught by qualified Islamic scholars and Aalims'
-    ],
-    syllabus: [
-      'Section 1: Surah Al-Fatiha and Core Aqeedah Principles',
-      'Section 2: Juz Amma with detailed Tafseer & reflections',
-      'Section 3: Major Surahs: Al-Kahf, Yaseen, Ar-Rahman, Al-Mulk, Al-Hujurat',
-      'Section 4: Systematic Juz-by-Juz journey through the entire Quran'
-    ]
-  },
-  {
-    id: 'c-6',
-    slug: 'islamic-studies-general',
-    name: 'Islamic Studies & Tarbiyah',
-    arabicName: 'التربية والدراسات الإسلامية',
-    category: 'islamic_studies',
-    shortDescription: 'Comprehensive Islamic character building, Seerah of the Prophet (PBUH), and Islamic manners (Adab).',
-    description: 'Nurture strong Islamic identity and moral values in young minds. Covers the life of the Prophet Muhammad (PBUH), stories of the Prophets, halal/haram concepts, and noble Islamic etiquette.',
-    audience: 'Kids, Teens & Young Adults',
-    duration: '6 Months',
-    classesPerWeek: '3 Days / Week',
+    shortDescription: 'Understand Quranic meaning, essential daily Duas, 6 Kalmas, Hadith stories, and Salah.',
+    description: 'A holistic Islamic curriculum covering word-by-word Quran translation, Tafseer of selected Surahs, 40 Masnoon Duas, Step-by-Step Namaz (Salah), basic Fiqh of Taharah, and inspiring Seerah of the Prophets.',
+    audience: 'Kids, Teenagers & Adult Converts',
+    duration: '4 - 6 Months',
+    classesPerWeek: '2 - 3 Days / Week',
     feePKR: 3500,
     feeUSD: 35,
-    featured: false,
-    status: 'active',
-    imageUrl: '/images/kids-program-banner.webp',
-    highlights: [
-      'Stories of the 25 Prophets mentioned in Quran',
-      'Seerah of Prophet Muhammad (PBUH)',
-      'Core Beliefs: 6 Articles of Iman & 5 Pillars of Islam',
-      'Islamic manners: Respect for parents, honesty, kindness, modesty'
-    ],
-    syllabus: [
-      'Month 1: Tawheed, Angels, Holy Books, and Prophets',
-      'Month 2: Seerah from birth in Makkah to Hijrah',
-      'Month 3: Madinah period, Battles, Treaty of Hudaybiyyah, Conquest of Makkah',
-      'Month 4: Islamic Etiquette: Table manners, speaking truth, helping neighbors',
-      'Month 5: Concept of Halal, Haram, and Daily Islamic Living'
-    ]
-  },
-  {
-    id: 'c-7',
-    slug: 'namaz-salah-mastery',
-    name: 'Namaz / Salah Mastery',
-    arabicName: 'تعليم الصلاة والوضوء',
-    category: 'islamic_studies',
-    shortDescription: 'Step-by-step Wudu, practical Salah movements, Azan, Tashahhud, and translation of prayer recitations.',
-    description: 'Learn the second pillar of Islam with complete precision. From physical postures (Qiyam, Ruku, Sujood, Jalsah) to word-by-word translation of Subhanaka, Attahiyyat, Durood Ibrahim, and Duas.',
-    audience: 'Children (Ages 5+), New Muslims & Beginners',
-    duration: '2 - 3 Months',
-    classesPerWeek: '3 Days / Week',
-    feePKR: 3000,
-    feeUSD: 30,
-    featured: false,
+    featured: true,
     status: 'active',
     imageUrl: '/images/adults-program-banner.webp',
     highlights: [
-      'Physical Demonstration of Wudu, Ghusl, and Tayammum',
-      'Correct Salah Postures and Movements step-by-step',
-      'Word-by-word meaning of everything recited in Namaz',
-      'Rules of Janazah Prayer, Eid Prayer, and Witr Dua Qunoot'
+      'Word-by-word translation and contextual Tafseer',
+      '40 Daily Masnoon Duas with Arabic transliteration',
+      'Practical Salah (Namaz) with word-for-word translation',
+      'Islamic morals, manners (Adab), and Seerah stories'
     ],
     syllabus: [
-      'Week 1: Taharah, Rules of Cleanliness & Method of Wudu',
-      'Week 2: Preparation for Salah, Takbeer-e-Tahreema & Qiyam',
-      'Week 3: Subhanaka, Surah Fatiha, Ruku, Qawmah, and Sajdah',
-      'Week 4: Tashahhud (Attahiyyat), Durood-e-Ibrahimi & Rabbana Duas',
-      'Week 5: Sunnah, Fardh, Wajib, Nafil prayer structures & Qaza Salah rules'
-    ]
-  },
-  {
-    id: 'c-8',
-    slug: 'duas-and-kalmas',
-    name: 'Daily Duas & 6 Kalmas',
-    arabicName: 'الأدعية والكلمات الست',
-    category: 'islamic_studies',
-    shortDescription: '40 essential Masnoon supplications with Urdu/English translations and 6 Kalimas memorization.',
-    description: 'Equip yourself and your children with daily prophetic Duas for protection, eating, sleeping, waking up, entering the home, traveling, and the 6 foundational Kalimas.',
-    audience: 'Children, Teens & Entire Family',
-    duration: '2 - 3 Months',
-    classesPerWeek: '2 - 3 Days / Week',
-    feePKR: 3000,
-    feeUSD: 30,
-    featured: false,
-    status: 'active',
-    imageUrl: '/images/course-noorani-qaida.webp',
-    highlights: [
-      '6 Kalimas with accurate Arabic pronunciation & translation',
-      '40 Daily Masnoon Duas from Hisnul Muslim',
-      'Ayat-ul-Kursi & 4 Quls for spiritual protection',
-      'Interactive flashcard methods for kids'
+      'Unit 1: Iman, Aqeedah & 6 Kalmas with translation',
+      'Unit 2: Perfecting Salah (Namaz), Wudu, Ghusl & Tayammum',
+      'Unit 3: Essential Daily Supplications (Eating, Sleeping, Traveling, Mosque)',
+      'Unit 4: Stories of the Prophets (Adam, Ibrahim, Musa, Isa, Muhammad SAW)',
+      'Unit 5: Tafseer of Short Surahs (Surah Fatiha to Surah Naas)'
     ],
-    syllabus: [
-      'Unit 1: The 6 Kalimas (Tayyab, Shahadat, Tamjeed, Tawheed, Astaghfar, Rad-de-Kufr)',
-      'Unit 2: Morning & Evening Protection Duas',
-      'Unit 3: Eating, Drinking, Sleeping, Waking, Bathroom Duas',
-      'Unit 4: Traveling, Mosque, Leaving Home & Rain Duas',
-      'Unit 5: Duas for Parents, Forgiveness & Protection from evil eye'
-    ]
-  },
-  {
-    id: 'c-9',
-    slug: 'quran-for-kids',
-    name: 'Quran Classes for Kids',
-    arabicName: 'تعليم القرآن للأطفال',
-    category: 'kids',
-    shortDescription: 'Child-friendly pedagogy, interactive rewards, patience, and positive reinforcement.',
-    description: 'Specially engineered for children ages 4 to 14. Our teachers use interactive whiteboards, animated illustrations, and gentle encouragement to make Quran learning joyful and lifelong.',
-    audience: 'Children Ages 4 to 14',
-    duration: 'Customized based on child pace',
-    classesPerWeek: '3 - 5 Days / Week',
-    feePKR: 3800,
-    feeUSD: 38,
-    featured: true,
-    status: 'active',
-    imageUrl: '/images/kids-program-banner.webp',
-    highlights: [
-      'Trained kids specialists with extreme patience and gentle tone',
-      '1-on-1 private attention without any group distractions',
-      'Combined Qaida, Nazra, Namaz, Duas, and Islamic manners',
-      'Weekly progress logs and parent WhatsApp updates'
-    ],
-    syllabus: [
-      'Interactive Noorani Qaida phonetics with fun sound drills',
-      'Short Surahs from Juz Amma memorization with correct rhythm',
-      'Practical Namaz and Wudu demonstrations',
-      'Stories of the Prophets and moral values (honesty, kindness)'
-    ]
-  },
-  {
-    id: 'c-10',
-    slug: 'quran-for-women',
-    name: 'Quran for Women & Sisters',
-    arabicName: 'تعليم القرآن للنساء',
-    category: 'women',
-    shortDescription: '100% private 1-on-1 sessions taught exclusively by certified female scholars (Aalima / Hafiza).',
-    description: 'A completely secure, private, and comfortable learning environment for sisters, mothers, and working women. Study Noorani Qaida, Tajweed refinement, Tafseer, or Hifz at flexible hours.',
-    audience: 'Sisters, Mothers, College Students & Working Women',
-    duration: 'Flexible / Customized',
-    classesPerWeek: '2 - 5 Days / Week',
-    feePKR: 4000,
-    feeUSD: 40,
-    featured: true,
-    status: 'active',
-    imageUrl: '/images/female-program-banner.webp',
-    highlights: [
-      'Certified Female Quran Tutors (Ijazah & Aalima graduates)',
-      '100% privacy and comfortable home environment',
-      'Flexible morning, afternoon, or late-night schedules',
-      'Women-specific Fiqh guidance (Taharah, Salah, Family values)'
-    ],
-    syllabus: [
-      'Track A: Beginner Arabic reading & Makharij perfection',
-      'Track B: Fluency in recitation with practical Tajweed rules',
-      'Track C: Word-by-word translation & Tafseer of Surah Maryam, An-Nur, An-Nisa',
-      'Track D: Selective Hifz of Surah Yaseen, Al-Mulk, Al-Waqiah, Ar-Rahman'
-    ]
-  },
-  {
-    id: 'c-11',
-    slug: 'quran-for-beginners',
-    name: 'Quran for Absolute Beginners',
-    arabicName: 'القرآن للمبتدئين',
-    category: 'adults',
-    shortDescription: 'Zero prior Arabic knowledge required. Start from letter sounds to reading full verses.',
-    description: 'Designed for anyone who never had the chance to learn in childhood or wants to restart from scratch. Zero judgment, highly supportive, and step-by-step guidance from single letters to fluent reading.',
-    audience: 'Adults, Teens, Converts & New Learners',
-    duration: '4 - 6 Months',
-    classesPerWeek: '3 - 4 Days / Week',
-    feePKR: 4000,
-    feeUSD: 40,
-    featured: false,
-    status: 'active',
-    imageUrl: '/images/course-noorani-qaida.webp',
-    highlights: [
-      'Start from Zero: No prerequisite knowledge needed',
-      'Encouraging, adult-friendly adult pedagogy without embarrassment',
-      'Master Arabic letter forms (Beginning, Middle, End)',
-      'Read your first full Quranic page within 12 weeks'
-    ],
-    syllabus: [
-      'Phase 1: 28 Alphabet shapes and pronunciation points',
-      'Phase 2: Connecting letters to form syllables and words',
-      'Phase 3: Vowels (Fatha, Kasra, Damma) and Tanween',
-      'Phase 4: Reading full sentences directly from Surah Al-Fatiha and Juz 30'
-    ]
-  },
-  {
-    id: 'c-12',
-    slug: 'quran-for-adults',
-    name: 'Quran Classes for Adults',
-    arabicName: 'تعليم القرآن للكبار',
-    category: 'adults',
-    shortDescription: 'Executive flexible schedules tailored for busy professionals, university students, and parents.',
-    description: 'Busy schedules shouldn\'t keep you from the Quran. Choose early morning, late evening, or weekend slots across any international timezone with dedicated 1-on-1 private tutors.',
-    audience: 'Busy Professionals, University Students & Parents',
-    duration: 'Flexible Ongoing',
-    classesPerWeek: '2 - 5 Days / Week',
-    feePKR: 4500,
-    feeUSD: 45,
-    featured: false,
-    status: 'active',
-    imageUrl: '/images/adults-program-banner.webp',
-    highlights: [
-      'Ultra-flexible time slots accommodating work and family life',
-      'Choice of Tajweed, Translation, Tafseer, or Recitation tracks',
-      '1-on-1 focused instruction with respected Male or Female tutors',
-      'Make-up class flexibility for missed sessions'
-    ],
-    syllabus: [
-      'Tailored Diagnostic Assessment during 3-Day Trial',
-      'Targeted correction of common pronunciation habits',
-      'Tajweed rule application with immediate audio feedback',
-      'Spiritual reflections and understanding of divine commandments'
+    learningOutcomes: [
+      'Deep personal connection to the meaning of Allah\'s message',
+      'Correct performance of all daily religious obligations with understanding',
+      'Strong moral character rooted in Quran and Sunnah'
     ]
   }
 ];
@@ -370,32 +184,33 @@ export const ALL_COURSES: Course[] = [
 export const ALL_PACKAGES: PackagePlan[] = [
   {
     id: 'pkg-2days',
-    name: 'Basic Foundation',
+    name: 'Starter Track',
     code: 'pkg-2days',
     daysPerWeek: '2 Days / Week',
     classesPerMonth: 8,
     classDurationMinutes: 30,
     monthlyFeePKR: 3000,
     monthlyFeeUSD: 30,
-    monthlyFeeGBP: 25,
+    monthlyFeeGBP: 24,
     monthlyFeeEUR: 28,
     monthlyFeeAED: 110,
     monthlyFeeCAD: 40,
     monthlyFeeAUD: 45,
-    badge: 'Starter Friendly',
-    description: 'Perfect for working adults, young beginners, or revision of Tajweed with a steady pace.',
+    badge: 'Light Schedule',
+    description: 'Perfect for busy school children, university students, and beginners easing into Quran study.',
     features: [
       '8 One-on-One Live Classes per month',
       '30 Minutes per private lesson',
       'Choice of Male or Female certified tutor',
-      'Includes Quran Reading, Namaz & Daily Duas',
-      'Flexible weekend or weekday slots',
-      '3-Day Free Trial with zero advance fee'
+      'Noorani Qaida or Quran Reading basics',
+      'Monthly attendance & progress report',
+      'Free Class Rescheduling with 4-hour notice',
+      '3-Day Free Trial included'
     ]
   },
   {
     id: 'pkg-3days',
-    name: 'Standard Learning',
+    name: 'Standard Track',
     code: 'pkg-3days',
     daysPerWeek: '3 Days / Week',
     classesPerMonth: 12,
@@ -561,43 +376,43 @@ export const INITIAL_TESTIMONIALS: Testimonial[] = [
     countryFlag: '🇬🇧',
     courseName: 'Noorani Qaida & Nazra with Tajweed',
     rating: 5,
-    comment: 'Living in the UK, finding reliable, punctual Quran teachers who speak fluent English was our biggest struggle. Noor-e-Quran Institute matched us with Ustadha Maryam, and in just 4 months my children progressed from basic letters to reading Juz Amma smoothly! The 1-on-1 attention is unmatched.',
+    comment: 'Finding genuine teachers who combine deep Tajweed knowledge with child-friendly patience was difficult until we joined. My children look forward to every single class.',
     date: 'February 2026',
     status: 'published'
   },
   {
     id: 't-2',
-    name: 'Sister Sarah Al-Hashimi',
-    studentOrParent: 'Adult Learner',
+    name: 'Sister Saima Rehman',
+    studentOrParent: 'Mother of Maryam (11 yrs)',
     location: 'Dallas, Texas, USA',
     countryFlag: '🇺🇸',
     courseName: 'Quran for Women & Tajweed',
     rating: 5,
-    comment: 'As a working mother, having classes at 9:00 PM local time was a blessing. My female tutor is so patient with my slow pace and corrected pronunciation mistakes I had been making for 20 years. I highly recommend their 3-Day Free Trial!',
+    comment: 'As a working mother, having classes at 9:00 PM local time was a blessing. My daughter\'s female tutor is so patient and corrected pronunciation mistakes with immense care.',
     date: 'January 2026',
     status: 'published'
   },
   {
     id: 't-3',
-    name: 'Brother Farhan Akhtar',
-    studentOrParent: 'Father of Hamza (11 yrs - Hifz Student)',
-    location: 'Toronto, Canada',
-    countryFlag: '🇨🇦',
+    name: 'Brother Farhan Malik',
+    studentOrParent: 'Adult Tajweed Student',
+    location: 'Sydney, Australia',
+    countryFlag: '🇦🇺',
     courseName: 'Quran Memorization / Hifz',
     rating: 5,
-    comment: 'The Manzil and Sabqi tracking system at Noor-e-Quran Institute is exceptional. Qari Bilal checks daily homework and sends monthly progress reports. Hamza has already memorized 6 Paras with rock-solid retention.',
+    comment: 'The 1-on-1 coaching system at Noor Al-Quran Institute is exceptional. My teacher checks daily recitation and provides practical exercises for Noon Sakinah and Madd.',
     date: 'January 2026',
     status: 'published'
   },
   {
     id: 't-4',
-    name: 'Rashid Khan',
-    studentOrParent: 'Father of Daniyal (6 yrs)',
-    location: 'Melbourne, Australia',
-    countryFlag: '🇦🇺',
+    name: 'Zainab Qureshi',
+    studentOrParent: 'Mother of Daniyal (6 yrs)',
+    location: 'Toronto, Canada',
+    countryFlag: '🇨🇦',
     courseName: 'Quran for Kids & Slow Learners Support',
     rating: 5,
-    comment: 'Daniyal is quite shy and used to get anxious during group Islamic classes. Noor-e-Quran’s slow learner approach gave him confidence. His tutor teaches with games, rewards, and zero pressure. MashAllah great service!',
+    comment: 'Daniyal used to get anxious during group Islamic classes. Noor Al-Quran\'s gentle, slow-learner approach gave him real confidence. He loves his lessons now!',
     date: 'December 2025',
     status: 'published'
   }
@@ -606,73 +421,289 @@ export const INITIAL_TESTIMONIALS: Testimonial[] = [
 export const INITIAL_ARTICLES: Article[] = [
   {
     id: 'art-1',
-    slug: 'rules-of-tajweed-for-beginners',
-    title: 'Essential Rules of Tajweed Every Muslim Should Know',
-    category: 'Tajweed',
-    author: 'Qari Hafiz Muhammad Bilal',
-    readTime: '5 min read',
+    slug: 'how-to-teach-quran-to-kids-at-home',
+    title: 'How to Teach Quran to Kids at Home: 5 Proven Pedagogical Tips',
+    category: 'Kids',
+    author: 'Ustadha Maryam Siddiqa',
+    readTime: '6 min read',
     publishedAt: 'February 2026',
-    summary: 'A beginner-friendly guide explaining Makharij articulation points, Noon Sakin rules, and why reciting with Tajweed is a spiritual duty.',
-    content: `Reciting the Holy Quran with Tajweed is not merely an art; it is an obligation to preserve the exact words revealed to the Prophet Muhammad (peace be upon him). 
+    summary: 'Discover five practical, child-psychology backed strategies to teach Quran to young children at home without stress, frustration, or burnout.',
+    content: `# How to Teach Quran to Kids at Home (5 Proven Tips)
 
-### What is Tajweed?
-The word *Tajweed* linguistically means 'proficiency' or 'doing something well'. In the context of Quranic recitation, it means giving every Arabic letter its exact rights from its specific articulation point (Makhraj) and respecting its intrinsic characteristics (Sifaat).
+Teaching the Holy Quran to young children is one of the most rewarding spiritual responsibilities for Muslim parents. However, busy family routines, short attention spans, and language barriers often make daily practice feel overwhelming.
 
-### 1. Correct Makharij (Articulation Points)
-Arabic has several letters with subtle differences that change entire meanings if confused. For example:
-- **ح (Haa)** vs **هـ (Haa)**: *Al-Rahman* (The Most Merciful) vs *Al-Rahman* (corrupted sound).
-- **ق (Qaf)** vs **ك (Kaaf)**: *Qalb* (Heart) vs *Kalb* (Dog).
+At **Noor Al-Quran Institute**, our certified scholars have taught thousands of young students globally. Here are 5 practical, tried-and-tested tips to cultivate a joyful, lifelong relationship with Allah's Book.
 
-### 2. The 4 Rules of Noon Sakinah & Tanween
-Whenever a Noon without a vowel (Noon Sakin) or Tanween appears, one of 4 rules applies:
-1. **Izhar (Clarity):** Reciting clearly when followed by throat letters (Hamzah, Haa, Ayn, Haa, Ghayn, Khaa).
-2. **Idgham (Merging):** Merging into letters (Yaa, Raa, Meem, Laam, Waw, Noon).
-3. **Iqlab (Conversion):** Converting Noon into Meem when followed by Baa.
-4. **Ikhfa (Hiding):** Subtle nasalization before the remaining 15 letters.
+---
 
-By practicing 1-on-1 with a qualified teacher, these rules transition from theoretical memory to effortless, melodious habit.`,
+## 1. Why Early Quran Learning Matters for Children
+
+During the formative years (ages 4 to 9), a child's brain has exceptional neuroplasticity. Introducing Arabic phonetics and **Makharij** (articulation points) early ensures:
+- Natural pronunciation without heavy regional accents.
+- Effortless auditory memorization of short Surahs (*Juz Amma*).
+- Emotional attachment to daily Islamic prayers (*Salah*) and *Duas*.
+
+---
+
+## 2. Step-by-Step Method for Home Learning
+
+### A. Short, Consistent 20-30 Minute Daily Lessons
+Children thrive on predictability. Rather than holding long, exhausting weekend sessions, dedicate 25 to 30 minutes 4 to 5 days per week. This reinforces short-term memory into permanent retention.
+
+### B. Master Noorani Qaida Before Rushing into Mushaf
+Many parents make the mistake of rushing children into reading full Surahs before foundational letter recognition is solid. Ensure your child thoroughly understands:
+- Individual letter shapes (isolated, initial, medial, final).
+- Short vowels (*Fatha, Kasra, Damma*).
+- Joining rules (*Tashdeed, Sukoon, Tanween*).
+
+If you want structured guidance, explore our **[Certified Noorani Qaida Course](/courses)**.
+
+---
+
+## 3. Common Mistakes Parents Make (And How to Avoid Them)
+
+1. **Using Pressure or Harsh Reprimands**: Quran learning must never be associated with fear or anxiety. Always pair lessons with praise, small rewards, and patience.
+2. **Ignoring Pronunciation Inaccuracies**: Overlooking subtle mistakes in letters like **ح (Haa)** vs **هـ (Haa)** or **ق (Qaf)** vs **ك (Kaaf)** makes bad recitation habits difficult to unlearn later.
+3. **Inconsistent Schedules**: Skipping lessons for weeks breaks the momentum.
+
+---
+
+## 4. Tips for Busy Working Parents
+
+- **Utilize Daily Car Rides**: Play melodic recitations of Juz Amma by renowned Qaris during the school run to build auditory familiarity.
+- **Set Up a Quiet Learning Studio**: Dedicate a clean, peaceful corner in your home for Quran study with their Mushaf, Rehal, and headphones.
+- **Partner with an Accredited 1-on-1 Tutor**: If work or time constraints limit your teaching availability, enrolling in dedicated **[Online Quran Classes for Kids](/courses)** provides structured supervision with certified male or female scholars.
+
+---
+
+## Ready to Start Your Child's Quran Journey?
+Book a **[3-Day Free Trial Class](/courses)** with our gentle, certified scholars today. No credit card required.`,
     status: 'published'
   },
   {
     id: 'art-2',
-    slug: 'how-to-motivate-kids-to-love-quran',
-    title: 'How to Nurture a Lifelong Love for the Quran in Children',
-    category: 'Kids',
-    author: 'Ustadha Maryam Siddiqa',
-    readTime: '6 min read',
-    publishedAt: 'January 2026',
-    summary: 'Practical tips for parents on positive reinforcement, short daily consistency, and choosing compassionate 1-on-1 teachers.',
-    content: `Teaching young children the Quran requires emotional warmth, consistency, and immense patience. When children associate Quran learning with affection and praise, they carry that love for life.
+    slug: 'tajweed-rules-for-beginners',
+    title: 'Complete Guide to Tajweed Rules for Beginners: Makharij, Noon Sakin & Madd',
+    category: 'Tajweed',
+    author: 'Qari Hafiz Muhammad Bilal',
+    readTime: '7 min read',
+    publishedAt: 'February 2026',
+    summary: 'A structured, beginner-friendly breakdown of core Tajweed rules: Makharij points, the 4 rules of Noon Sakinah & Tanween, and common recitation errors.',
+    content: `# Essential Rules of Tajweed for Beginners: A Complete Step-by-Step Guide
 
-### 1. Prioritize Consistency Over Long Hours
-A 30-minute focused 1-on-1 class 3 to 4 days a week is far more effective for children than an exhausting 2-hour marathon. Young attention spans thrive on short, energetic sessions.
+Reciting the Holy Quran with **Tajweed** is not merely an optional decorative art; it is a sacred obligation to preserve the exact phonetics revealed to the Prophet Muhammad (peace be upon him).
 
-### 2. Choose Positive Reinforcement
-Celebrate every milestone: completing the Arabic alphabet, finishing their first Qaida lesson, or reciting Surah Al-Fatiha without errors. At Noor-e-Quran Institute, our tutors use digital stars, verbal praise, and certificates of completion.
+Allah subhanahu wa ta'ala commands in the Quran:
+> *“And recite the Quran with measured, rhythmic recitation.”* — (Surah Al-Muzzammil, 73:4)
 
-### 3. Let Them Learn in Their Comfort Zone
-Online 1-on-1 lessons from home remove the social anxiety of crowded classrooms and eliminate tiring commutes, allowing kids to learn relaxed beside their parents.`,
+---
+
+## What is Tajweed?
+Linguistically, *Tajweed* means 'proficiency' or 'doing something with excellence'. In Islamic terminology, it is the science of giving every Arabic letter its exact rights from its specific articulation point (*Makhraj*) and respecting its intrinsic characteristics (*Sifaat*).
+
+---
+
+## 1. The 5 Major Articulation Points (Makharij-ul-Huroof)
+
+Every Arabic sound originates from one of 5 primary areas:
+1. **Al-Jawf (The Oral Cavity / Chest)**: Produces the long elongation letters (*Alif, Waw, Yaa Maddah*).
+2. **Al-Halq (The Throat)**: 6 throat letters divided into lowest throat (**ء , هـ**), middle throat (**ع , ح**), and upper throat (**غ , خ**).
+3. **Al-Lisaan (The Tongue)**: Originates 18 letters including **ق , ك , ض , ل , ن , ر**.
+4. **Ash-Shafataan (The Lips)**: Produces **ب , م , و , ف**.
+5. **Al-Khayshoom (The Nasal Cavity)**: The source of nasal humming (*Ghunnah*).
+
+---
+
+## 2. The 4 Golden Rules of Noon Sakinah & Tanween
+
+Whenever a **Noon Sakin** (نْ) or **Tanween** (ـً ـٍ ـٌ) occurs, one of four rules must be applied:
+
+### A. Izhar (Clear Pronunciation)
+Recite the 'N' sound distinctly without extra nasalization when followed by any of the 6 throat letters: **ء , هـ , ع , ح , غ , خ**.
+*Example*: مِنْ خَوْفٍ (*Min Khawf*).
+
+### B. Idgham (Merging)
+Merge the Noon Sakin into the following letter when it is one of the **YARMALOON** letters: **ي , ر , م , ل , و , ن**.
+- **With Ghunnah (Yaa, Noon, Meem, Waw)**
+- **Without Ghunnah (Laam, Raa)**
+
+### C. Iqlab (Conversion)
+Convert the Noon sound into a gentle **Meem (م)** with Ghunnah when followed by the letter **ب (Baa)**.
+*Example*: مِن بَعْدِ (*Mim Ba'di*).
+
+### D. Ikhfa (Concealment with Nasalization)
+Conceal the Noon sound with a subtle 2-count nasal Ghunnah when followed by the remaining 15 letters of the Arabic alphabet.
+
+---
+
+## 3. How to Master Tajweed at Home
+
+Learning Tajweed from books alone is insufficient because accurate pronunciation requires auditory modeling and real-time correction by an authorized teacher (*Talaqqi*).
+
+If you want to recite with confidence and beauty, explore our **[Certified Quran with Tajweed Course](/courses)** or schedule a **[Free 1-on-1 Trial Class](/courses)**.`,
     status: 'published'
   },
   {
     id: 'art-3',
-    slug: 'effective-hifz-memorization-system',
-    title: 'The 3-Pillar Daily System for Lifelong Hifz Retention',
+    slug: 'how-to-memorize-quran-fast',
+    title: 'How to Memorize the Quran Fast: The 3-Pillar Daily Sabaq & Manzil System',
     category: 'Hifz',
-    author: 'Maulana Usman Tariq',
-    readTime: '7 min read',
+    author: 'Shaykh Tariq Al-Azhari',
+    readTime: '8 min read',
     publishedAt: 'January 2026',
-    summary: 'Understand the traditional Ottoman & Subcontinent memorization methodology: Sabaq, Sabqi, and Manzil cycle.',
-    content: `Many students struggle with Quran memorization not because of memory capacity, but because of a flawed revision structure. Memorizing a new page is easy; keeping previously memorized Paras intact requires a systematic rhythm.
+    summary: 'Learn the proven Ottoman and Subcontinent Hifz methodology: Sabaq, Sabqi, and Manzil daily cycle for permanent Quranic memorization retention.',
+    content: `# How to Memorize the Quran Fast (The 3-Pillar Daily System)
+
+Memorizing the Holy Quran (*Hifz-ul-Quran*) is an immense spiritual honor. However, many students struggle not because of memory capacity, but because of an unstructured revision methodology.
+
+Memorizing a new page is relatively easy; retaining 30 Paras without hesitation requires a systematic daily cycle.
+
+---
+
+## The 3-Pillar Hifz Methodology
 
 ### Pillar 1: Daily Sabaq (New Lesson)
-Memorize 1 to 2 pages every morning after Fajr when the mind is fresh and undisturbed.
+- **Best Timing**: Immediately after *Fajr* prayer when mental clarity is peak.
+- **Pacing**: Memorize 1 to 2 pages daily depending on your personal capacity.
+- **Method**: Listen to a certified Qari recite the page 5 times, read the translation to understand the context, then memorize line-by-line repeating each Ayah 10 times.
 
 ### Pillar 2: Daily Sabqi (Recent Revision)
-Every single day, recite the last 5 to 10 pages memorized before giving new Sabaq. This cements short-term memory into medium-term memory.
+- Recite the last 5 to 10 pages memorized directly before submitting your new Sabaq.
+- This bridges short-term memory into medium-term retention.
 
 ### Pillar 3: Daily Manzil (Long-Term Retention)
-Recite at least 1/2 to 1 full Juz of previously memorized Paras on a continuous monthly cycle. With this rule, no verse is ever forgotten.`,
+- Recite at least 1/2 to 1 full completed Juz on a continuous monthly loop.
+- By adhering to this rhythm, every memorized verse is refreshed every 30 days.
+
+---
+
+## 4 Practical Tips for Rapid Quran Memorization
+
+1. **Use One Standard Mushaf**: Stick to one single print edition (such as the 15-line Madani or 16-line South Asian script) so your visual photographic memory locks verse positions.
+2. **Recite in Daily Prayers**: Recite newly memorized Surahs during *Sunnah* and *Tahajjud* prayers.
+3. **Understand the Meaning**: Memorization speed doubles when you comprehend the narrative themes and stories within each Surah.
+4. **Work with a Certified Hafiz Tutor**: Ongoing supervision ensures zero vowel slips (*Harkat* errors) occur during memorization.
+
+Explore our dedicated **[Online Quran Memorization (Hifz) Program](/courses)** to learn with certified male and female Huffaz.`,
+    status: 'published'
+  },
+  {
+    id: 'art-4',
+    slug: 'best-age-to-start-quran-learning',
+    title: 'What Is the Best Age for Kids to Start Learning the Quran?',
+    category: 'Kids',
+    author: 'Ustadha Ayesha Noor',
+    readTime: '5 min read',
+    publishedAt: 'January 2026',
+    summary: 'A developmental analysis of when children should begin Noorani Qaida, Nazra reading, and Hifz memorization with age-appropriate milestones.',
+    content: `# What Is the Best Age for Children to Start Learning the Quran?
+
+One of the most frequent questions Muslim parents ask is: *"At what age should my child begin formal Quran classes?"*
+
+While early exposure through auditory listening can begin in infancy, structured pedagogical learning aligns with natural childhood cognitive milestones.
+
+---
+
+## Developmental Age Milestones for Quran Learning
+
+### 1. Ages 3 to 4: The Auditory Familiarity Phase
+- Focus on listening to melodious Quran recitations at home and during car rides.
+- Introduce oral repetition of *Bismillah*, *Ta'awwudh*, and short 3-verse Surahs (*Al-Ikhlas, Al-Falaq, An-Naas*).
+
+### 2. Ages 4 to 6: The Noorani Qaida Foundation Phase
+- Children are developmentally prepared for visual alphabet recognition and single-letter articulation points (*Makharij*).
+- Sessions should be interactive, gamified, and capped at 25 minutes to match attention spans.
+
+### 3. Ages 6 to 9: Fluent Nazra Reading & Intermediate Tajweed
+- The ideal age for reading fluently directly from the Mushaf.
+- Memory retention is high, making this the prime window for beginning partial or full **Hifz-ul-Quran**.
+
+---
+
+## Is It Ever Too Late to Start?
+Never. Adults and revert Muslims frequently begin from Noorani Qaida and achieve fluent Quran recitation within months.
+
+Find the ideal curriculum for your child by scheduling a **[Free 3-Day Trial Class](/courses)** today.`,
+    status: 'published'
+  },
+  {
+    id: 'art-5',
+    slug: 'benefits-of-learning-quran-online',
+    title: '7 Spiritual and Academic Benefits of Learning the Quran Online',
+    category: 'Quran Learning',
+    author: 'Qari Hafiz Muhammad Bilal',
+    readTime: '6 min read',
+    publishedAt: 'December 2025',
+    summary: 'Compare online 1-on-1 Quran classes with traditional crowded madrasas: personalized pace, verified Ijazah scholars, scheduling flexibility, and safety.',
+    content: `# 7 Key Benefits of Learning the Quran Online for Muslim Families
+
+Technological advancements have made high-quality Islamic education accessible to Muslim families worldwide, regardless of whether they reside in London, New York, Sydney, or Toronto.
+
+---
+
+## 1. 1-on-1 Dedicated Teacher Attention
+Traditional group madrasas often have 15 to 20 students per teacher, meaning each child receives only 3 to 5 minutes of direct recitation time. Online 1-on-1 tuition ensures 100% focused supervision for the entire 30-minute session.
+
+## 2. Access to Certified Male and Female Scholars
+Families can choose accredited Ijazah holders and Al-Azhar graduates who speak fluent English and Urdu, providing comfortable instruction for sisters and young children.
+
+## 3. Total Scheduling Flexibility
+Classes can be scheduled 24/7 across any international timezone, easily fitting around school and work commitments.
+
+## 4. Safe and Comfortable Learning at Home
+Parents can sit beside their children, observe class progress directly, and eliminate stressful daily commutes in traffic.
+
+## 5. Transparent Monthly Progress Reports
+Receive monthly evaluation report cards detailing attendance, Tajweed accuracy, and Sabaq progress.
+
+---
+
+Join thousands of families worldwide. Start with our **[Risk-Free 3-Day Trial](/courses)** today.`,
+    status: 'published'
+  },
+  {
+    id: 'art-6',
+    slug: 'common-tajweed-mistakes-and-how-to-fix-them',
+    title: '10 Common Tajweed Mistakes in Quran Recitation & How to Correct Them',
+    category: 'Tajweed',
+    author: 'Shaykh Tariq Al-Azhari',
+    readTime: '7 min read',
+    publishedAt: 'December 2025',
+    summary: 'An analytical review of the most frequent major (Lahn Jali) and minor (Lahn Khafi) pronunciation errors made during Quran reading and how to fix them.',
+    content: `# 10 Common Tajweed Mistakes in Quran Recitation (And How to Fix Them)
+
+In the science of Tajweed, mistakes in Quranic recitation are categorized into two types:
+1. **Lahn Jali (Obvious Mistakes)**: Major errors that change Arabic words, grammar, or meanings (e.g. confusing letter sounds or swapping short vowels).
+2. **Lahn Khafi (Hidden Mistakes)**: Minor errors that affect the beauty and rhythm of recitation (e.g. incorrect Ghunnah timing or improper Madd length).
+
+---
+
+## The Top 5 Most Frequent Mistakes
+
+### 1. Confusing Similar Sounding Letters
+- **ح (Haa - throat)** vs **هـ (Haa - chest)**
+- **ع (Ayn - throat)** vs **ء (Hamzah - throat)**
+- **ص (Saad - heavy)** vs **س (Seen - light)**
+- **ط (Taa - heavy)** vs **ت (Taa - light)**
+
+### 2. Missing Qalqalah (Echoing Bounce)
+Failing to produce the distinct bounce on the 5 Qalqalah letters (**ق , ط , ب , ج , د**) when they carry a Sukoon (*Jazm*).
+
+### 3. Stretching Short Vowels (Harakat)
+Turning a simple *Fatha* into a prolonged *Alif*, or dropping a required 2-count *Madd Asli*.
+
+### 4. Incorrect Raa (Heavy vs Light)
+Reciting the letter **ر (Raa)** with a heavy sound (*Tafkheem*) when it carries a *Kasra* instead of light (*Tarqeeq*).
+
+### 5. Inadequate Ghunnah Timing
+Rushing through Noon Sakin and Meem Sakin without holding the 2-count nasal resonance.
+
+---
+
+## How to Fix Recitation Errors
+The only verified method to rectify these errors is consistent 1-on-1 practice with a qualified Qari. 
+
+Explore our **[Quran Reading & Tajweed Courses](/courses)** to receive personalized diagnostic assessments.`,
     status: 'published'
   }
 ];

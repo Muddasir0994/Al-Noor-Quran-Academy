@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { IconContext } from '@phosphor-icons/react';
 import { Course, PackagePlan, Tutor, Testimonial, Article } from './types';
 import { ALL_COURSES, ALL_PACKAGES, INITIAL_TUTORS, INITIAL_TESTIMONIALS, INITIAL_ARTICLES } from './data/academyData';
@@ -510,19 +511,21 @@ function AppContent() {
 
 export default function App() {
   return (
-    <IconContext.Provider
-      value={{
-        color: 'currentColor',
-        size: 20,
-        weight: 'regular',
-        mirrored: false
-      }}
-    >
-      <AuthProvider>
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
-      </AuthProvider>
-    </IconContext.Provider>
+    <HelmetProvider>
+      <IconContext.Provider
+        value={{
+          color: 'currentColor',
+          size: 20,
+          weight: 'regular',
+          mirrored: false
+        }}
+      >
+        <AuthProvider>
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </AuthProvider>
+      </IconContext.Provider>
+    </HelmetProvider>
   );
 }

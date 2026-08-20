@@ -1,195 +1,84 @@
-import React, { useEffect } from 'react';
-import { SEO_PAGE_MAP, ACADEMY_BASE_URL, HREFLANG_ALTERNATES } from '../lib/seoConfig';
-import { Course, Article } from '../types';
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import { ACADEMY_BASE_URL, HREFLANG_ALTERNATES } from '../lib/seoConfig';
 
-interface SEOHeadProps {
-  currentTab: string;
-  inspectCourse?: Course | null;
-  readingArticle?: Article | null;
+export interface SEOHeadProps {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  ogType?: string;
+  ogImage?: string;
+  structuredDataType?: 'EducationalOrganization' | 'Course' | 'Article' | 'FAQPage';
+  schemaData?: any;
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
-  currentTab,
-  inspectCourse,
-  readingArticle
+  title = 'Noor Al-Quran Institute | Certified Online Quran & Tajweed Academy',
+  description = 'Learn Quran online with Tajweed from certified male & female teachers. Personalized 1-on-1 classes for kids & adults worldwide with 3-day free trial.',
+  canonicalUrl = 'https://noorequraninstitute.me/',
+  ogType = 'website',
+  ogImage = `${ACADEMY_BASE_URL}/logo.png`,
+  structuredDataType = 'EducationalOrganization',
+  schemaData
 }) => {
-  useEffect(() => {
-    // Ensure regular pages are indexed
-    let robotsTag = document.querySelector('meta[name="robots"]');
-    if (robotsTag) {
-      robotsTag.setAttribute('content', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
+  const defaultOrgSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOrganization',
+    name: 'Noor Al-Quran Institute',
+    alternateName: 'Noor-e-Quran Institute',
+    url: ACADEMY_BASE_URL,
+    logo: `${ACADEMY_BASE_URL}/logo.png`,
+    description: 'Premier international online Quran academy providing 1-on-1 live classes with certified male and female scholars.',
+    sameAs: [
+      'https://www.youtube.com/@NooreQuranInstitute',
+      'https://www.instagram.com/noore_quraninstitute',
+      'https://www.facebook.com/share/14pNXeMTM7o/',
+      'https://www.linkedin.com/in/muddasir-hameed'
+    ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+92-327-4496163',
+      contactType: 'Academic Support & Admissions',
+      availableLanguage: ['English', 'Urdu', 'Arabic']
     }
+  };
 
-    let title = '';
-    let description = '';
-    let canonical = '';
-    let ogType = 'website';
-    let ogImage = `${ACADEMY_BASE_URL}/logo.png`;
-    let breadcrumbItems: { name: string; item: string }[] = [];
-    let extraSchema: any = null;
+  const activeSchema = schemaData || defaultOrgSchema;
 
-    if (inspectCourse) {
-      title = `${inspectCourse.name} Online Course with Tajweed | Noor-e-Quran Institute`;
-      description = inspectCourse.shortDescription || `Learn ${inspectCourse.name} with 1-on-1 certified male and female tutors. Flexible timings and 3-day free trial.`;
-      canonical = `${ACADEMY_BASE_URL}/courses/${inspectCourse.slug || inspectCourse.id}`;
-      ogType = 'article';
-      breadcrumbItems = [
-        { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
-        { name: 'Courses', item: `${ACADEMY_BASE_URL}/online-quran-classes` },
-        { name: inspectCourse.name, item: canonical }
-      ];
+  return (
+    <Helmet>
+      {/* Primary Meta Tags */}
+      <title>{title}</title>
+      <meta name="title" content={title} />
+      <meta name="description" content={description} />
+      <link rel="canonical" href={canonicalUrl} />
+      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
-      extraSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'Course',
-        name: inspectCourse.name,
-        description: inspectCourse.description || inspectCourse.shortDescription,
-        provider: {
-          '@type': 'EducationalOrganization',
-          name: 'Noor-e-Quran Institute',
-          sameAs: ACADEMY_BASE_URL
-        },
-        timeRequired: inspectCourse.duration || '3-6 Months',
-        offers: {
-          '@type': 'Offer',
-          category: 'Monthly Quran Tuition',
-          priceCurrency: 'USD',
-          price: inspectCourse.feeUSD || 35,
-          availability: 'https://schema.org/InStock',
-          url: canonical
-        }
-      };
-    } else if (readingArticle) {
-      title = `${readingArticle.title} | Noor-e-Quran Institute Blog`;
-      description = readingArticle.summary || `Read complete educational guide: ${readingArticle.title}. Practical advice for Muslim learners and parents.`;
-      canonical = `${ACADEMY_BASE_URL}/blog/${readingArticle.slug || readingArticle.id}`;
-      ogType = 'article';
-      breadcrumbItems = [
-        { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
-        { name: 'Blog', item: `${ACADEMY_BASE_URL}/blog` },
-        { name: readingArticle.title, item: canonical }
-      ];
+      {/* OpenGraph / Facebook */}
+      <meta property="og:type" content={ogType} />
+      <meta property="og:url" content={canonicalUrl} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:site_name" content="Noor Al-Quran Institute" />
+      <meta property="og:locale" content="en_US" />
 
-      extraSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'Article',
-        headline: readingArticle.title,
-        description: readingArticle.summary,
-        author: {
-          '@type': readingArticle.author ? 'Person' : 'EducationalOrganization',
-          name: readingArticle.author || 'Noor-e-Quran Institute Editorial Team'
-        },
-        publisher: {
-          '@type': 'EducationalOrganization',
-          name: 'Noor-e-Quran Institute',
-          logo: {
-            '@type': 'ImageObject',
-            url: `${ACADEMY_BASE_URL}/logo.png`
-          }
-        },
-        datePublished: readingArticle.publishedAt || '2026-01-15',
-        mainEntityOfPage: {
-          '@type': 'WebPage',
-          '@id': canonical
-        }
-      };
-    } else {
-      const meta = SEO_PAGE_MAP[currentTab] || SEO_PAGE_MAP.home;
-      title = meta.title;
-      description = meta.description;
-      canonical = meta.canonical;
-      ogType = meta.ogType || 'website';
-      breadcrumbItems = meta.breadcrumbs;
-    }
+      {/* Twitter Card */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:url" content={canonicalUrl} />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={ogImage} />
 
-    // 1. Update document title
-    document.title = title;
+      {/* International Alternates */}
+      {HREFLANG_ALTERNATES.map((alt) => (
+        <link key={alt.hreflang} rel="alternate" hrefLang={alt.hreflang} href={alt.href} />
+      ))}
 
-    // 2. Update meta description
-    let descTag = document.querySelector('meta[name="description"]');
-    if (!descTag) {
-      descTag = document.createElement('meta');
-      descTag.setAttribute('name', 'description');
-      document.head.appendChild(descTag);
-    }
-    descTag.setAttribute('content', description);
-
-    // 3. Update canonical link
-    let canonicalTag = document.querySelector('link[rel="canonical"]');
-    if (!canonicalTag) {
-      canonicalTag = document.createElement('link');
-      canonicalTag.setAttribute('rel', 'canonical');
-      document.head.appendChild(canonicalTag);
-    }
-    canonicalTag.setAttribute('href', canonical);
-
-    // 4. Update OpenGraph & Twitter tags
-    const updateOrCreateMeta = (attribute: 'property' | 'name', key: string, content: string) => {
-      let tag = document.querySelector(`meta[${attribute}="${key}"]`);
-      if (!tag) {
-        tag = document.createElement('meta');
-        tag.setAttribute(attribute, key);
-        document.head.appendChild(tag);
-      }
-      tag.setAttribute('content', content);
-    };
-
-    updateOrCreateMeta('property', 'og:title', title);
-    updateOrCreateMeta('property', 'og:description', description);
-    updateOrCreateMeta('property', 'og:url', canonical);
-    updateOrCreateMeta('property', 'og:type', ogType);
-    updateOrCreateMeta('property', 'og:image', ogImage);
-    updateOrCreateMeta('property', 'og:site_name', 'Noor-e-Quran Institute');
-    updateOrCreateMeta('property', 'og:locale', 'en_US');
-
-    updateOrCreateMeta('name', 'twitter:card', 'summary_large_image');
-    updateOrCreateMeta('name', 'twitter:title', title);
-    updateOrCreateMeta('name', 'twitter:description', description);
-    updateOrCreateMeta('name', 'twitter:image', ogImage);
-
-    // 5. Inject bidirectional hreflang links
-    document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
-    HREFLANG_ALTERNATES.forEach(({ hreflang, href }) => {
-      const link = document.createElement('link');
-      link.setAttribute('rel', 'alternate');
-      link.setAttribute('hreflang', hreflang);
-      link.setAttribute('href', href);
-      document.head.appendChild(link);
-    });
-
-    // 6. Inject Breadcrumb Schema
-    const breadcrumbSchema = {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: breadcrumbItems.map((item, idx) => ({
-        '@type': 'ListItem',
-        position: idx + 1,
-        name: item.name,
-        item: item.item
-      }))
-    };
-
-    const oldBreadcrumbScript = document.getElementById('dynamic-breadcrumb-schema');
-    if (oldBreadcrumbScript) oldBreadcrumbScript.remove();
-
-    const breadcrumbScript = document.createElement('script');
-    breadcrumbScript.id = 'dynamic-breadcrumb-schema';
-    breadcrumbScript.type = 'application/ld+json';
-    breadcrumbScript.textContent = JSON.stringify(breadcrumbSchema);
-    document.head.appendChild(breadcrumbScript);
-
-    // 7. Inject item schema if available (Course/Article)
-    const oldItemScript = document.getElementById('dynamic-item-schema');
-    if (oldItemScript) oldItemScript.remove();
-
-    if (extraSchema) {
-      const itemScript = document.createElement('script');
-      itemScript.id = 'dynamic-item-schema';
-      itemScript.type = 'application/ld+json';
-      itemScript.textContent = JSON.stringify(extraSchema);
-      document.head.appendChild(itemScript);
-    }
-  }, [currentTab, inspectCourse, readingArticle]);
-
-  return null;
+      {/* Structured Data JSON-LD Schema */}
+      <script type="application/ld+json">
+        {JSON.stringify(activeSchema)}
+      </script>
+    </Helmet>
+  );
 };

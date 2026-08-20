@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { BlogPost } from '../types';
 import { INITIAL_ARTICLES } from '../data/academyData';
 import { getBlogPostBySlug, getPublishedBlogPosts } from '../lib/firestoreService';
-import { Calendar, Clock, User, ArrowLeft, BookOpen, Tag, ArrowRight } from '@phosphor-icons/react';
+import { Calendar, Clock, User, ArrowLeft, BookOpen, ArrowRight } from '@phosphor-icons/react';
 
 interface BlogPostPageProps {
   slug: string;
@@ -50,11 +51,6 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onNavigate, on
       setPost(data);
 
       if (data) {
-        document.title = `${data.title} | Noor-e-Quran Institute Blog`;
-        const meta = document.querySelector('meta[name="description"]');
-        if (meta) meta.setAttribute('content', data.metaDescription || '');
-
-        // Get related posts from baseline or Firestore
         try {
           const all = await getPublishedBlogPosts();
           if (all && all.length > 0) {
@@ -109,15 +105,14 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onNavigate, on
 
   if (loading) {
     return (
-      <section className="py-16 min-h-screen bg-white">
+      <section className="py-24 min-h-screen bg-[#FCFBF8]">
         <div className="max-w-4xl mx-auto px-4">
           <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-200 rounded-lg w-3/4" />
-            <div className="h-64 bg-gray-200 rounded-2xl" />
+            <div className="h-8 bg-[#F8F5EE] rounded-sm w-3/4" />
+            <div className="h-72 bg-[#F8F5EE] rounded-sm" />
             <div className="space-y-3">
-              <div className="h-4 bg-gray-200 rounded w-full" />
-              <div className="h-4 bg-gray-200 rounded w-5/6" />
-              <div className="h-4 bg-gray-200 rounded w-4/6" />
+              <div className="h-4 bg-[#F8F5EE] rounded-sm w-full" />
+              <div className="h-4 bg-[#F8F5EE] rounded-sm w-5/6" />
             </div>
           </div>
         </div>
@@ -127,138 +122,183 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onNavigate, on
 
   if (!post) {
     return (
-      <section className="py-20 min-h-screen bg-white text-center">
-        <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <h2 className="text-xl font-heading font-bold text-gray-700 mb-2">Article Not Found</h2>
-        <p className="text-gray-500 text-sm mb-6">This blog post may have been removed or doesn't exist.</p>
+      <section className="py-24 min-h-screen bg-[#FCFBF8] text-center">
+        <BookOpen className="w-12 h-12 text-[#B79A62] mx-auto mb-4" />
+        <h2 className="text-2xl font-editorial font-bold text-[#0B332D] mb-2">Article Not Found</h2>
+        <p className="text-gray-500 text-xs font-sans mb-6">This blog article may have been moved or does not exist.</p>
         <button
           onClick={onNavigateBack}
-          className="px-6 py-2.5 rounded-xl bg-[#064E3B] text-white text-sm font-bold hover:bg-[#043929] transition-all cursor-pointer"
+          className="px-6 py-2.5 rounded-sm bg-[#0B332D] text-[#F8F5EE] text-xs font-semibold uppercase tracking-wider hover:bg-[#07221E] transition-colors cursor-pointer"
         >
-          ← Back to Blog
+          ← Return to Blog
         </button>
       </section>
     );
   }
 
+  const canonicalUrl = `https://noorequraninstitute.me/blog/${post.slug}`;
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.metaDescription,
+    image: post.featuredImage || 'https://noorequraninstitute.me/logo.png',
+    author: {
+      '@type': 'Person',
+      name: post.author || 'Noor Al-Quran Institute Scholar'
+    },
+    publisher: {
+      '@type': 'EducationalOrganization',
+      name: 'Noor Al-Quran Institute',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://noorequraninstitute.me/logo.png'
+      }
+    },
+    datePublished: post.createdAt,
+    dateModified: post.updatedAt || post.createdAt,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl
+    }
+  };
+
   return (
-    <article className="py-10 sm:py-16 min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+    <article className="py-20 lg:py-28 bg-[#FCFBF8] min-h-screen">
+      {/* Dynamic SEO Meta Tags via Helmet */}
+      <Helmet>
+        <title>{`${post.title} | Noor Al-Quran Institute`}</title>
+        <meta name="title" content={`${post.title} | Noor Al-Quran Institute`} />
+        <meta name="description" content={post.metaDescription} />
+        <link rel="canonical" href={canonicalUrl} />
 
-        {/* Back Button */}
-        <button
-          onClick={onNavigateBack}
-          className="flex items-center gap-1.5 text-[#064E3B] text-sm font-bold mb-6 hover:gap-2.5 transition-all cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" weight="bold" />
-          Back to Blog
-        </button>
+        {/* OpenGraph */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.metaDescription} />
+        {post.featuredImage && <meta property="og:image" content={post.featuredImage} />}
 
-        {/* Category Badge */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="px-3 py-1 rounded-lg bg-[#064E3B] text-[#F3C64D] text-[10px] font-bold uppercase tracking-wider">
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.metaDescription} />
+        {post.featuredImage && <meta name="twitter:image" content={post.featuredImage} />}
+
+        {/* Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
+      </Helmet>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Navigation Breadcrumb */}
+        <div className="mb-8">
+          <button
+            onClick={onNavigateBack}
+            className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-[#0B332D] hover:text-[#B79A62] transition-colors cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to All Articles</span>
+          </button>
+        </div>
+
+        {/* Article Header */}
+        <header className="space-y-4 mb-10 pb-8 border-b border-[#E8E0D1]">
+          <span className="text-[11px] font-sans font-bold uppercase tracking-widest text-[#B79A62]">
             {post.category}
           </span>
-        </div>
 
-        {/* Title */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-extrabold text-[#064E3B] tracking-tight leading-tight mb-4">
-          {post.title}
-        </h1>
+          <h1 className="font-editorial text-3xl sm:text-4xl lg:text-5xl text-[#0B332D] font-semibold leading-[1.14] tracking-tight">
+            {post.title}
+          </h1>
 
-        {/* Meta Info */}
-        <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 mb-8 pb-6 border-b border-gray-200">
-          <span className="flex items-center gap-1.5">
-            <User className="w-3.5 h-3.5 text-[#A16207]" weight="duotone" />
-            {post.author}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Calendar className="w-3.5 h-3.5 text-[#A16207]" weight="duotone" />
-            {new Date(post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-[#A16207]" weight="duotone" />
-            {post.readTime}
-          </span>
-        </div>
+          <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 font-sans pt-1">
+            <span className="flex items-center gap-1.5 font-medium text-gray-700">
+              <User className="w-3.5 h-3.5 text-[#B79A62]" />
+              <span>{post.author}</span>
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-[#B79A62]" />
+              <span>{post.readTime}</span>
+            </span>
+          </div>
+        </header>
 
         {/* Featured Image */}
         {post.featuredImage && (
-          <div className="rounded-2xl overflow-hidden mb-10 shadow-md">
+          <div className="mb-12 aspect-[16/9] overflow-hidden rounded-sm border border-[#E8E0D1] bg-[#F8F5EE]">
             <img
               src={post.featuredImage}
               alt={post.title}
-              className="w-full h-auto max-h-[480px] object-cover"
+              className="w-full h-full object-cover"
+              loading="eager"
             />
           </div>
         )}
 
-        {/* Content */}
-        <div
-          className="prose prose-emerald prose-sm sm:prose-base max-w-none
-            prose-headings:text-[#064E3B] prose-headings:font-heading prose-headings:font-extrabold
-            prose-p:text-gray-700 prose-p:leading-relaxed
-            prose-a:text-[#064E3B] prose-a:font-semibold prose-a:underline
-            prose-img:rounded-xl prose-img:shadow-md
-            prose-strong:text-[#064E3B]
-            prose-blockquote:border-l-[#D4A72C] prose-blockquote:bg-emerald-50/50 prose-blockquote:rounded-r-xl prose-blockquote:py-1"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
-
-        {/* Tags */}
-        {post.tags && post.tags.length > 0 && (
-          <div className="mt-10 pt-6 border-t border-gray-200 flex items-center gap-2 flex-wrap">
-            <Tag className="w-4 h-4 text-gray-400" weight="duotone" />
-            {post.tags.map(tag => (
-              <span key={tag} className="px-2.5 py-1 rounded-lg bg-[#FAFAF7] text-gray-600 text-[10px] font-bold border border-gray-200/80">
-                {tag}
-              </span>
-            ))}
+        {/* Article Body Content */}
+        <div className="prose prose-lg max-w-none text-gray-700 font-sans leading-relaxed space-y-6">
+          <div className="whitespace-pre-line text-sm sm:text-base leading-relaxed">
+            {post.content}
           </div>
-        )}
+        </div>
 
-        {/* CTA Box */}
-        <div className="mt-12 p-6 sm:p-8 bg-gradient-to-br from-[#064E3B] to-[#032B21] rounded-2xl text-white">
-          <h3 className="text-lg font-heading font-extrabold mb-2">Ready to Start Your Quran Learning Journey?</h3>
-          <p className="text-emerald-100 text-xs sm:text-sm mb-5">
-            Experience 1-on-1 live classes with certified tutors. Book your free 3-day trial — no commitment required.
+        {/* In-Article Conversion Callout Banner */}
+        <div className="my-14 p-8 bg-[#0B332D] text-[#F8F5EE] rounded-sm space-y-4 border border-[#B79A62]/30">
+          <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest">
+            1-ON-1 PERSONALIZED TUITION
           </p>
-          <button
-            onClick={onOpenTrial}
-            className="gold-gradient-btn text-[#032B21] px-6 py-3 rounded-xl font-extrabold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-2"
-          >
-            <ArrowRight className="w-4 h-4" weight="bold" />
-            Book Free Trial Class
-          </button>
+          <h3 className="font-editorial text-2xl sm:text-3xl text-[#F8F5EE] font-semibold">
+            Ready to Begin Your Quran Journey with a Certified Scholar?
+          </h3>
+          <p className="text-xs sm:text-sm text-[#E8E0D1]/80 font-sans leading-relaxed max-w-xl">
+            Experience our compassionate, interactive teaching approach with male or female verified teachers.
+          </p>
+          <div className="pt-2 flex flex-wrap gap-4">
+            <button
+              onClick={onOpenTrial}
+              className="px-6 py-3 bg-[#B79A62] text-[#07221E] text-xs font-semibold uppercase tracking-wider rounded-sm hover:bg-[#D8C7A3] transition-colors cursor-pointer shadow-xs"
+            >
+              Book 3-Day Free Trial
+            </button>
+            <button
+              onClick={onNavigateBack}
+              className="px-6 py-3 border border-[#E8E0D1]/40 text-[#F8F5EE] text-xs font-semibold uppercase tracking-wider rounded-sm hover:border-[#B79A62] transition-colors cursor-pointer"
+            >
+              Explore More Articles
+            </button>
+          </div>
         </div>
 
         {/* Related Articles */}
         {related.length > 0 && (
-          <div className="mt-14">
-            <h3 className="text-xl font-heading font-extrabold text-[#064E3B] mb-6">Related Articles</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {related.map(r => (
+          <section className="pt-12 border-t border-[#E8E0D1] space-y-6">
+            <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest">
+              RELATED ARTICLES
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {related.map(rel => (
                 <div
-                  key={r.id}
-                  onClick={() => onNavigate(r.slug)}
-                  className="group bg-white rounded-xl border border-gray-200/80 overflow-hidden shadow-xs hover:shadow-md transition-all cursor-pointer"
+                  key={rel.id}
+                  onClick={() => onNavigate(rel.slug)}
+                  className="group p-4 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm cursor-pointer hover:border-[#B79A62] transition-colors space-y-2"
                 >
-                  {r.featuredImage ? (
-                    <img src={r.featuredImage} alt={r.title} className="w-full h-32 object-cover" loading="lazy" />
-                  ) : (
-                    <div className="w-full h-32 bg-gradient-to-br from-[#064E3B] to-[#032B21] flex items-center justify-center">
-                      <BookOpen className="w-8 h-8 text-[#F3C64D]/40" />
-                    </div>
-                  )}
-                  <div className="p-4">
-                    <h4 className="text-sm font-bold text-[#064E3B] line-clamp-2 group-hover:underline">{r.title}</h4>
-                    <p className="text-[10px] text-gray-400 mt-2">{r.readTime} · {new Date(r.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
-                  </div>
+                  <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#B79A62]">
+                    {rel.category}
+                  </span>
+                  <h4 className="font-editorial text-lg text-[#0B332D] font-semibold line-clamp-2 group-hover:text-[#07221E]">
+                    {rel.title}
+                  </h4>
+                  <span className="text-xs text-gray-500 font-sans block pt-1">{rel.readTime}</span>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         )}
+
       </div>
     </article>
   );
