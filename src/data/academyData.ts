@@ -770,3 +770,75 @@ export const INITIAL_RESOURCES: IslamicResource[] = [
     featured: false
   }
 ];
+
+export const INITIAL_FAQS: FAQItem[] = [
+  {
+    id: 'faq-1',
+    question: 'Do you offer a free trial?',
+    answer: 'Yes! We offer a full 3-Day Free Trial with zero payment or advance commitment. This allows parents and students to evaluate our teaching style, meet the tutor, and experience our 1-on-1 learning environment before making any decision.',
+    category: 'Admissions',
+    order: 1
+  },
+  {
+    id: 'faq-2',
+    question: 'Are classes one-to-one?',
+    answer: 'Yes, all our classes are 100% one-to-one. The teacher focuses exclusively on one student throughout the session to ensure proper articulation of Makharij, immediate correction of recitation mistakes, and personalized progress.',
+    category: 'Classes',
+    order: 2
+  },
+  {
+    id: 'faq-3',
+    question: 'Are male and female teachers available?',
+    answer: 'Yes. We have qualified and certified Male and Female Quran tutors available. Female tutors are dedicated for sisters, young girls, and children, while male teachers are available for boys and adult male students.',
+    category: 'Faculty',
+    order: 3
+  },
+  {
+    id: 'faq-4',
+    question: 'Do you teach children?',
+    answer: 'Yes, we specialize in teaching children from 4 years and older. Our instructors are trained to be gentle, engaging, and patient, using interactive Noorani Qaida lessons and positive reinforcement.',
+    category: 'Courses',
+    order: 4
+  },
+  {
+    id: 'faq-5',
+    question: 'Do you teach adults?',
+    answer: 'Yes, we have many adult learners—both brothers and sisters. Whether you are starting from zero Arabic or looking to polish your Tajweed, revise your Hifz, or learn Quran translation, we have tailored adult curriculum tracks.',
+    category: 'Courses',
+    order: 5
+  },
+  {
+    id: 'faq-6',
+    question: 'Are classes available internationally?',
+    answer: 'Yes, our academy operates globally 24/7. We cater to students across the United Kingdom, United States, Canada, Australia, UAE, Saudi Arabia, Pakistan, and worldwide across all timezones.',
+    category: 'Schedules',
+    order: 6
+  },
+  {
+    id: 'faq-7',
+    question: 'How can I enroll?',
+    answer: 'Simply click "Book Free Trial" or "Enroll Now" on the website and submit the short form. Our academy coordinator will reach out to you directly on WhatsApp (+92 327 4496163) to schedule your classes and answer any questions.',
+    category: 'Admissions',
+    order: 7
+  },
+  {
+    id: 'faq-8',
+    question: 'How will I receive my class schedule?',
+    answer: 'Once your application or free trial is submitted, our coordinator will message you on WhatsApp to finalize convenient days and times that fit your family\'s routine, and provide your teacher\'s details and live classroom meeting link.',
+    category: 'Schedules',
+    order: 8
+  }
+];
+
+export const DEFAULT_SITE_SETTINGS: SiteSettings = {
+  announcementBarText: 'Special Ramadan Admissions Open • 3-Day Risk-Free Trial • Flexible Timings for UK, USA, Canada & Global',
+  announcementBarEnabled: true,
+  announcementBadge: 'ADMISSIONS OPEN',
+  heroHeadline: 'Learn Holy Quran Online with Certified Scholars',
+  heroSubtitle: '1-on-1 interactive live sessions for kids, sisters, and adults worldwide. Master Tajweed, Noorani Qaida, Nazra, and Hifz from the comfort of home.',
+  primaryWhatsApp: '+92 327 4496163',
+  officialEmail: 'contact.noorequraninstitute@gmail.com',
+  emergencyPhone: '+92 327 4496163',
+  address: 'Global Online Operations (UK • USA • Canada • Australia • Gulf • Pakistan)',
+  freeTrialDays: 3
+};

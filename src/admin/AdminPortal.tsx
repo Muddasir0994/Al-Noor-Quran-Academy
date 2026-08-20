@@ -5,13 +5,24 @@ import {
   Student,
   Tutor,
   Course,
+  PackagePlan,
+  Testimonial,
+  FAQItem,
+  SiteSettings,
   SystemNotification,
   DashboardStats,
   LeadStatus,
   EnrollmentStatus,
   StudentStatus,
-  TutorStatus
+  TutorStatus,
+  TimeSlot
 } from '../types';
+import {
+  ALL_PACKAGES,
+  INITIAL_TESTIMONIALS,
+  INITIAL_FAQS,
+  DEFAULT_SITE_SETTINGS
+} from '../data/academyData';
 import {
   Lock,
   SignOut,
@@ -43,7 +54,14 @@ import {
   PenNib,
   Crop,
   UploadSimple,
-  User
+  User,
+  CreditCard,
+  Star,
+  Question,
+  Gear,
+  Megaphone,
+  Sliders,
+  Sparkle
 } from '@phosphor-icons/react';
 import { BlogEditor } from './BlogEditor';
 import { ImageCropModal } from '../components/ImageCropModal';
@@ -71,8 +89,10 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const [loginError, setLoginError] = useState('');
   const [loggingIn, setLoggingIn] = useState(false);
 
-  // Active view tab in admin
-  const [activeTab, setActiveTab] = useState<'overview' | 'leads' | 'enrollments' | 'students' | 'tutors' | 'courses' | 'blog' | 'notifications'>('overview');
+  // Active view tab in admin CMS
+  const [activeTab, setActiveTab] = useState<
+    'overview' | 'leads' | 'enrollments' | 'students' | 'tutors' | 'courses' | 'packages' | 'blog' | 'testimonials' | 'faqs' | 'settings'
+  >('overview');
 
   // Data states
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -83,6 +103,71 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const [adminCourses, setAdminCourses] = useState<Course[]>(courses || []);
   const [notifications, setNotifications] = useState<SystemNotification[]>([]);
   const [loadingData, setLoadingData] = useState(false);
+
+  // Packages CMS state
+  const [packages, setPackages] = useState<PackagePlan[]>(() => {
+    const saved = localStorage.getItem('alnoor_cms_packages');
+    return saved ? JSON.parse(saved) : ALL_PACKAGES;
+  });
+  const [editingPackage, setEditingPackage] = useState<PackagePlan | null>(null);
+  const [isAddingPackage, setIsAddingPackage] = useState(false);
+  const [packageForm, setPackageForm] = useState<Partial<PackagePlan>>({
+    name: '',
+    code: 'pkg-3days',
+    daysPerWeek: '3 Days / Week',
+    classesPerMonth: 12,
+    classDurationMinutes: 30,
+    monthlyFeePKR: 3500,
+    monthlyFeeUSD: 35,
+    monthlyFeeGBP: 28,
+    monthlyFeeEUR: 32,
+    monthlyFeeAED: 130,
+    monthlyFeeCAD: 45,
+    monthlyFeeAUD: 50,
+    isPopular: false,
+    badge: 'Popular Plan',
+    features: ['1-on-1 Dedicated Tutor', '30 Mins Daily Lesson', 'Weekly Makharij Evaluation'],
+    description: 'Balanced Quran learning pace ideal for school-going kids and working adults.'
+  });
+
+  // Testimonials CMS state
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(() => {
+    const saved = localStorage.getItem('alnoor_cms_testimonials');
+    return saved ? JSON.parse(saved) : INITIAL_TESTIMONIALS;
+  });
+  const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
+  const [isAddingTestimonial, setIsAddingTestimonial] = useState(false);
+  const [testimonialForm, setTestimonialForm] = useState<Partial<Testimonial>>({
+    name: '',
+    studentOrParent: 'Parent',
+    location: 'London, UK',
+    countryFlag: '🇬🇧',
+    courseName: 'Noorani Qaida & Tajweed',
+    rating: 5,
+    comment: '',
+    status: 'published'
+  });
+
+  // FAQs CMS state
+  const [faqs, setFaqs] = useState<FAQItem[]>(() => {
+    const saved = localStorage.getItem('alnoor_cms_faqs');
+    return saved ? JSON.parse(saved) : INITIAL_FAQS;
+  });
+  const [editingFaq, setEditingFaq] = useState<FAQItem | null>(null);
+  const [isAddingFaq, setIsAddingFaq] = useState(false);
+  const [faqForm, setFaqForm] = useState<Partial<FAQItem>>({
+    question: '',
+    answer: '',
+    category: 'Admissions',
+    order: 1
+  });
+
+  // Site Settings CMS state
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(() => {
+    const saved = localStorage.getItem('alnoor_cms_settings');
+    return saved ? JSON.parse(saved) : DEFAULT_SITE_SETTINGS;
+  });
+  const [settingsSavedToast, setSettingsSavedToast] = useState(false);
 
   // Filter & search states
   const [searchTerm, setSearchTerm] = useState('');
@@ -503,6 +588,127 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     onRefreshCourses();
   };
 
+  // --- Packages CMS Handlers ---
+  const handleSavePackage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingPackage) {
+      const updated = packages.map(p => p.id === editingPackage.id ? { ...editingPackage, ...packageForm } as PackagePlan : p);
+      setPackages(updated);
+      localStorage.setItem('alnoor_cms_packages', JSON.stringify(updated));
+    } else {
+      const newPkg: PackagePlan = {
+        id: `pkg-${Date.now()}`,
+        name: packageForm.name || 'Custom Plan',
+        code: (packageForm.code as any) || 'pkg-3days',
+        daysPerWeek: packageForm.daysPerWeek || '3 Days / Week',
+        classesPerMonth: packageForm.classesPerMonth || 12,
+        classDurationMinutes: packageForm.classDurationMinutes || 30,
+        monthlyFeePKR: packageForm.monthlyFeePKR || 3500,
+        monthlyFeeUSD: packageForm.monthlyFeeUSD || 35,
+        monthlyFeeGBP: packageForm.monthlyFeeGBP || 28,
+        monthlyFeeEUR: packageForm.monthlyFeeEUR || 32,
+        monthlyFeeAED: packageForm.monthlyFeeAED || 130,
+        monthlyFeeCAD: packageForm.monthlyFeeCAD || 45,
+        monthlyFeeAUD: packageForm.monthlyFeeAUD || 50,
+        isPopular: !!packageForm.isPopular,
+        badge: packageForm.badge || 'Popular Plan',
+        features: packageForm.features || ['1-on-1 Dedicated Tutor', '30 Mins Live Lessons', 'Weekly Makharij Check'],
+        description: packageForm.description || 'Flexible Quran learning program tailored to your timetable.'
+      };
+      const updated = [...packages, newPkg];
+      setPackages(updated);
+      localStorage.setItem('alnoor_cms_packages', JSON.stringify(updated));
+    }
+    setIsAddingPackage(false);
+    setEditingPackage(null);
+  };
+
+  const handleDeletePackage = (id: string, name: string) => {
+    if (!window.confirm(`Delete package plan "${name}"?`)) return;
+    const updated = packages.filter(p => p.id !== id);
+    setPackages(updated);
+    localStorage.setItem('alnoor_cms_packages', JSON.stringify(updated));
+  };
+
+  // --- Testimonials CMS Handlers ---
+  const handleSaveTestimonial = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingTestimonial) {
+      const updated = testimonials.map(t => t.id === editingTestimonial.id ? { ...editingTestimonial, ...testimonialForm } as Testimonial : t);
+      setTestimonials(updated);
+      localStorage.setItem('alnoor_cms_testimonials', JSON.stringify(updated));
+    } else {
+      const newTestimonial: Testimonial = {
+        id: `t-${Date.now()}`,
+        name: testimonialForm.name || 'Anonymous Parent',
+        studentOrParent: testimonialForm.studentOrParent || 'Parent',
+        location: testimonialForm.location || 'United Kingdom',
+        countryFlag: testimonialForm.countryFlag || '🇬🇧',
+        courseName: testimonialForm.courseName || 'Quran Reading & Tajweed',
+        rating: testimonialForm.rating || 5,
+        comment: testimonialForm.comment || '',
+        date: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+        status: testimonialForm.status || 'published'
+      };
+      const updated = [newTestimonial, ...testimonials];
+      setTestimonials(updated);
+      localStorage.setItem('alnoor_cms_testimonials', JSON.stringify(updated));
+    }
+    setIsAddingTestimonial(false);
+    setEditingTestimonial(null);
+  };
+
+  const handleToggleTestimonialStatus = (id: string) => {
+    const updated = testimonials.map(t => t.id === id ? { ...t, status: (t.status === 'published' ? 'pending' : 'published') as any } : t);
+    setTestimonials(updated);
+    localStorage.setItem('alnoor_cms_testimonials', JSON.stringify(updated));
+  };
+
+  const handleDeleteTestimonial = (id: string, name: string) => {
+    if (!window.confirm(`Delete testimonial from "${name}"?`)) return;
+    const updated = testimonials.filter(t => t.id !== id);
+    setTestimonials(updated);
+    localStorage.setItem('alnoor_cms_testimonials', JSON.stringify(updated));
+  };
+
+  // --- FAQs CMS Handlers ---
+  const handleSaveFaq = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingFaq) {
+      const updated = faqs.map(f => f.id === editingFaq.id ? { ...editingFaq, ...faqForm } as FAQItem : f);
+      setFaqs(updated);
+      localStorage.setItem('alnoor_cms_faqs', JSON.stringify(updated));
+    } else {
+      const newFaq: FAQItem = {
+        id: `faq-${Date.now()}`,
+        question: faqForm.question || 'New Question?',
+        answer: faqForm.answer || 'Answer here...',
+        category: faqForm.category || 'Admissions',
+        order: faqs.length + 1
+      };
+      const updated = [...faqs, newFaq];
+      setFaqs(updated);
+      localStorage.setItem('alnoor_cms_faqs', JSON.stringify(updated));
+    }
+    setIsAddingFaq(false);
+    setEditingFaq(null);
+  };
+
+  const handleDeleteFaq = (id: string, question: string) => {
+    if (!window.confirm(`Delete FAQ: "${question}"?`)) return;
+    const updated = faqs.filter(f => f.id !== id);
+    setFaqs(updated);
+    localStorage.setItem('alnoor_cms_faqs', JSON.stringify(updated));
+  };
+
+  // --- Site Settings CMS Handler ---
+  const handleSaveSiteSettings = (e: React.FormEvent) => {
+    e.preventDefault();
+    localStorage.setItem('alnoor_cms_settings', JSON.stringify(siteSettings));
+    setSettingsSavedToast(true);
+    setTimeout(() => setSettingsSavedToast(false), 3000);
+  };
+
   const handleOpenAssignModal = (student: Student) => {
     setAssigningStudent(student);
     setAssignmentForm({
@@ -680,47 +886,91 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
           <div className="flex-1 flex overflow-hidden">
             
             {/* Sidebar Navigation */}
-            <aside className="w-56 bg-[#F8F5EE] border-r border-[#E8E0D1] p-4 flex flex-col justify-between shrink-0">
-              <div className="space-y-1.5">
-                {[
-                  { id: 'overview', label: 'Overview & Stats', icon: ShieldCheck },
-                  { id: 'leads', label: 'Trial Leads', icon: Users, badge: leads.filter(l => l.status === 'New Lead').length },
-                  { id: 'enrollments', label: 'Enrollments', icon: UserCheck, badge: enrollments.filter(e => e.status === 'New Application').length },
-                  { id: 'students', label: 'Students Directory', icon: GraduationCap },
-                  { id: 'tutors', label: 'Tutors & Faculty', icon: Certificate },
-                  { id: 'courses', label: 'Course Programs', icon: BookOpen },
-                  { id: 'blog', label: 'Blog & Articles', icon: PenNib }
-                ].map(item => {
-                  const Icon = item.icon;
-                  const active = activeTab === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveTab(item.id as any)}
-                      className={`w-full flex items-center justify-between px-3 py-2.5 text-xs font-sans rounded-sm transition-all cursor-pointer ${
-                        active
-                          ? 'bg-[#0B332D] text-[#F8F5EE] font-bold shadow-xs'
-                          : 'text-gray-700 hover:bg-[#E8E0D1]/50'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Icon className={`w-4 h-4 ${active ? 'text-[#B79A62]' : 'text-gray-500'}`} />
-                        <span>{item.label}</span>
-                      </div>
-                      {item.badge && item.badge > 0 ? (
-                        <span className="px-1.5 py-0.5 text-[10px] font-bold rounded-xs bg-[#B79A62] text-[#07221E]">
-                          {item.badge}
-                        </span>
-                      ) : null}
-                    </button>
-                  );
-                })}
+            <aside className="w-60 bg-[#F8F5EE] border-r border-[#E8E0D1] p-3.5 flex flex-col justify-between shrink-0 overflow-y-auto">
+              <div className="space-y-4">
+                
+                {/* Operations Section */}
+                <div>
+                  <p className="px-2.5 mb-1 text-[10px] font-sans font-bold uppercase tracking-wider text-gray-400">
+                    Academy Operations
+                  </p>
+                  <div className="space-y-1">
+                    {[
+                      { id: 'overview', label: 'Overview & Stats', icon: ShieldCheck },
+                      { id: 'leads', label: 'Trial Inquiries', icon: Users, badge: leads.filter(l => l.status === 'New Lead').length },
+                      { id: 'enrollments', label: 'Enrollments', icon: UserCheck, badge: enrollments.filter(e => e.status === 'New Application').length },
+                      { id: 'students', label: 'Students & Timetable', icon: GraduationCap },
+                      { id: 'tutors', label: 'Faculty & Scholars', icon: Certificate }
+                    ].map(item => {
+                      const Icon = item.icon;
+                      const active = activeTab === item.id;
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => setActiveTab(item.id as any)}
+                          className={`w-full flex items-center justify-between px-3 py-2 text-xs font-sans rounded-sm transition-all cursor-pointer ${
+                            active
+                              ? 'bg-[#0B332D] text-[#F8F5EE] font-bold shadow-xs'
+                              : 'text-gray-700 hover:bg-[#E8E0D1]/50'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <Icon className={`w-4 h-4 ${active ? 'text-[#B79A62]' : 'text-gray-500'}`} />
+                            <span>{item.label}</span>
+                          </div>
+                          {item.badge && item.badge > 0 ? (
+                            <span className="px-1.5 py-0.2 text-[9px] font-bold rounded-xs bg-[#B79A62] text-[#07221E]">
+                              {item.badge}
+                            </span>
+                          ) : null}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Content CMS Section */}
+                <div>
+                  <p className="px-2.5 mb-1 text-[10px] font-sans font-bold uppercase tracking-wider text-[#B79A62]">
+                    Content CMS
+                  </p>
+                  <div className="space-y-1">
+                    {[
+                      { id: 'courses', label: 'Courses & Curricula', icon: BookOpen },
+                      { id: 'packages', label: 'Pricing & Packages', icon: CreditCard },
+                      { id: 'blog', label: 'Articles & Guides', icon: PenNib },
+                      { id: 'testimonials', label: 'Parent Reviews', icon: Star },
+                      { id: 'faqs', label: 'FAQ Management', icon: Question },
+                      { id: 'settings', label: 'Site & Banners CMS', icon: Gear }
+                    ].map(item => {
+                      const Icon = item.icon;
+                      const active = activeTab === item.id;
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => setActiveTab(item.id as any)}
+                          className={`w-full flex items-center justify-between px-3 py-2 text-xs font-sans rounded-sm transition-all cursor-pointer ${
+                            active
+                              ? 'bg-[#0B332D] text-[#F8F5EE] font-bold shadow-xs'
+                              : 'text-gray-700 hover:bg-[#E8E0D1]/50'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <Icon className={`w-4 h-4 ${active ? 'text-[#B79A62]' : 'text-gray-500'}`} />
+                            <span>{item.label}</span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
               </div>
 
-              <div className="pt-4 border-t border-[#E8E0D1] text-[11px] font-sans text-gray-500 space-y-1">
-                <p>Status: <strong className="text-emerald-700">Authenticated</strong></p>
-                <p>Live Tutors: <strong>{tutors.length}</strong></p>
-                <p>Active Courses: <strong>{adminCourses.length}</strong></p>
+              <div className="pt-3 border-t border-[#E8E0D1] text-[10px] font-sans text-gray-500 space-y-0.5">
+                <p>CMS Studio: <strong className="text-emerald-700">Full Access</strong></p>
+                <p>Tutors: <strong>{tutors.length}</strong> • Courses: <strong>{adminCourses.length}</strong></p>
+                <p>Packages: <strong>{packages.length}</strong> • FAQs: <strong>{faqs.length}</strong></p>
               </div>
             </aside>
 
@@ -1191,6 +1441,439 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
               {/* TAB 7: BLOG & ESSAYS */}
               {activeTab === 'blog' && (
                 <BlogEditor />
+              )}
+
+              {/* TAB 8: PRICING & PACKAGES CMS */}
+              {activeTab === 'packages' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">Pricing &amp; Packages CMS</h3>
+                      <p className="text-xs text-gray-500 font-sans">Configure monthly subscription plans, class durations, days per week, and international currency tiers.</p>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setEditingPackage(null);
+                        setPackageForm({
+                          name: '',
+                          code: 'pkg-3days',
+                          daysPerWeek: '3 Days / Week',
+                          classesPerMonth: 12,
+                          classDurationMinutes: 30,
+                          monthlyFeePKR: 3500,
+                          monthlyFeeUSD: 35,
+                          monthlyFeeGBP: 28,
+                          monthlyFeeEUR: 32,
+                          monthlyFeeAED: 130,
+                          monthlyFeeCAD: 45,
+                          monthlyFeeAUD: 50,
+                          isPopular: false,
+                          badge: 'Popular Plan',
+                          features: ['1-on-1 Dedicated Tutor', '30 Mins Live Lessons', 'Weekly Tajweed Evaluation'],
+                          description: 'Balanced Quran learning pace ideal for school-going kids and working adults.'
+                        });
+                        setIsAddingPackage(true);
+                      }}
+                      className="px-4 py-2 bg-[#0B332D] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-[#B79A62]" weight="bold" />
+                      <span>Add Package Plan</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {packages.map((pkg) => (
+                      <div
+                        key={pkg.id}
+                        className={`p-6 bg-[#F8F5EE] border rounded-sm space-y-4 relative flex flex-col justify-between ${
+                          pkg.isPopular ? 'border-[#B79A62] shadow-sm' : 'border-[#E8E0D1]'
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              {pkg.isPopular && (
+                                <span className="inline-block px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-[#B79A62] text-[#07221E] rounded-xs mb-1">
+                                  {pkg.badge || 'Popular'}
+                                </span>
+                              )}
+                              <h4 className="font-editorial text-2xl text-[#0B332D] font-bold">{pkg.name}</h4>
+                            </div>
+                            <span className="text-xs font-sans font-bold text-[#0B332D] bg-[#FCFBF8] px-2.5 py-1 rounded-sm border border-[#E8E0D1]">
+                              PKR {pkg.monthlyFeePKR?.toLocaleString()} / ${pkg.monthlyFeeUSD}
+                            </span>
+                          </div>
+
+                          <div className="mt-3 flex items-center gap-3 text-xs font-sans text-gray-600">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-3.5 h-3.5 text-[#B79A62]" />
+                              {pkg.daysPerWeek}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3.5 h-3.5 text-[#B79A62]" />
+                              {pkg.classDurationMinutes} Mins / Class
+                            </span>
+                          </div>
+
+                          <p className="mt-2 text-xs text-gray-600 font-sans leading-relaxed">
+                            {pkg.description}
+                          </p>
+
+                          <div className="mt-3 pt-3 border-t border-[#E8E0D1]/60 space-y-1 text-xs font-sans text-gray-700">
+                            {pkg.features?.map((f, i) => (
+                              <div key={i} className="flex items-center gap-1.5 text-[11px]">
+                                <CheckCircle className="w-3.5 h-3.5 text-[#B79A62] shrink-0" weight="fill" />
+                                <span>{f}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="pt-3 border-t border-[#E8E0D1] flex items-center justify-between">
+                          <button
+                            onClick={() => {
+                              setEditingPackage(pkg);
+                              setPackageForm({ ...pkg });
+                              setIsAddingPackage(true);
+                            }}
+                            className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-[#0B332D] hover:text-[#B79A62] cursor-pointer"
+                          >
+                            <PencilSimple className="w-3.5 h-3.5" />
+                            <span>Edit Package</span>
+                          </button>
+
+                          <button
+                            onClick={() => handleDeletePackage(pkg.id, pkg.name)}
+                            className="text-red-600 hover:text-red-800 text-xs font-sans font-semibold cursor-pointer"
+                          >
+                            <Trash className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 9: TESTIMONIALS & REVIEWS CMS */}
+              {activeTab === 'testimonials' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">Parent &amp; Student Reviews CMS</h3>
+                      <p className="text-xs text-gray-500 font-sans">Curate, publish, and manage verified parent reflections and student testimonials on the website.</p>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setEditingTestimonial(null);
+                        setTestimonialForm({
+                          name: '',
+                          studentOrParent: 'Parent of Student',
+                          location: 'London, UK',
+                          countryFlag: '🇬🇧',
+                          courseName: 'Noorani Qaida & Tajweed',
+                          rating: 5,
+                          comment: '',
+                          status: 'published'
+                        });
+                        setIsAddingTestimonial(true);
+                      }}
+                      className="px-4 py-2 bg-[#0B332D] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-[#B79A62]" weight="bold" />
+                      <span>Add Testimonial</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {testimonials.map((t) => (
+                      <div
+                        key={t.id}
+                        className="p-5 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm space-y-3 flex flex-col justify-between shadow-xs"
+                      >
+                        <div className="space-y-2">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-base">{t.countryFlag || '🌍'}</span>
+                                <h4 className="font-bold text-[#0B332D] text-sm">{t.name}</h4>
+                              </div>
+                              <p className="text-[10px] text-gray-500">{t.studentOrParent} • {t.location}</p>
+                            </div>
+
+                            <span className={`px-2 py-0.5 text-[9px] font-bold rounded-xs ${
+                              t.status === 'published' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-700'
+                            }`}>
+                              {t.status === 'published' ? 'Published' : 'Draft'}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1 text-[#B79A62]">
+                            {Array.from({ length: t.rating || 5 }).map((_, idx) => (
+                              <Star key={idx} className="w-3.5 h-3.5" weight="fill" />
+                            ))}
+                            <span className="text-[11px] text-gray-500 font-sans ml-1 font-semibold">({t.courseName})</span>
+                          </div>
+
+                          <p className="text-xs text-gray-700 italic leading-relaxed bg-[#FCFBF8] p-3 rounded-xs border border-[#E8E0D1]/60">
+                            "{t.comment}"
+                          </p>
+                        </div>
+
+                        <div className="pt-2 border-t border-[#E8E0D1] flex items-center justify-between">
+                          <button
+                            onClick={() => handleToggleTestimonialStatus(t.id)}
+                            className="text-[11px] font-sans font-semibold text-[#0B332D] hover:underline cursor-pointer"
+                          >
+                            {t.status === 'published' ? 'Unpublish to Draft' : 'Approve & Publish'}
+                          </button>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => {
+                                setEditingTestimonial(t);
+                                setTestimonialForm({ ...t });
+                                setIsAddingTestimonial(true);
+                              }}
+                              className="p-1 text-gray-700 hover:text-[#0B332D] cursor-pointer"
+                              title="Edit Review"
+                            >
+                              <PencilSimple className="w-3.5 h-3.5" />
+                            </button>
+
+                            <button
+                              onClick={() => handleDeleteTestimonial(t.id, t.name)}
+                              className="p-1 text-red-600 hover:text-red-800 cursor-pointer"
+                              title="Delete Review"
+                            >
+                              <Trash className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 10: FAQ MANAGEMENT CMS */}
+              {activeTab === 'faqs' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">FAQ Management CMS</h3>
+                      <p className="text-xs text-gray-500 font-sans">Manage frequently asked questions, admission queries, and curriculum guidance displayed on the website.</p>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setEditingFaq(null);
+                        setFaqForm({
+                          question: '',
+                          answer: '',
+                          category: 'Admissions',
+                          order: faqs.length + 1
+                        });
+                        setIsAddingFaq(true);
+                      }}
+                      className="px-4 py-2 bg-[#0B332D] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-[#B79A62]" weight="bold" />
+                      <span>Add New FAQ</span>
+                    </button>
+                  </div>
+
+                  <div className="space-y-3">
+                    {faqs.map((faq, idx) => (
+                      <div
+                        key={faq.id}
+                        className="p-5 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm space-y-2"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-start gap-2">
+                            <span className="w-5 h-5 rounded-full bg-[#0B332D] text-[#F8F5EE] text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                              {idx + 1}
+                            </span>
+                            <div>
+                              <span className="text-[9px] font-bold uppercase tracking-widest text-[#B79A62] block mb-0.5">
+                                {faq.category || 'General'}
+                              </span>
+                              <h4 className="font-bold text-[#0B332D] text-sm">{faq.question}</h4>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => {
+                                setEditingFaq(faq);
+                                setFaqForm({ ...faq });
+                                setIsAddingFaq(true);
+                              }}
+                              className="p-1 text-gray-700 hover:text-[#0B332D] cursor-pointer"
+                              title="Edit FAQ"
+                            >
+                              <PencilSimple className="w-3.5 h-3.5" />
+                            </button>
+
+                            <button
+                              onClick={() => handleDeleteFaq(faq.id, faq.question)}
+                              className="p-1 text-red-600 hover:text-red-800 cursor-pointer"
+                              title="Delete FAQ"
+                            >
+                              <Trash className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+
+                        <p className="text-xs text-gray-700 font-sans leading-relaxed pl-7">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 11: SITE SETTINGS & ANNOUNCEMENT CMS */}
+              {activeTab === 'settings' && (
+                <div className="space-y-6 max-w-4xl">
+                  <div className="bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1] flex items-center justify-between">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">Site Settings &amp; Banners CMS</h3>
+                      <p className="text-xs text-gray-500 font-sans">Manage top announcement ticker bar, hero titles, contact channels, and academy branding.</p>
+                    </div>
+
+                    {settingsSavedToast && (
+                      <div className="px-3 py-1.5 bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold rounded-sm flex items-center gap-1.5 animate-in fade-in">
+                        <CheckCircle className="w-4 h-4" weight="fill" />
+                        <span>Settings Saved Successfully!</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <form onSubmit={handleSaveSiteSettings} className="space-y-6 bg-[#FCFBF8] p-6 border border-[#E8E0D1] rounded-sm text-xs font-sans">
+                    
+                    {/* Announcement Bar CMS */}
+                    <div className="space-y-3 pb-6 border-b border-[#E8E0D1]">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-editorial text-lg text-[#0B332D] font-bold flex items-center gap-1.5">
+                          <Megaphone className="w-4 h-4 text-[#B79A62]" />
+                          <span>Announcement Bar Ticker</span>
+                        </h4>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={siteSettings.announcementBarEnabled}
+                            onChange={e => setSiteSettings({ ...siteSettings, announcementBarEnabled: e.target.checked })}
+                            className="rounded-xs text-[#0B332D]"
+                          />
+                          <span className="font-bold text-[#0B332D]">Enable Announcement Bar</span>
+                        </label>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                        <div className="sm:col-span-1">
+                          <label className="block font-bold text-gray-700 mb-1">Badge Tag</label>
+                          <input
+                            type="text"
+                            value={siteSettings.announcementBadge}
+                            onChange={e => setSiteSettings({ ...siteSettings, announcementBadge: e.target.value })}
+                            className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                          />
+                        </div>
+                        <div className="sm:col-span-3">
+                          <label className="block font-bold text-gray-700 mb-1">Announcement Message</label>
+                          <input
+                            type="text"
+                            value={siteSettings.announcementBarText}
+                            onChange={e => setSiteSettings({ ...siteSettings, announcementBarText: e.target.value })}
+                            className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Hero Section Headlines CMS */}
+                    <div className="space-y-3 pb-6 border-b border-[#E8E0D1]">
+                      <h4 className="font-editorial text-lg text-[#0B332D] font-bold flex items-center gap-1.5">
+                        <Sparkle className="w-4 h-4 text-[#B79A62]" />
+                        <span>Homepage Hero Branding</span>
+                      </h4>
+
+                      <div>
+                        <label className="block font-bold text-gray-700 mb-1">Main Headline</label>
+                        <input
+                          type="text"
+                          value={siteSettings.heroHeadline}
+                          onChange={e => setSiteSettings({ ...siteSettings, heroHeadline: e.target.value })}
+                          className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-gray-700 mb-1">Subtitle / Subheading</label>
+                        <textarea
+                          rows={2}
+                          value={siteSettings.heroSubtitle}
+                          onChange={e => setSiteSettings({ ...siteSettings, heroSubtitle: e.target.value })}
+                          className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Official Contact Channels CMS */}
+                    <div className="space-y-3 pb-6 border-b border-[#E8E0D1]">
+                      <h4 className="font-editorial text-lg text-[#0B332D] font-bold flex items-center gap-1.5">
+                        <PhoneCall className="w-4 h-4 text-[#B79A62]" />
+                        <span>Official Academy Channels</span>
+                      </h4>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block font-bold text-gray-700 mb-1">Primary WhatsApp Number</label>
+                          <input
+                            type="text"
+                            value={siteSettings.primaryWhatsApp}
+                            onChange={e => setSiteSettings({ ...siteSettings, primaryWhatsApp: e.target.value })}
+                            className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block font-bold text-gray-700 mb-1">Official Admissions Email</label>
+                          <input
+                            type="email"
+                            value={siteSettings.officialEmail}
+                            onChange={e => setSiteSettings({ ...siteSettings, officialEmail: e.target.value })}
+                            className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-gray-700 mb-1">Academy Operations Region / Address</label>
+                        <input
+                          type="text"
+                          value={siteSettings.address}
+                          onChange={e => setSiteSettings({ ...siteSettings, address: e.target.value })}
+                          className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end pt-2">
+                      <button
+                        type="submit"
+                        className="px-6 py-2.5 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] shadow-sm flex items-center gap-2 cursor-pointer"
+                      >
+                        <FloppyDisk className="w-4 h-4 text-[#B79A62]" />
+                        <span>Save Site Settings</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
               )}
 
             </main>
@@ -1863,6 +2546,342 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Add/Edit Package Plan Modal */}
+        {isAddingPackage && (
+          <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-lg bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="px-6 py-4 bg-[#0B332D] text-[#F8F5EE] flex items-center justify-between border-b border-[#B79A62]/30">
+                <h3 className="font-editorial text-xl font-semibold">
+                  {editingPackage ? 'Edit Pricing Package' : 'Add Pricing Package'}
+                </h3>
+                <button onClick={() => setIsAddingPackage(false)} className="text-gray-300 hover:text-white cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSavePackage} className="p-6 space-y-4 overflow-y-auto text-xs font-sans">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Package Name *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Standard 3 Days/Week"
+                    value={packageForm.name || ''}
+                    onChange={e => setPackageForm({ ...packageForm, name: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Days Per Week</label>
+                    <input
+                      type="text"
+                      placeholder="3 Days / Week"
+                      value={packageForm.daysPerWeek || ''}
+                      onChange={e => setPackageForm({ ...packageForm, daysPerWeek: e.target.value })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Class Duration (Mins)</label>
+                    <input
+                      type="number"
+                      value={packageForm.classDurationMinutes || 30}
+                      onChange={e => setPackageForm({ ...packageForm, classDurationMinutes: Number(e.target.value) })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Monthly Fee (PKR)</label>
+                    <input
+                      type="number"
+                      value={packageForm.monthlyFeePKR || 3500}
+                      onChange={e => setPackageForm({ ...packageForm, monthlyFeePKR: Number(e.target.value) })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Monthly Fee (USD)</label>
+                    <input
+                      type="number"
+                      value={packageForm.monthlyFeeUSD || 35}
+                      onChange={e => setPackageForm({ ...packageForm, monthlyFeeUSD: Number(e.target.value) })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Short Description</label>
+                  <textarea
+                    rows={2}
+                    value={packageForm.description || ''}
+                    onChange={e => setPackageForm({ ...packageForm, description: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between p-3 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={!!packageForm.isPopular}
+                      onChange={e => setPackageForm({ ...packageForm, isPopular: e.target.checked })}
+                      className="rounded-xs text-[#0B332D]"
+                    />
+                    <span className="font-bold text-[#0B332D]">Mark as Popular / Best Value Plan</span>
+                  </label>
+                  {packageForm.isPopular && (
+                    <input
+                      type="text"
+                      placeholder="Badge: e.g. Most Popular"
+                      value={packageForm.badge || 'Popular'}
+                      onChange={e => setPackageForm({ ...packageForm, badge: e.target.value })}
+                      className="px-2 py-1 text-xs border border-[#E8E0D1] bg-[#FCFBF8] rounded-sm"
+                    />
+                  )}
+                </div>
+
+                <div className="pt-4 border-t border-[#E8E0D1] flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsAddingPackage(false)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-900 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] cursor-pointer"
+                  >
+                    Save Package
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Add/Edit Testimonial Modal */}
+        {isAddingTestimonial && (
+          <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-lg bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="px-6 py-4 bg-[#0B332D] text-[#F8F5EE] flex items-center justify-between border-b border-[#B79A62]/30">
+                <h3 className="font-editorial text-xl font-semibold">
+                  {editingTestimonial ? 'Edit Parent Review' : 'Add Parent Review'}
+                </h3>
+                <button onClick={() => setIsAddingTestimonial(false)} className="text-gray-300 hover:text-white cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveTestimonial} className="p-6 space-y-4 overflow-y-auto text-xs font-sans">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Reviewer Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Sister Fatima Khan"
+                      value={testimonialForm.name || ''}
+                      onChange={e => setTestimonialForm({ ...testimonialForm, name: e.target.value })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Relation / Role</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Mother of Ayaan (7 yrs)"
+                      value={testimonialForm.studentOrParent || ''}
+                      onChange={e => setTestimonialForm({ ...testimonialForm, studentOrParent: e.target.value })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Location &amp; Country</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. London, UK"
+                      value={testimonialForm.location || ''}
+                      onChange={e => setTestimonialForm({ ...testimonialForm, location: e.target.value })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Country Flag</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 🇬🇧 or 🇺🇸"
+                      value={testimonialForm.countryFlag || '🇬🇧'}
+                      onChange={e => setTestimonialForm({ ...testimonialForm, countryFlag: e.target.value })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Course Name</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Noorani Qaida & Tajweed"
+                      value={testimonialForm.courseName || ''}
+                      onChange={e => setTestimonialForm({ ...testimonialForm, courseName: e.target.value })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Star Rating (1 - 5)</label>
+                    <select
+                      value={testimonialForm.rating || 5}
+                      onChange={e => setTestimonialForm({ ...testimonialForm, rating: Number(e.target.value) })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    >
+                      <option value={5}>⭐⭐⭐⭐⭐ (5 Stars)</option>
+                      <option value={4}>⭐⭐⭐⭐ (4 Stars)</option>
+                      <option value={3}>⭐⭐⭐ (3 Stars)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Parent Review / Feedback *</label>
+                  <textarea
+                    rows={3}
+                    required
+                    placeholder="Enter quote or parent reflection..."
+                    value={testimonialForm.comment || ''}
+                    onChange={e => setTestimonialForm({ ...testimonialForm, comment: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Publish Status</label>
+                  <select
+                    value={testimonialForm.status || 'published'}
+                    onChange={e => setTestimonialForm({ ...testimonialForm, status: e.target.value as any })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  >
+                    <option value="published">Published (Visible on Website)</option>
+                    <option value="pending">Draft / Pending</option>
+                  </select>
+                </div>
+
+                <div className="pt-4 border-t border-[#E8E0D1] flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsAddingTestimonial(false)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-900 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] cursor-pointer"
+                  >
+                    Save Review
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Add/Edit FAQ Modal */}
+        {isAddingFaq && (
+          <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-lg bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="px-6 py-4 bg-[#0B332D] text-[#F8F5EE] flex items-center justify-between border-b border-[#B79A62]/30">
+                <h3 className="font-editorial text-xl font-semibold">
+                  {editingFaq ? 'Edit FAQ' : 'Add New FAQ'}
+                </h3>
+                <button onClick={() => setIsAddingFaq(false)} className="text-gray-300 hover:text-white cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveFaq} className="p-6 space-y-4 overflow-y-auto text-xs font-sans">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Question *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Do you offer female Quran teachers?"
+                    value={faqForm.question || ''}
+                    onChange={e => setFaqForm({ ...faqForm, question: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Answer *</label>
+                  <textarea
+                    rows={4}
+                    required
+                    placeholder="Comprehensive answer..."
+                    value={faqForm.answer || ''}
+                    onChange={e => setFaqForm({ ...faqForm, answer: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Category</label>
+                    <select
+                      value={faqForm.category || 'Admissions'}
+                      onChange={e => setFaqForm({ ...faqForm, category: e.target.value })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    >
+                      <option value="Admissions">Admissions</option>
+                      <option value="Classes">Classes</option>
+                      <option value="Faculty">Faculty</option>
+                      <option value="Courses">Courses</option>
+                      <option value="Schedules">Schedules</option>
+                      <option value="Fees">Fees &amp; Billing</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Display Order</label>
+                    <input
+                      type="number"
+                      value={faqForm.order || 1}
+                      onChange={e => setFaqForm({ ...faqForm, order: Number(e.target.value) })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-[#E8E0D1] flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsAddingFaq(false)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-900 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] cursor-pointer"
+                  >
+                    Save FAQ
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}

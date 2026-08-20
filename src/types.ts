@@ -337,3 +337,23 @@ export interface UserAccount {
   updatedAt?: string;
 }
 
+export interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+  category?: string;
+  order?: number;
+}
+
+export interface SiteSettings {
+  announcementBarText: string;
+  announcementBarEnabled: boolean;
+  announcementBadge: string;
+  heroHeadline: string;
+  heroSubtitle: string;
+  primaryWhatsApp: string;
+  officialEmail: string;
+  emergencyPhone: string;
+  address: string;
+  freeTrialDays: number;
+}
