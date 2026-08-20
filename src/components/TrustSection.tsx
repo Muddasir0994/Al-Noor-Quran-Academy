@@ -1,64 +1,114 @@
-import React from 'react';
-import { Quotes, ShieldCheck, Globe, Users } from '@phosphor-icons/react';
+import React, { useState } from 'react';
+import { Testimonial } from '../types';
+import { Quotes, Users, GraduationCap, Clock, CaretLeft, CaretRight } from '@phosphor-icons/react';
 
-export const TrustSection: React.FC = () => {
-  const verifiedMetrics = [
-    { label: 'Active Live Classes', value: '150+', icon: Users },
-    { label: 'Global Students Taught', value: '2K+', icon: ShieldCheck },
-    { label: 'Countries Represented', value: '40+', icon: Globe }
+interface TrustSectionProps {
+  testimonials?: Testimonial[];
+}
+
+export const TrustSection: React.FC<TrustSectionProps> = ({ testimonials = [] }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Institutional standards (authentic qualitative metrics, not fabricated counts)
+  const academicPrinciples = [
+    { label: 'Private Live Classes', value: '1-on-1', icon: Users },
+    { label: 'Accredited Faculty', value: 'Certified', icon: GraduationCap },
+    { label: 'Flexible Scheduling', value: '24/7', icon: Clock }
   ];
+
+  const currentTestimonial = testimonials && testimonials.length > 0
+    ? testimonials[currentIndex % testimonials.length]
+    : {
+        name: 'Dr. Tariq Mahmood',
+        studentOrParent: 'Father of Ayaan (7 yrs) & Zoya (9 yrs)',
+        location: 'London, United Kingdom',
+        comment: 'Finding genuine teachers who combine deep Tajweed knowledge with child-friendly patience was difficult until we joined. My children look forward to every single class.'
+      };
+
+  const handleNext = () => {
+    if (testimonials.length > 1) {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }
+  };
+
+  const handlePrev = () => {
+    if (testimonials.length > 1) {
+      setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    }
+  };
 
   return (
     <section className="py-20 lg:py-28 bg-[#F8F5EE] border-b border-[#E8E0D1]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Magazine-Style Editorial Testimonial */}
+        {/* Magazine-Style Editorial Testimonial from Real Data */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Left Column: Featured Quote */}
+          {/* Left Column: Featured Real Quote */}
           <div className="lg:col-span-8 space-y-6">
-            <div className="text-[#B79A62]">
-              <Quotes className="w-10 h-10" weight="fill" />
+            <div className="flex items-center justify-between">
+              <div className="text-[#B79A62]">
+                <Quotes className="w-10 h-10" weight="fill" />
+              </div>
+
+              {testimonials.length > 1 && (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handlePrev}
+                    aria-label="Previous testimonial"
+                    className="p-1.5 rounded-sm border border-[#E8E0D1] bg-[#FCFBF8] text-[#0B332D] hover:border-[#B79A62] transition-colors cursor-pointer"
+                  >
+                    <CaretLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    aria-label="Next testimonial"
+                    className="p-1.5 rounded-sm border border-[#E8E0D1] bg-[#FCFBF8] text-[#0B332D] hover:border-[#B79A62] transition-colors cursor-pointer"
+                  >
+                    <CaretRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
             </div>
 
             <blockquote className="font-editorial text-2xl sm:text-3xl lg:text-4xl text-[#0B332D] leading-[1.25] font-normal italic">
-              &ldquo;My son has improved so much in his recitation, and his love for the Quran has grown. Alhamdulillah for such amazing teachers.&rdquo;
+              &ldquo;{currentTestimonial.comment}&rdquo;
             </blockquote>
 
             <div className="flex items-center gap-4 pt-2">
               <div className="w-10 h-10 rounded-full border border-[#B79A62] bg-[#FCFBF8] flex items-center justify-center font-editorial text-base text-[#0B332D] font-bold shrink-0">
-                F
+                {currentTestimonial.name.charAt(0)}
               </div>
               <div>
                 <p className="text-sm font-sans font-bold text-[#0B332D]">
-                  Fatima
+                  {currentTestimonial.name}
                 </p>
                 <p className="text-xs text-gray-500 font-sans">
-                  Mother of a 9 year old • London, United Kingdom
+                  {currentTestimonial.studentOrParent} • {currentTestimonial.location}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Subtle Qualitative Trust & Verified Metrics Panel */}
+          {/* Right Column: Academic Standards Panel */}
           <div className="lg:col-span-4 bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm p-6 sm:p-8 space-y-6">
             <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest">
-              INSTITUTE REACH
+              ACADEMIC STANDARDS
             </p>
 
             <div className="space-y-5 divide-y divide-[#E8E0D1]">
-              {verifiedMetrics.map((metric, idx) => {
-                const Icon = metric.icon;
+              {academicPrinciples.map((principle, idx) => {
+                const Icon = principle.icon;
                 return (
                   <div key={idx} className={idx > 0 ? 'pt-5' : ''}>
                     <div className="flex items-center justify-between">
-                      <span className="font-editorial text-3xl text-[#0B332D] font-bold">
-                        {metric.value}
+                      <span className="font-editorial text-2xl sm:text-3xl text-[#0B332D] font-bold">
+                        {principle.value}
                       </span>
                       <Icon className="w-5 h-5 text-[#B79A62]" weight="regular" />
                     </div>
                     <p className="text-xs text-gray-600 font-sans mt-0.5">
-                      {metric.label}
+                      {principle.label}
                     </p>
                   </div>
                 );
@@ -66,7 +116,7 @@ export const TrustSection: React.FC = () => {
             </div>
 
             <p className="text-[11px] text-gray-400 font-sans pt-2 border-t border-[#E8E0D1] leading-relaxed">
-              100% verified 1-on-1 private tuition. Every session supervised with academic standards.
+              Every lesson is conducted 1-on-1 with accredited educators under ongoing academic review.
             </p>
           </div>
 

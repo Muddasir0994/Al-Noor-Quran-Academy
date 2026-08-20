@@ -547,6 +547,7 @@ function AppContent() {
             {activeNavTab === 'home' && (
               <HomePageView
                 courses={courses}
+                tutors={tutors}
                 testimonials={testimonials}
                 onOpenTrial={handleOpenTrial}
                 onOpenEnroll={handleOpenEnroll}

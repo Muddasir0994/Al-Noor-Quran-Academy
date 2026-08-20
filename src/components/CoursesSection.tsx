@@ -4,7 +4,7 @@ import {
   BookOpen,
   Certificate,
   GraduationCap,
-  Sparkle,
+  BookmarkSimple,
   ArrowRight
 } from '@phosphor-icons/react';
 
@@ -20,50 +20,14 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
   onOpenTrial,
   onInspectCourse
 }) => {
-  const editorialCourses = [
-    {
-      number: '01',
-      id: 'c-1',
-      slug: 'noorani-qaida',
-      title: 'Quran Reading',
-      arabicName: 'قراءة القرآن والقاعدة النورانية',
-      description: 'Noorani Qaida, reading practice, pronunciation, and fluency for learners of all ages.',
-      icon: BookOpen
-    },
-    {
-      number: '02',
-      id: 'c-3',
-      slug: 'quran-with-tajweed',
-      title: 'Tajweed',
-      arabicName: 'أحكام التجويد والإتقان',
-      description: 'Learn the rules of Tajweed and develop accurate, confident Quran recitation.',
-      icon: Certificate
-    },
-    {
-      number: '03',
-      id: 'c-4',
-      slug: 'quran-memorization-hifz',
-      title: 'Hifz-ul-Quran',
-      arabicName: 'حفظ القرآن الكريم وتثبيته',
-      description: 'Memorize the Quran through a structured, supportive, and personalized method.',
-      icon: GraduationCap
-    },
-    {
-      number: '04',
-      id: 'c-5',
-      slug: 'islamic-studies',
-      title: 'Islamic Studies',
-      arabicName: 'الدراسات الإسلامية والعبادات',
-      description: 'Build authentic understanding through essential Islamic knowledge and practical learning.',
-      icon: Sparkle
-    }
-  ];
+  // Use real courses from database, displaying the core curated curriculum
+  const displayCourses = courses && courses.length > 0 ? courses.slice(0, 5) : [];
 
-  const handleExplore = (item: typeof editorialCourses[0]) => {
-    const matched = courses.find(c => c.slug === item.slug || c.id === item.id) || courses[0];
-    if (matched) {
-      onInspectCourse(matched);
-    }
+  const getCourseIcon = (slug: string, category: string) => {
+    if (slug.includes('tajweed') || category === 'tajweed') return Certificate;
+    if (slug.includes('hifz') || category === 'hifz') return GraduationCap;
+    if (slug.includes('islamic') || category === 'islamic_studies') return BookmarkSimple;
+    return BookOpen;
   };
 
   return (
@@ -81,47 +45,51 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
           </h2>
         </div>
 
-        {/* Numbered Curriculum System (Open Editorial Layout) */}
+        {/* Numbered Curriculum System (Subtle, Open Editorial Layout) */}
         <div className="divide-y divide-[#E8E0D1] border-t border-b border-[#E8E0D1]">
-          {editorialCourses.map((course) => {
-            const Icon = course.icon;
+          {displayCourses.map((course, idx) => {
+            const Icon = getCourseIcon(course.slug, course.category);
+            const numStr = String(idx + 1).padStart(2, '0');
+
             return (
               <div
-                key={course.number}
-                className="py-10 lg:py-12 grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-start lg:items-center group hover:bg-[#F8F5EE]/60 transition-colors px-2 sm:px-4"
+                key={course.id || idx}
+                className="py-9 lg:py-11 grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-start lg:items-center group hover:bg-[#F8F5EE]/60 transition-colors px-2 sm:px-4"
               >
                 
-                {/* 1. Large Editorial Number & Icon */}
-                <div className="md:col-span-3 flex items-baseline gap-4">
-                  <span className="font-editorial text-3xl sm:text-4xl text-[#B79A62] font-light">
-                    {course.number}
+                {/* 1. Subtle, Low-Contrast Editorial Number */}
+                <div className="md:col-span-2 flex items-baseline gap-3">
+                  <span className="font-editorial text-2xl sm:text-3xl text-[#B79A62]/60 font-light tracking-wide">
+                    {numStr}
                   </span>
-                  <div className="w-8 h-8 rounded-sm bg-[#F8F5EE] border border-[#E8E0D1] flex items-center justify-center text-[#0B332D] group-hover:border-[#B79A62] transition-colors">
-                    <Icon className="w-4 h-4" weight="regular" />
+                  <div className="w-7 h-7 rounded-sm bg-[#F8F5EE] border border-[#E8E0D1] flex items-center justify-center text-[#0B332D] group-hover:border-[#B79A62] transition-colors">
+                    <Icon className="w-3.5 h-3.5" weight="regular" />
                   </div>
                 </div>
 
                 {/* 2. Course Title & Arabic Subheading */}
                 <div className="md:col-span-4 space-y-1">
                   <h3 className="font-editorial text-2xl sm:text-3xl text-[#0B332D] font-semibold group-hover:text-[#07221E] transition-colors">
-                    {course.title}
+                    {course.name}
                   </h3>
-                  <p className="font-arabic text-xs text-gray-500" dir="rtl">
-                    {course.arabicName}
-                  </p>
+                  {course.arabicName && (
+                    <p className="font-arabic text-xs text-gray-500" dir="rtl">
+                      {course.arabicName}
+                    </p>
+                  )}
                 </div>
 
                 {/* 3. Description */}
-                <div className="md:col-span-3">
+                <div className="md:col-span-4">
                   <p className="text-xs sm:text-sm text-gray-600 font-sans leading-relaxed">
-                    {course.description}
+                    {course.shortDescription || course.description}
                   </p>
                 </div>
 
                 {/* 4. Action Text Link */}
                 <div className="md:col-span-2 flex md:justify-end items-center gap-4 pt-2 md:pt-0">
                   <button
-                    onClick={() => handleExplore(course)}
+                    onClick={() => onInspectCourse(course)}
                     className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-[#0B332D] hover:text-[#B79A62] transition-colors py-1 border-b border-[#0B332D]/30 hover:border-[#B79A62] cursor-pointer"
                   >
                     <span>Explore Course</span>

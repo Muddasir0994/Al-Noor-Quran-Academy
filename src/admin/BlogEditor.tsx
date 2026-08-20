@@ -13,7 +13,6 @@ import {
   Tag,
   ArrowsClockwise,
   Clock,
-  Sparkle,
   UploadSimple,
   TextB,
   TextItalic,

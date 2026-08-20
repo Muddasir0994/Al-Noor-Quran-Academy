@@ -11,6 +11,7 @@ import { FinalCTASection } from './FinalCTASection';
 
 interface HomePageViewProps {
   courses: Course[];
+  tutors?: Tutor[];
   testimonials: Testimonial[];
   onOpenTrial: (courseName?: string, genderPref?: 'Male' | 'Female' | 'No Preference') => void;
   onOpenEnroll: (courseName?: string) => void;
@@ -20,6 +21,8 @@ interface HomePageViewProps {
 
 export const HomePageView: React.FC<HomePageViewProps> = ({
   courses,
+  tutors = [],
+  testimonials,
   onOpenTrial,
   onInspectCourse,
   onNavClick
@@ -42,8 +45,9 @@ export const HomePageView: React.FC<HomePageViewProps> = ({
       {/* 3. Why Choose Us: Full-Width Deep Emerald Section */}
       <WhyChooseUs onOpenTrial={() => onOpenTrial()} />
 
-      {/* 4. Teachers Section: Authentic Editorial Showcase */}
+      {/* 4. Teachers Section: Authentic Editorial Showcase with Real Data */}
       <TutorsSection
+        tutors={tutors}
         onOpenTrialWithGender={(g) => onOpenTrial(undefined, g)}
         onOpenTrial={onOpenTrial}
       />
@@ -51,8 +55,8 @@ export const HomePageView: React.FC<HomePageViewProps> = ({
       {/* 5. How It Works: 4-Step Process Timeline */}
       <MethodologySection onOpenTrial={() => onOpenTrial()} />
 
-      {/* 6. Authentic Magazine Testimonial & Verified Metrics */}
-      <TrustSection />
+      {/* 6. Authentic Magazine Testimonial with Real Data */}
+      <TrustSection testimonials={testimonials} />
 
       {/* 7. Image & Story Section */}
       <StorySection onOpenTrial={() => onOpenTrial()} />
