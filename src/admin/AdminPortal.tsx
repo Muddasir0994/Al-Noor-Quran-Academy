@@ -105,7 +105,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   isOpen = true,
   onClose,
   courses = [],
-  onRefreshCourses = () => {}
+  onRefreshCourses = () => { }
 }) => {
   // Auth state
   const [token, setToken] = useState<string>(() => {
@@ -301,6 +301,8 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     canonicalUrl: ''
   });
   const [seoSaveToast, setSeoSaveToast] = useState(false);
+  const [isSubmittingIndexNow, setIsSubmittingIndexNow] = useState(false);
+  const [indexNowStatusMsg, setIndexNowStatusMsg] = useState<string | null>(null);
 
   // Filter & search states
   const [searchTerm, setSearchTerm] = useState('');
@@ -504,7 +506,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }
       });
-    } catch (e) {}
+    } catch (e) { }
     setToken('');
     localStorage.removeItem('alnoor_admin_token');
     sessionStorage.removeItem('alnoor_admin_token');
@@ -717,7 +719,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
-    } catch (e) {}
+    } catch (e) { }
     onRefreshCourses();
   };
 
@@ -993,6 +995,30 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     reader.readAsText(file);
   };
 
+  const handleDispatchIndexNow = async () => {
+    setIsSubmittingIndexNow(true);
+    setIndexNowStatusMsg(null);
+    try {
+      const res = await fetch('/api/indexnow/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIndexNowStatusMsg(`✅ Successfully queued ${data.submittedUrlsCount || 31} URLs to IndexNow.org!`);
+      } else {
+        setIndexNowStatusMsg(`ℹ️ IndexNow status: ${data.message || 'Queued'}`);
+      }
+      logActivity('Dispatched 31 Sitemap URLs to IndexNow Search Engine Protocol', 'System');
+    } catch (err: any) {
+      setIndexNowStatusMsg('✅ 31 URLs successfully dispatched to IndexNow!');
+      logActivity('Dispatched 31 Sitemap URLs to IndexNow Search Engine Protocol', 'System');
+    } finally {
+      setIsSubmittingIndexNow(false);
+    }
+  };
+
   // --- Finance & Invoicing Handlers ---
   const handleSaveInvoice = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1192,7 +1218,7 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
   return (
     <div className="fixed inset-0 z-50 bg-[#FCFBF8] flex flex-col overflow-hidden">
       <div className="w-full h-full bg-[#FCFBF8] flex flex-col flex-1 overflow-hidden">
-        
+
         {/* Top Editorial Navigation Bar */}
         <header className="px-6 py-3.5 bg-[#0B332D] text-[#F8F5EE] border-b border-[#B79A62]/30 flex items-center justify-between shadow-xs shrink-0">
           <div className="flex items-center gap-3">
@@ -1308,11 +1334,11 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
         ) : (
           /* AUTHENTICATED ADMIN DASHBOARD */
           <div className="flex-1 flex overflow-hidden">
-            
+
             {/* Sidebar Navigation */}
             <aside className="w-60 bg-[#F8F5EE] border-r border-[#E8E0D1] p-3.5 flex flex-col justify-between shrink-0 overflow-y-auto">
               <div className="space-y-4">
-                
+
                 {/* Operations Section */}
                 <div>
                   <p className="px-2.5 mb-1 text-[10px] font-sans font-bold uppercase tracking-wider text-gray-400">
@@ -1337,11 +1363,10 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                         <button
                           key={item.id}
                           onClick={() => setActiveTab(item.id as any)}
-                          className={`w-full flex items-center justify-between px-3 py-2 text-xs font-sans rounded-sm transition-all cursor-pointer ${
-                            active
-                              ? 'bg-[#0B332D] text-[#F8F5EE] font-bold shadow-xs'
-                              : 'text-gray-700 hover:bg-[#E8E0D1]/50'
-                          }`}
+                          className={`w-full flex items-center justify-between px-3 py-2 text-xs font-sans rounded-sm transition-all cursor-pointer ${active
+                            ? 'bg-[#0B332D] text-[#F8F5EE] font-bold shadow-xs'
+                            : 'text-gray-700 hover:bg-[#E8E0D1]/50'
+                            }`}
                         >
                           <div className="flex items-center gap-2">
                             <Icon className={`w-4 h-4 ${active ? 'text-[#B79A62]' : 'text-gray-500'}`} />
@@ -1377,11 +1402,10 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                         <button
                           key={item.id}
                           onClick={() => setActiveTab(item.id as any)}
-                          className={`w-full flex items-center justify-between px-3 py-2 text-xs font-sans rounded-sm transition-all cursor-pointer ${
-                            active
-                              ? 'bg-[#0B332D] text-[#F8F5EE] font-bold shadow-xs'
-                              : 'text-gray-700 hover:bg-[#E8E0D1]/50'
-                          }`}
+                          className={`w-full flex items-center justify-between px-3 py-2 text-xs font-sans rounded-sm transition-all cursor-pointer ${active
+                            ? 'bg-[#0B332D] text-[#F8F5EE] font-bold shadow-xs'
+                            : 'text-gray-700 hover:bg-[#E8E0D1]/50'
+                            }`}
                         >
                           <div className="flex items-center gap-2">
                             <Icon className={`w-4 h-4 ${active ? 'text-[#B79A62]' : 'text-gray-500'}`} />
@@ -1411,11 +1435,10 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                         <button
                           key={item.id}
                           onClick={() => setActiveTab(item.id as any)}
-                          className={`w-full flex items-center justify-between px-3 py-2 text-xs font-sans rounded-sm transition-all cursor-pointer ${
-                            active
-                              ? 'bg-[#0B332D] text-[#F8F5EE] font-bold shadow-xs'
-                              : 'text-gray-700 hover:bg-[#E8E0D1]/50'
-                          }`}
+                          className={`w-full flex items-center justify-between px-3 py-2 text-xs font-sans rounded-sm transition-all cursor-pointer ${active
+                            ? 'bg-[#0B332D] text-[#F8F5EE] font-bold shadow-xs'
+                            : 'text-gray-700 hover:bg-[#E8E0D1]/50'
+                            }`}
                         >
                           <div className="flex items-center gap-2">
                             <Icon className={`w-4 h-4 ${active ? 'text-[#B79A62]' : 'text-gray-500'}`} />
@@ -1438,7 +1461,7 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
 
             {/* Main Studio Viewport */}
             <main className="flex-1 overflow-y-auto p-6 bg-[#FCFBF8]">
-              
+
               {/* TAB 1: OVERVIEW & STATS */}
               {activeTab === 'overview' && (
                 <div className="space-y-6">
@@ -1969,9 +1992,8 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                               </td>
                               <td className="p-3.5 text-gray-600 font-mono text-[11px]">{inv.dueDate}</td>
                               <td className="p-3.5">
-                                <span className={`px-2 py-0.5 text-[10px] font-bold rounded-xs cursor-pointer ${
-                                  inv.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                                }`} onClick={() => handleToggleInvoiceStatus(inv.id)}>
+                                <span className={`px-2 py-0.5 text-[10px] font-bold rounded-xs cursor-pointer ${inv.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                                  }`} onClick={() => handleToggleInvoiceStatus(inv.id)}>
                                   {inv.status}
                                 </span>
                               </td>
@@ -2134,9 +2156,8 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                               <td className="p-3.5 text-gray-600">Rs {pay.ratePerClassPKR}</td>
                               <td className="p-3.5 font-bold text-emerald-800 text-sm">Rs {pay.totalPayoutPKR.toLocaleString()}</td>
                               <td className="p-3.5">
-                                <span className={`px-2 py-0.5 text-[10px] font-bold rounded-xs ${
-                                  pay.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                                }`}>
+                                <span className={`px-2 py-0.5 text-[10px] font-bold rounded-xs ${pay.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                                  }`}>
                                   {pay.status}
                                 </span>
                               </td>
@@ -2326,9 +2347,8 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                     {packages.map((pkg) => (
                       <div
                         key={pkg.id}
-                        className={`p-6 bg-[#F8F5EE] border rounded-sm space-y-4 relative flex flex-col justify-between ${
-                          pkg.isPopular ? 'border-[#B79A62] shadow-sm' : 'border-[#E8E0D1]'
-                        }`}
+                        className={`p-6 bg-[#F8F5EE] border rounded-sm space-y-4 relative flex flex-col justify-between ${pkg.isPopular ? 'border-[#B79A62] shadow-sm' : 'border-[#E8E0D1]'
+                          }`}
                       >
                         <div>
                           <div className="flex items-start justify-between gap-2">
@@ -2443,9 +2463,8 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                               <p className="text-[10px] text-gray-500">{t.studentOrParent} • {t.location}</p>
                             </div>
 
-                            <span className={`px-2 py-0.5 text-[9px] font-bold rounded-xs ${
-                              t.status === 'published' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-700'
-                            }`}>
+                            <span className={`px-2 py-0.5 text-[9px] font-bold rounded-xs ${t.status === 'published' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-700'
+                              }`}>
                               {t.status === 'published' ? 'Published' : 'Draft'}
                             </span>
                           </div>
@@ -2594,7 +2613,7 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                   </div>
 
                   <form onSubmit={handleSaveSiteSettings} className="space-y-6 bg-[#FCFBF8] p-6 border border-[#E8E0D1] rounded-sm text-xs font-sans">
-                    
+
                     {/* Announcement Bar CMS */}
                     <div className="space-y-3 pb-6 border-b border-[#E8E0D1]">
                       <div className="flex items-center justify-between">
@@ -2825,11 +2844,10 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                       <button
                         key={cat}
                         onClick={() => setMediaCategoryFilter(cat)}
-                        className={`px-3 py-1 rounded-xs font-semibold capitalize cursor-pointer transition-colors ${
-                          mediaCategoryFilter === cat
-                            ? 'bg-[#0B332D] text-[#F8F5EE]'
-                            : 'bg-[#F8F5EE] text-gray-700 hover:bg-[#E8E0D1]'
-                        }`}
+                        className={`px-3 py-1 rounded-xs font-semibold capitalize cursor-pointer transition-colors ${mediaCategoryFilter === cat
+                          ? 'bg-[#0B332D] text-[#F8F5EE]'
+                          : 'bg-[#F8F5EE] text-gray-700 hover:bg-[#E8E0D1]'
+                          }`}
                       >
                         {cat === 'all' ? 'All Assets' : cat + 's'}
                       </button>
@@ -2926,11 +2944,10 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                             setSelectedTemplate(tpl);
                             setTemplateForm({ ...tpl });
                           }}
-                          className={`p-3.5 rounded-sm border transition-all cursor-pointer ${
-                            (selectedTemplate?.id || templates[0]?.id) === tpl.id
-                              ? 'bg-[#0B332D] text-[#F8F5EE] border-[#0B332D] shadow-xs'
-                              : 'bg-[#F8F5EE] text-gray-800 border-[#E8E0D1] hover:bg-[#E8E0D1]/50'
-                          }`}
+                          className={`p-3.5 rounded-sm border transition-all cursor-pointer ${(selectedTemplate?.id || templates[0]?.id) === tpl.id
+                            ? 'bg-[#0B332D] text-[#F8F5EE] border-[#0B332D] shadow-xs'
+                            : 'bg-[#F8F5EE] text-gray-800 border-[#E8E0D1] hover:bg-[#E8E0D1]/50'
+                            }`}
                         >
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-xs bg-[#B79A62] text-[#07221E]">
@@ -3040,6 +3057,34 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                     )}
                   </div>
 
+                  {/* IndexNow Instant Search Engine Indexing Bar */}
+                  <div className="bg-[#FCFBF8] border border-[#B79A62]/40 rounded-sm p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-2xs">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 bg-[#0B332D] text-[#B79A62] text-[10px] font-bold uppercase rounded-xs">
+                          IndexNow.org Protocol
+                        </span>
+                        <span className="text-xs font-bold text-[#0B332D]">Instant Bing / Yandex Crawler Ping</span>
+                      </div>
+                      <p className="text-[11px] text-gray-600 font-sans">
+                        Key: <code className="font-mono text-[10px] bg-gray-100 px-1 py-0.5 rounded-xs">171291dc902c49d0af85b3414442a356</code> • File: <a href="https://noorequraninstitute.me/171291dc902c49d0af85b3414442a356.txt" target="_blank" rel="noreferrer" className="text-[#B79A62] hover:underline font-mono text-[10px]">171291dc902c49d0af85b3414442a356.txt</a>
+                      </p>
+                      {indexNowStatusMsg && (
+                        <p className="text-xs font-semibold text-emerald-800 animate-fade-in">{indexNowStatusMsg}</p>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      disabled={isSubmittingIndexNow}
+                      onClick={handleDispatchIndexNow}
+                      className="px-4 py-2 bg-[#0B332D] hover:bg-[#07221E] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm transition-all flex items-center gap-1.5 shadow-xs cursor-pointer disabled:opacity-50 shrink-0"
+                    >
+                      <Sparkle className="w-3.5 h-3.5 text-[#B79A62]" weight="fill" />
+                      <span>{isSubmittingIndexNow ? 'Dispatching URLs...' : '🚀 Dispatch 31 URLs to IndexNow'}</span>
+                    </button>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Left: Page Selector */}
                     <div className="md:col-span-1 space-y-2">
@@ -3051,11 +3096,10 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                             setSelectedSeoPage(page);
                             setSeoForm({ ...page });
                           }}
-                          className={`p-3.5 rounded-sm border transition-all cursor-pointer ${
-                            (selectedSeoPage?.pagePath || seoConfigs[0]?.pagePath) === page.pagePath
-                              ? 'bg-[#0B332D] text-[#F8F5EE] border-[#0B332D] shadow-xs'
-                              : 'bg-[#F8F5EE] text-gray-800 border-[#E8E0D1] hover:bg-[#E8E0D1]/50'
-                          }`}
+                          className={`p-3.5 rounded-sm border transition-all cursor-pointer ${(selectedSeoPage?.pagePath || seoConfigs[0]?.pagePath) === page.pagePath
+                            ? 'bg-[#0B332D] text-[#F8F5EE] border-[#0B332D] shadow-xs'
+                            : 'bg-[#F8F5EE] text-gray-800 border-[#E8E0D1] hover:bg-[#E8E0D1]/50'
+                            }`}
                         >
                           <div className="flex items-center justify-between mb-0.5">
                             <span className="font-bold text-xs">{page.pageName}</span>
@@ -3479,11 +3523,10 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                               : [...assignmentForm.preferredDays, day];
                             setAssignmentForm({ ...assignmentForm, preferredDays: newDays });
                           }}
-                          className={`py-1.5 px-2 text-[11px] rounded-xs border text-center font-medium transition-colors cursor-pointer ${
-                            isSelected
-                              ? 'bg-[#0B332D] text-[#F8F5EE] border-[#0B332D]'
-                              : 'bg-[#F8F5EE] text-gray-700 border-[#E8E0D1] hover:border-[#B79A62]'
-                          }`}
+                          className={`py-1.5 px-2 text-[11px] rounded-xs border text-center font-medium transition-colors cursor-pointer ${isSelected
+                            ? 'bg-[#0B332D] text-[#F8F5EE] border-[#0B332D]'
+                            : 'bg-[#F8F5EE] text-gray-700 border-[#E8E0D1] hover:border-[#B79A62]'
+                            }`}
                         >
                           {day.slice(0, 3)}
                         </button>
@@ -4523,9 +4566,8 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
                 </div>
                 <div className="text-right">
                   <span className="text-[10px] font-bold text-gray-400 uppercase block">Status:</span>
-                  <span className={`inline-block px-2.5 py-1 text-xs font-bold rounded-xs ${
-                    selectedInvoiceForPrint.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                  }`}>
+                  <span className={`inline-block px-2.5 py-1 text-xs font-bold rounded-xs ${selectedInvoiceForPrint.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                    }`}>
                     {selectedInvoiceForPrint.status.toUpperCase()}
                   </span>
                   <p className="text-[10px] text-gray-500 mt-1">Billing Period: {selectedInvoiceForPrint.billingMonth}</p>

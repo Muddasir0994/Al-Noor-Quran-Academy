@@ -859,6 +859,74 @@ app.post('/api/admin/assessments', requireAdmin, (req, res) => {
   res.status(201).json({ success: true, assessment });
 });
 
+// IndexNow Instant Search Engine Indexing Endpoint
+app.post('/api/indexnow/submit', async (req, res) => {
+  const DEFAULT_URL_LIST = [
+    'https://noorequraninstitute.me/',
+    'https://noorequraninstitute.me/courses',
+    'https://noorequraninstitute.me/online-quran-classes',
+    'https://noorequraninstitute.me/noorani-qaida',
+    'https://noorequraninstitute.me/quran-reading-nazra',
+    'https://noorequraninstitute.me/quran-with-tajweed',
+    'https://noorequraninstitute.me/quran-memorization-hifz',
+    'https://noorequraninstitute.me/islamic-studies',
+    'https://noorequraninstitute.me/teachers',
+    'https://noorequraninstitute.me/faculty',
+    'https://noorequraninstitute.me/tutors',
+    'https://noorequraninstitute.me/packages',
+    'https://noorequraninstitute.me/pricing',
+    'https://noorequraninstitute.me/how-it-works',
+    'https://noorequraninstitute.me/methodology',
+    'https://noorequraninstitute.me/about',
+    'https://noorequraninstitute.me/about-us',
+    'https://noorequraninstitute.me/blog',
+    'https://noorequraninstitute.me/contact',
+    'https://noorequraninstitute.me/faq',
+    'https://noorequraninstitute.me/kids-program',
+    'https://noorequraninstitute.me/quran-classes-for-kids',
+    'https://noorequraninstitute.me/adults-program',
+    'https://noorequraninstitute.me/quran-classes-for-adults',
+    'https://noorequraninstitute.me/female-tutors',
+    'https://noorequraninstitute.me/female-quran-teacher',
+    'https://noorequraninstitute.me/online-quran-classes-uk',
+    'https://noorequraninstitute.me/online-quran-classes-usa',
+    'https://noorequraninstitute.me/online-quran-classes-canada',
+    'https://noorequraninstitute.me/online-quran-classes-australia',
+    'https://noorequraninstitute.me/online-quran-classes-pakistan'
+  ];
+
+  const payload = {
+    host: 'noorequraninstitute.me',
+    key: '171291dc902c49d0af85b3414442a356',
+    keyLocation: 'https://noorequraninstitute.me/171291dc902c49d0af85b3414442a356.txt',
+    urlList: req.body.urlList && Array.isArray(req.body.urlList) && req.body.urlList.length > 0 ? req.body.urlList : DEFAULT_URL_LIST
+  };
+
+  try {
+    const fetchRes = await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    res.json({
+      success: fetchRes.ok || fetchRes.status === 200 || fetchRes.status === 202,
+      statusCode: fetchRes.status,
+      message: fetchRes.status === 200
+        ? `Successfully submitted ${payload.urlList.length} URLs to IndexNow.org!`
+        : `IndexNow responded with status ${fetchRes.status}`,
+      submittedUrlsCount: payload.urlList.length
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      error: err.message || 'Failed to dispatch URLs to IndexNow'
+    });
+  }
+});
+
 // Testimonials Admin
 app.post('/api/admin/testimonials', requireAdmin, (req, res) => {
   const testimonial = dataStore.addTestimonial(req.body);
