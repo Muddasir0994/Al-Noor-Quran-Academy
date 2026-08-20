@@ -801,6 +801,28 @@ app.patch('/api/admin/tutors/:id', requireAdmin, (req, res) => {
   res.json({ success: true, tutor });
 });
 
+// Courses Management
+app.get('/api/admin/courses', requireAdmin, (req, res) => {
+  res.json({ success: true, courses: dataStore.getCourses() });
+});
+
+app.post('/api/admin/courses', requireAdmin, (req, res) => {
+  const course = dataStore.addCourse(req.body);
+  res.status(201).json({ success: true, course });
+});
+
+app.put('/api/admin/courses/:id', requireAdmin, (req, res) => {
+  const course = dataStore.updateCourse(req.params.id, req.body);
+  if (!course) return res.status(404).json({ error: 'Course not found' });
+  res.json({ success: true, course });
+});
+
+app.delete('/api/admin/courses/:id', requireAdmin, (req, res) => {
+  const deleted = dataStore.deleteCourse(req.params.id);
+  if (!deleted) return res.status(404).json({ error: 'Course not found' });
+  res.json({ success: true, message: 'Course deleted successfully' });
+});
+
 // Classes & Schedules
 app.get('/api/admin/classes', requireAdmin, (req, res) => {
   res.json({ success: true, classes: dataStore.getClasses() });

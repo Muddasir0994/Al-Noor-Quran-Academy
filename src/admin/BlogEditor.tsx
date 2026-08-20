@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BlogPost } from '../types';
 import { getAllBlogPosts, saveBlogPost, deleteBlogPost } from '../lib/firestoreService';
+import { ImageCropModal } from '../components/ImageCropModal';
 import {
   Plus,
   PencilSimple,
@@ -26,7 +27,8 @@ import {
   Code,
   EyeSlash,
   BookOpen,
-  ArrowCounterClockwise
+  Crop,
+  X
 } from '@phosphor-icons/react';
 
 const CATEGORIES: BlogPost['category'][] = [
@@ -61,14 +63,14 @@ class BlogEditorErrorBoundary extends React.Component<{ children: React.ReactNod
   render() {
     if (this.state.hasError) {
       return (
-        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-red-900 space-y-4 max-w-xl mx-auto my-8 text-center">
-          <h3 className="font-heading font-bold text-lg text-red-700">Editor Encountered an Issue</h3>
-          <p className="text-xs text-red-600">
+        <div className="bg-red-50 border border-red-200 rounded-sm p-6 text-red-900 space-y-4 max-w-xl mx-auto my-8 text-center">
+          <h3 className="font-editorial font-bold text-lg text-red-700">Editor Encountered an Issue</h3>
+          <p className="text-xs text-red-600 font-sans">
             {this.state.error?.message || 'An unexpected rendering error occurred.'}
           </p>
           <button
             onClick={() => this.setState({ hasError: false, error: null })}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-sm text-xs font-bold transition-colors cursor-pointer font-sans"
           >
             Reload Editor
           </button>
@@ -85,8 +87,11 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [uploadingImage, setUploadingImage] = useState(false);
   const [editorMode, setEditorMode] = useState<'visual' | 'code' | 'preview'>('visual');
+
+  // Cropper Modal State
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false);
+  const [rawImageForCrop, setRawImageForCrop] = useState<string>('');
 
   // Form State
   const [currentId, setCurrentId] = useState<string>('');
@@ -97,7 +102,7 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
   const [featuredImage, setFeaturedImage] = useState('');
   const [content, setContent] = useState('');
   const [tagsInput, setTagsInput] = useState('');
-  const [author, setAuthor] = useState('Noor-e-Quran Institute');
+  const [author, setAuthor] = useState('Noor Al-Quran Institute');
   const [readTime, setReadTime] = useState('5 min read');
   const [published, setPublished] = useState(true);
 
@@ -138,7 +143,7 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     setFeaturedImage('');
     setContent('');
     setTagsInput('');
-    setAuthor('Noor-e-Quran Institute');
+    setAuthor('Noor Al-Quran Institute');
     setReadTime('5 min read');
     setPublished(true);
     setEditorMode('visual');
@@ -155,7 +160,7 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     setFeaturedImage(post.featuredImage || '');
     setContent(post.content || '');
     setTagsInput(post.tags ? post.tags.join(', ') : '');
-    setAuthor(post.author || 'Noor-e-Quran Institute');
+    setAuthor(post.author || 'Noor Al-Quran Institute');
     setReadTime(post.readTime || '5 min read');
     setPublished(post.published ?? true);
     setEditorMode('visual');
@@ -179,44 +184,29 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     }
   };
 
-  // Image Upload to backend / Cloudinary
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Image Upload -> Opens Crop Modal
+  const handleImageFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploadingImage(true);
-    setStatusMessage(null);
+    if (file.size > 8 * 1024 * 1024) {
+      setStatusMessage({ type: 'error', text: 'Image file must be under 8MB.' });
+      return;
+    }
 
     const reader = new FileReader();
-    reader.onload = async () => {
+    reader.onload = () => {
       const base64String = reader.result as string;
-      try {
-        const token = localStorage.getItem('alnoor_admin_token') || '';
-        const res = await fetch('/api/upload-image', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({ imageBase64: base64String })
-        });
-
-        const data = await res.json();
-        if (data.success && data.imageUrl) {
-          setFeaturedImage(data.imageUrl);
-          setStatusMessage({ type: 'success', text: 'Image uploaded successfully!' });
-        } else {
-          setFeaturedImage(base64String);
-          setStatusMessage({ type: 'success', text: 'Image preview loaded (Base64).' });
-        }
-      } catch {
-        setFeaturedImage(base64String);
-        setStatusMessage({ type: 'success', text: 'Image preview loaded (Local).' });
-      } finally {
-        setUploadingImage(false);
-      }
+      setRawImageForCrop(base64String);
+      setIsCropModalOpen(true);
     };
     reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleCropFinished = (croppedBase64: string) => {
+    setFeaturedImage(croppedBase64);
+    setStatusMessage({ type: 'success', text: 'Banner image framed and ready!' });
   };
 
   // Execute rich formatting commands
@@ -257,7 +247,7 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
           insertion = `<a href="${value || 'https://noorequraninstitute.me'}">${selected || 'link text'}</a>`;
           break;
         case 'insertImage':
-          insertion = `<img src="${value || 'https://res.cloudinary.com/demo/image/upload/sample.jpg'}" alt="Article Illustration" class="rounded-xl shadow-md my-4" />\n`;
+          insertion = `<img src="${value || 'https://noorequraninstitute.me/images/hero-banner.webp'}" alt="Article Illustration" class="rounded-sm shadow-xs my-4" />\n`;
           break;
         default:
           insertion = selected;
@@ -273,13 +263,8 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
   };
 
   const insertLinkPrompt = () => {
-    const url = prompt('Enter destination URL:', 'https://noorequraninstitute.me');
+    const url = prompt('Enter destination URL:', 'https://noorequraninstitute.me/courses');
     if (url) executeCommand('createLink', url);
-  };
-
-  const insertImagePrompt = () => {
-    const url = prompt('Enter Image URL (e.g. Cloudinary HTTPS link):', featuredImage || 'https://');
-    if (url) executeCommand('insertImage', url);
   };
 
   const insertQuranBox = () => {
@@ -287,9 +272,9 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     const translation = prompt('Enter English / Urdu Translation:', 'In the name of Allah, the Entirely Merciful, the Especially Merciful.');
     if (ayah) {
       const boxHtml = `
-<div class="my-6 p-5 rounded-2xl bg-emerald-900/90 text-white border border-[#D4A72C]/50 shadow-md">
-  <p class="font-arabic text-xl sm:text-2xl text-[#F3C64D] font-bold text-center mb-3 dir-rtl">${ayah}</p>
-  <p class="text-xs sm:text-sm text-emerald-100 text-center italic">"${translation || ''}"</p>
+<div class="my-6 p-6 rounded-sm bg-[#0B332D] text-[#F8F5EE] border border-[#B79A62]/40 shadow-xs">
+  <p class="font-arabic text-xl sm:text-2xl text-[#B79A62] font-bold text-center mb-3 dir-rtl">${ayah}</p>
+  <p class="text-xs sm:text-sm text-[#E8E0D1]/85 text-center italic">"${translation || ''}"</p>
 </div>\n`;
       if (editorMode === 'visual' && contentEditableRef.current) {
         contentEditableRef.current.focus();
@@ -304,49 +289,43 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
-      setStatusMessage({ type: 'error', text: 'Please provide a title.' });
+      setStatusMessage({ type: 'error', text: 'Article title is required.' });
       return;
     }
     if (!slug.trim()) {
-      setStatusMessage({ type: 'error', text: 'Please provide a URL slug.' });
+      setStatusMessage({ type: 'error', text: 'URL slug is required.' });
       return;
     }
 
     setSaving(true);
     setStatusMessage(null);
 
-    const tags = tagsInput
+    const tagsArray = tagsInput
       .split(',')
       .map(t => t.trim())
       .filter(Boolean);
 
-    // Calculate approximate read time if not set
-    const wordCount = content.replace(/<[^>]*>/g, '').split(/\s+/).length;
-    const computedReadTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
-
-    const blogPost: BlogPost = {
-      id: currentId || 'post-' + Date.now(),
+    const postPayload: BlogPost = {
+      id: currentId,
       title: title.trim(),
-      slug: slug.trim(),
+      slug: slug.trim().toLowerCase(),
       category,
       metaDescription: metaDescription.trim(),
       featuredImage: featuredImage.trim(),
-      content,
-      tags,
-      author: author.trim() || 'Noor-e-Quran Institute',
-      readTime: readTime || computedReadTime,
+      content: content.trim(),
+      tags: tagsArray,
+      author: author.trim() || 'Noor Al-Quran Institute',
+      readTime: readTime.trim() || '5 min read',
       published,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      createdAt: new Date().toISOString().split('T')[0],
+      updatedAt: new Date().toISOString().split('T')[0]
     };
 
     try {
-      await saveBlogPost(blogPost);
-      setStatusMessage({ type: 'success', text: 'Blog post published successfully!' });
+      await saveBlogPost(postPayload);
+      setStatusMessage({ type: 'success', text: 'Article published & saved successfully!' });
       await fetchPosts();
-      setTimeout(() => {
-        setIsEditing(false);
-      }, 1000);
+      setIsEditing(false);
     } catch (err) {
       console.error('Save failed:', err);
       setStatusMessage({ type: 'error', text: 'Failed to save blog post. Check console.' });
@@ -372,9 +351,9 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
       {/* Alert Status */}
       {statusMessage && (
         <div
-          className={`p-4 rounded-xl text-xs font-semibold flex items-center justify-between ${
+          className={`p-4 rounded-sm text-xs font-sans font-semibold flex items-center justify-between ${
             statusMessage.type === 'success'
-              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+              ? 'bg-[#F8F5EE] text-[#0B332D] border border-[#B79A62]'
               : 'bg-red-50 text-red-800 border border-red-200'
           }`}
         >
@@ -385,24 +364,24 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
 
       {/* Editor View */}
       {isEditing ? (
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-6">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div className="bg-[#FCFBF8] p-6 sm:p-8 rounded-sm border border-[#E8E0D1] shadow-xs space-y-6">
+          <div className="flex items-center justify-between border-b border-[#E8E0D1] pb-4">
             <button
               onClick={() => setIsEditing(false)}
-              className="flex items-center gap-1.5 text-gray-600 hover:text-[#064E3B] text-xs font-bold transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-gray-600 hover:text-[#0B332D] text-xs font-sans font-bold transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Blog List
+              <span>Back to Article List</span>
             </button>
             <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-700">
+              <label className="flex items-center gap-2 cursor-pointer text-xs font-sans font-bold text-gray-700">
                 <input
                   type="checkbox"
                   checked={published}
                   onChange={e => setPublished(e.target.checked)}
-                  className="rounded text-[#064E3B] focus:ring-[#064E3B]"
+                  className="rounded-xs text-[#0B332D] focus:ring-[#B79A62]"
                 />
-                <span>Published on Website</span>
+                <span>Publish on Website</span>
               </label>
             </div>
           </div>
@@ -411,7 +390,7 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
             {/* Title & Slug */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
+                <label className="block text-xs font-sans font-bold text-gray-700 mb-1">
                   Article Title *
                 </label>
                 <input
@@ -420,12 +399,12 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
                   placeholder="e.g. 5 Simple Tajweed Rules Every Parent Should Teach"
                   value={title}
                   onChange={e => handleTitleChange(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-[#064E3B]"
+                  className="w-full px-3 py-2 border border-[#E8E0D1] rounded-sm text-xs sm:text-sm font-sans focus:outline-none focus:border-[#0B332D] bg-[#F8F5EE]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
+                <label className="block text-xs font-sans font-bold text-gray-700 mb-1">
                   URL Slug (/blog/slug) *
                 </label>
                 <input
@@ -434,7 +413,7 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
                   placeholder="5-simple-tajweed-rules"
                   value={slug}
                   onChange={e => setSlug(generateSlug(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-[#064E3B] font-mono text-gray-600"
+                  className="w-full px-3 py-2 border border-[#E8E0D1] rounded-sm text-xs sm:text-sm font-mono text-gray-600 focus:outline-none focus:border-[#0B332D] bg-[#F8F5EE]"
                 />
               </div>
             </div>
@@ -442,14 +421,13 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
             {/* Category, Author, Read Time */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
+                <label className="block text-xs font-sans font-bold text-gray-700 mb-1">
                   Category
                 </label>
                 <select
                   value={category}
                   onChange={e => setCategory(e.target.value as BlogPost['category'])}
-                  aria-label="Article Category"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-[#064E3B]"
+                  className="w-full px-3 py-2 border border-[#E8E0D1] rounded-sm text-xs sm:text-sm font-sans focus:outline-none focus:border-[#0B332D] bg-[#F8F5EE]"
                 >
                   {CATEGORIES.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
@@ -458,27 +436,27 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Author Name
+                <label className="block text-xs font-sans font-bold text-gray-700 mb-1">
+                  Author Name / Scholar
                 </label>
                 <input
                   type="text"
                   value={author}
                   onChange={e => setAuthor(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-[#064E3B]"
+                  className="w-full px-3 py-2 border border-[#E8E0D1] rounded-sm text-xs sm:text-sm font-sans focus:outline-none focus:border-[#0B332D] bg-[#F8F5EE]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
+                <label className="block text-xs font-sans font-bold text-gray-700 mb-1">
                   Read Time
                 </label>
                 <input
                   type="text"
                   value={readTime}
                   onChange={e => setReadTime(e.target.value)}
-                  placeholder="e.g. 5 min read"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-[#064E3B]"
+                  placeholder="e.g. 6 min read"
+                  className="w-full px-3 py-2 border border-[#E8E0D1] rounded-sm text-xs sm:text-sm font-sans focus:outline-none focus:border-[#0B332D] bg-[#F8F5EE]"
                 />
               </div>
             </div>
@@ -486,10 +464,10 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
             {/* Meta Description (SEO) */}
             <div>
               <div className="flex justify-between items-center mb-1">
-                <label className="block text-xs font-bold text-gray-700">
-                  SEO Meta Description (For Google/Bing snippet)
+                <label className="block text-xs font-sans font-bold text-gray-700">
+                  SEO Meta Description (Google / Social Snippet)
                 </label>
-                <span className={`text-[10px] ${metaDescription.length > 160 ? 'text-red-500 font-bold' : 'text-gray-400'}`}>
+                <span className={`text-[10px] font-sans ${metaDescription.length > 160 ? 'text-red-500 font-bold' : 'text-gray-400'}`}>
                   {metaDescription.length} / 160 characters
                 </span>
               </div>
@@ -497,50 +475,92 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
                 rows={2}
                 value={metaDescription}
                 onChange={e => setMetaDescription(e.target.value)}
-                placeholder="A compelling 1-2 sentence summary of this article that will appear on Google and Bing search results..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs focus:outline-none focus:border-[#064E3B]"
+                placeholder="A compelling 1-2 sentence summary of this article that will appear on search engine snippets..."
+                className="w-full px-3 py-2 border border-[#E8E0D1] rounded-sm text-xs font-sans focus:outline-none focus:border-[#0B332D] bg-[#F8F5EE]"
               />
             </div>
 
-            {/* Featured Image URL & Upload */}
+            {/* Featured Image with Live Preview + Crop Tool */}
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">
+              <label className="block text-xs font-sans font-bold text-gray-700 mb-1">
                 Featured Banner Image
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-                <div className="flex items-center gap-2">
+              
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
                   <input
                     type="text"
                     value={featuredImage}
                     onChange={e => setFeaturedImage(e.target.value)}
-                    placeholder="https://res.cloudinary.com/... or image URL"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-xl text-xs focus:outline-none focus:border-[#064E3B]"
+                    placeholder="https://... or upload below"
+                    className="w-full px-3 py-2 border border-[#E8E0D1] rounded-sm text-xs font-sans focus:outline-none focus:border-[#0B332D] bg-[#F8F5EE]"
                   />
+                  
+                  <div className="flex items-center gap-2">
+                    <label className="flex items-center gap-1.5 px-3 py-2 bg-[#F8F5EE] hover:bg-[#E8E0D1]/60 text-[#0B332D] border border-[#E8E0D1] rounded-sm text-xs font-sans font-bold cursor-pointer transition-colors">
+                      <UploadSimple className="w-4 h-4 text-[#B79A62]" />
+                      <span>Upload &amp; Frame</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageFileSelect}
+                        className="hidden"
+                      />
+                    </label>
+
+                    {featuredImage && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setRawImageForCrop(featuredImage);
+                          setIsCropModalOpen(true);
+                        }}
+                        className="flex items-center gap-1 px-3 py-2 bg-[#0B332D] text-[#F8F5EE] rounded-sm text-xs font-sans font-semibold hover:bg-[#07221E] cursor-pointer"
+                      >
+                        <Crop className="w-3.5 h-3.5 text-[#B79A62]" />
+                        <span>Adjust Frame</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <label className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold cursor-pointer transition-colors">
-                    <UploadSimple className="w-4 h-4" />
-                    <span>{uploadingImage ? 'Uploading...' : 'Upload Image'}</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      disabled={uploadingImage}
-                      className="hidden"
+
+                {/* Live Banner Preview Box */}
+                {featuredImage && (
+                  <div className="relative aspect-[16/9] max-w-md overflow-hidden rounded-sm border border-[#E8E0D1] bg-[#12201D]">
+                    <img
+                      src={featuredImage}
+                      alt="Banner preview"
+                      className="w-full h-full object-cover"
                     />
-                  </label>
-                  {featuredImage && (
-                    <div className="w-12 h-8 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 shrink-0">
-                      <img src={featuredImage} alt="Preview" className="w-full h-full object-cover" />
+                    <div className="absolute top-2 right-2 flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setRawImageForCrop(featuredImage);
+                          setIsCropModalOpen(true);
+                        }}
+                        className="px-2 py-1 bg-[#0B332D]/90 text-[#B79A62] text-[10px] font-sans font-bold uppercase rounded-xs backdrop-blur-xs flex items-center gap-1 cursor-pointer"
+                      >
+                        <Crop className="w-3 h-3" />
+                        <span>Crop</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setFeaturedImage('')}
+                        className="p-1 bg-red-600/90 text-white rounded-xs backdrop-blur-xs hover:bg-red-700 cursor-pointer"
+                        title="Remove image"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Tags */}
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">
+              <label className="block text-xs font-sans font-bold text-gray-700 mb-1">
                 Tags (Comma separated)
               </label>
               <input
@@ -548,337 +568,307 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
                 value={tagsInput}
                 onChange={e => setTagsInput(e.target.value)}
                 placeholder="Tajweed, Quran for Kids, Online Tutor, Hifz"
-                className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs focus:outline-none focus:border-[#064E3B]"
+                className="w-full px-3 py-2 border border-[#E8E0D1] rounded-sm text-xs font-sans focus:outline-none focus:border-[#0B332D] bg-[#F8F5EE]"
               />
             </div>
 
-            {/* Rich Text Editor (React 19 Resilient) */}
-            <div className="space-y-2">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <label className="block text-xs font-bold text-gray-700">
-                  Article Body Content *
+            {/* Rich Editor Canvas with Mode Tabs */}
+            <div className="space-y-2 pt-2">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-sans font-bold text-gray-700">
+                  Article Content *
                 </label>
-                <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
-                  <button
-                    type="button"
-                    onClick={() => setEditorMode('visual')}
-                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                      editorMode === 'visual' ? 'bg-white text-[#064E3B] shadow-xs' : 'text-gray-600 hover:text-gray-900'
-                    }`}
-                  >
-                    Visual Editor
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setEditorMode('code')}
-                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                      editorMode === 'code' ? 'bg-white text-[#064E3B] shadow-xs' : 'text-gray-600 hover:text-gray-900'
-                    }`}
-                  >
-                    HTML / Markdown
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setEditorMode('preview')}
-                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
-                      editorMode === 'preview' ? 'bg-[#064E3B] text-[#F3C64D] shadow-xs' : 'text-gray-600 hover:text-gray-900'
-                    }`}
-                  >
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>Live Preview</span>
-                  </button>
+                <div className="flex items-center gap-1 bg-[#F8F5EE] p-0.5 rounded-sm border border-[#E8E0D1]">
+                  {(['visual', 'code', 'preview'] as const).map(m => (
+                    <button
+                      key={m}
+                      type="button"
+                      onClick={() => setEditorMode(m)}
+                      className={`px-2.5 py-1 text-xs font-sans rounded-xs transition-colors cursor-pointer ${
+                        editorMode === m
+                          ? 'bg-[#0B332D] text-[#F8F5EE] font-bold'
+                          : 'text-gray-600 hover:text-[#0B332D]'
+                      }`}
+                    >
+                      {m === 'visual' ? 'Visual Editor' : m === 'code' ? 'HTML / Markdown' : 'Live Preview'}
+                    </button>
+                  ))}
                 </div>
               </div>
 
               {/* Toolbar */}
               {editorMode !== 'preview' && (
-                <div className="flex flex-wrap items-center gap-1.5 p-2 bg-gray-50 border border-gray-300 rounded-t-xl border-b-0 text-gray-700 text-xs">
+                <div className="flex flex-wrap items-center gap-1 p-2 bg-[#F8F5EE] border border-[#E8E0D1] rounded-t-sm text-gray-700">
                   <button
                     type="button"
                     onClick={() => executeCommand('bold')}
-                    title="Bold (Ctrl+B)"
-                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                    className="p-1.5 hover:bg-[#E8E0D1]/60 rounded-xs cursor-pointer"
+                    title="Bold"
                   >
-                    <TextB className="w-4 h-4" weight="bold" />
+                    <TextB className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
                     onClick={() => executeCommand('italic')}
-                    title="Italic (Ctrl+I)"
-                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                    className="p-1.5 hover:bg-[#E8E0D1]/60 rounded-xs cursor-pointer"
+                    title="Italic"
                   >
                     <TextItalic className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
                     onClick={() => executeCommand('underline')}
-                    title="Underline (Ctrl+U)"
-                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                    className="p-1.5 hover:bg-[#E8E0D1]/60 rounded-xs cursor-pointer"
+                    title="Underline"
                   >
                     <TextUnderline className="w-4 h-4" />
                   </button>
-                  <span className="text-gray-300">|</span>
+                  
+                  <span className="w-[1px] h-4 bg-[#E8E0D1] mx-1" />
+
                   <button
                     type="button"
                     onClick={() => executeCommand('formatBlock', 'h2')}
+                    className="p-1.5 hover:bg-[#E8E0D1]/60 rounded-xs cursor-pointer"
                     title="Heading 2"
-                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
                   >
                     <TextHTwo className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
                     onClick={() => executeCommand('formatBlock', 'h3')}
+                    className="p-1.5 hover:bg-[#E8E0D1]/60 rounded-xs cursor-pointer"
                     title="Heading 3"
-                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
                   >
                     <TextHThree className="w-4 h-4" />
                   </button>
-                  <span className="text-gray-300">|</span>
+
+                  <span className="w-[1px] h-4 bg-[#E8E0D1] mx-1" />
+
                   <button
                     type="button"
                     onClick={() => executeCommand('insertUnorderedList')}
-                    title="Bulleted List"
-                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                    className="p-1.5 hover:bg-[#E8E0D1]/60 rounded-xs cursor-pointer"
+                    title="Bullet List"
                   >
                     <ListBullets className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
                     onClick={() => executeCommand('insertOrderedList')}
+                    className="p-1.5 hover:bg-[#E8E0D1]/60 rounded-xs cursor-pointer"
                     title="Numbered List"
-                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
                   >
                     <ListNumbers className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
                     onClick={() => executeCommand('formatBlock', 'blockquote')}
-                    title="Blockquote"
-                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                    className="p-1.5 hover:bg-[#E8E0D1]/60 rounded-xs cursor-pointer"
+                    title="Quote"
                   >
                     <Quotes className="w-4 h-4" />
                   </button>
-                  <span className="text-gray-300">|</span>
+
+                  <span className="w-[1px] h-4 bg-[#E8E0D1] mx-1" />
+
                   <button
                     type="button"
                     onClick={insertLinkPrompt}
+                    className="p-1.5 hover:bg-[#E8E0D1]/60 rounded-xs cursor-pointer"
                     title="Insert Link"
-                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
                   >
                     <LinkSimple className="w-4 h-4" />
                   </button>
-                  <button
-                    type="button"
-                    onClick={insertImagePrompt}
-                    title="Insert Image"
-                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
-                  >
-                    <ImageIcon className="w-4 h-4" />
-                  </button>
+                  
                   <button
                     type="button"
                     onClick={insertQuranBox}
-                    title="Insert Quran Ayah / Arabic Box"
-                    className="px-2 py-1 bg-emerald-100 hover:bg-emerald-200 text-[#064E3B] rounded-lg font-bold flex items-center gap-1 transition-colors cursor-pointer ml-auto"
+                    className="px-2 py-1 bg-[#0B332D] text-[#B79A62] text-[10px] font-sans font-bold uppercase rounded-xs hover:bg-[#07221E] cursor-pointer ml-auto"
+                    title="Insert Arabic Quran Verse Card"
                   >
-                    <BookOpen className="w-3.5 h-3.5" />
-                    <span>+ Arabic Ayah Box</span>
+                    + Arabic Ayah Card
                   </button>
                 </div>
               )}
 
-              {/* Editor Surface */}
-              <div className="bg-white rounded-b-xl border border-gray-300 overflow-hidden min-h-[320px] relative">
-                {editorMode === 'visual' && (
+              {/* Visual Editable */}
+              {editorMode === 'visual' && (
+                <div
+                  ref={contentEditableRef}
+                  contentEditable
+                  onInput={e => setContent(e.currentTarget.innerHTML)}
+                  className="w-full min-h-[360px] p-4 bg-[#FCFBF8] border border-t-0 border-[#E8E0D1] rounded-b-sm focus:outline-none text-xs sm:text-sm font-sans leading-relaxed prose prose-sm max-w-none"
+                  style={{ minHeight: '360px' }}
+                />
+              )}
+
+              {/* Code / Markdown View */}
+              {editorMode === 'code' && (
+                <textarea
+                  ref={textareaRef}
+                  rows={14}
+                  value={content}
+                  onChange={e => setContent(e.target.value)}
+                  className="w-full p-4 bg-[#12201D] text-[#E8E0D1] font-mono text-xs border border-t-0 border-[#E8E0D1] rounded-b-sm focus:outline-none"
+                />
+              )}
+
+              {/* Live Preview View */}
+              {editorMode === 'preview' && (
+                <div className="p-6 bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm min-h-[360px] space-y-4">
+                  <h2 className="font-editorial text-2xl text-[#0B332D] font-bold">{title || 'Untitled Article'}</h2>
                   <div
-                    ref={contentEditableRef}
-                    contentEditable
-                    onInput={(e) => setContent(e.currentTarget.innerHTML)}
-                    className="p-4 outline-none min-h-[320px] max-h-[600px] overflow-y-auto prose prose-emerald prose-sm sm:prose-base max-w-none prose-headings:text-[#064E3B] prose-headings:font-heading prose-headings:font-bold"
-                    style={{ whiteSpace: 'pre-wrap' }}
+                    dangerouslySetInnerHTML={{ __html: content || '<p className="text-gray-400 italic">No content yet...</p>' }}
+                    className="prose max-w-none text-xs sm:text-sm font-sans leading-relaxed"
                   />
-                )}
-
-                {editorMode === 'code' && (
-                  <textarea
-                    ref={textareaRef}
-                    value={content}
-                    onChange={e => setContent(e.target.value)}
-                    placeholder="Write article in HTML or markdown format..."
-                    rows={16}
-                    className="w-full p-4 font-mono text-xs text-gray-800 outline-none resize-y min-h-[320px] bg-gray-50/50"
-                  />
-                )}
-
-                {editorMode === 'preview' && (
-                  <div className="p-6 min-h-[320px] max-h-[600px] overflow-y-auto bg-[#FAFAF7]">
-                    <div
-                      className="prose prose-emerald prose-sm sm:prose-base max-w-none
-                        prose-headings:text-[#064E3B] prose-headings:font-heading prose-headings:font-extrabold
-                        prose-p:text-gray-700 prose-p:leading-relaxed
-                        prose-a:text-[#064E3B] prose-a:font-semibold prose-a:underline
-                        prose-img:rounded-xl prose-img:shadow-md
-                        prose-strong:text-[#064E3B]
-                        prose-blockquote:border-l-[#D4A72C] prose-blockquote:bg-emerald-50/50 prose-blockquote:rounded-r-xl prose-blockquote:py-1"
-                      dangerouslySetInnerHTML={{ __html: content || '<p className="text-gray-400 italic">No content written yet. Switch to Visual Editor to write...</p>' }}
-                    />
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+            {/* Bottom Actions */}
+            <div className="pt-4 border-t border-[#E8E0D1] flex items-center justify-between">
               <button
                 type="button"
                 onClick={() => setIsEditing(false)}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 transition-all cursor-pointer"
+                className="px-4 py-2 text-xs font-sans font-semibold text-gray-600 hover:text-gray-900 cursor-pointer"
               >
                 Cancel
               </button>
+
               <button
                 type="submit"
                 disabled={saving}
-                className="px-6 py-2.5 rounded-xl text-xs font-bold bg-[#064E3B] text-[#F3C64D] hover:bg-[#043629] active:scale-95 transition-all shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                className="px-6 py-2.5 bg-[#0B332D] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
               >
-                <FloppyDisk className="w-4 h-4" />
-                <span>{saving ? 'Saving Post...' : 'Save & Publish Post'}</span>
+                <FloppyDisk className="w-4 h-4 text-[#B79A62]" />
+                <span>{saving ? 'Publishing...' : 'Save & Publish Article'}</span>
               </button>
             </div>
+
           </form>
         </div>
       ) : (
-        /* Blog Posts Table / Management */
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        /* Posts Table & Directory */
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#FCFBF8] p-4 rounded-sm border border-[#E8E0D1]">
             <div>
-              <h2 className="text-lg font-heading font-extrabold text-[#064E3B]">
-                Islamic Blog & Article CMS
-              </h2>
-              <p className="text-xs text-gray-500">
-                Publish high-ranking SEO articles, Tajweed guides, and parenting advice for Noor-e-Quran Institute.
-              </p>
+              <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">Islamic Blog &amp; Articles</h3>
+              <p className="text-xs text-gray-500 font-sans">Manage publications, Tajweed guides, and SEO parent articles.</p>
             </div>
-            <button
-              onClick={handleCreateNew}
-              className="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#064E3B] text-[#F3C64D] hover:bg-[#043629] transition-all shadow-sm flex items-center gap-1.5 cursor-pointer hover:scale-105"
-            >
-              <Plus className="w-4 h-4" weight="bold" />
-              <span>Write New Article</span>
-            </button>
-          </div>
+            
+            <div className="flex items-center gap-2">
+              <button
+                onClick={fetchPosts}
+                disabled={loading}
+                className="p-2 border border-[#E8E0D1] rounded-sm hover:bg-[#F8F5EE] text-gray-600 transition-colors cursor-pointer"
+                title="Refresh"
+              >
+                <ArrowsClockwise className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+              </button>
 
-          {/* Posts Table */}
-          {loading ? (
-            <div className="py-12 text-center text-gray-400 text-xs">
-              <ArrowsClockwise className="w-6 h-6 animate-spin mx-auto mb-2 text-[#064E3B]" />
-              <span>Loading articles...</span>
-            </div>
-          ) : posts.length === 0 ? (
-            <div className="py-12 text-center text-gray-400 space-y-3">
-              <p className="text-xs">No blog articles published yet.</p>
               <button
                 onClick={handleCreateNew}
-                className="px-4 py-2 rounded-xl text-xs font-bold gold-gradient-btn text-[#032B21] shadow-xs cursor-pointer"
+                className="px-4 py-2 bg-[#0B332D] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] flex items-center gap-1.5 shadow-xs cursor-pointer"
               >
-                Write Your First Article
+                <Plus className="w-3.5 h-3.5 text-[#B79A62]" weight="bold" />
+                <span>Write New Article</span>
               </button>
             </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="border-b border-gray-200 text-gray-400 font-bold uppercase tracking-wider text-[10px]">
-                    <th className="pb-3">Article</th>
-                    <th className="pb-3">Category</th>
-                    <th className="pb-3">Author</th>
-                    <th className="pb-3">Status</th>
-                    <th className="pb-3 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {posts.map(post => (
-                    <tr key={post.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="py-3.5 pr-4">
-                        <div className="flex items-center gap-3">
-                          {post.featuredImage ? (
-                            <img src={post.featuredImage} alt={post.title} className="w-10 h-10 rounded-lg object-cover border border-gray-100 shrink-0" />
-                          ) : (
-                            <div className="w-10 h-10 rounded-lg bg-emerald-50 text-[#064E3B] flex items-center justify-center font-bold shrink-0">
-                              <BookOpen className="w-5 h-5" />
-                            </div>
-                          )}
-                          <div>
-                            <span className="font-bold text-gray-900 line-clamp-1 block">{post.title}</span>
-                            <span className="text-[10px] text-gray-400 font-mono block">/blog/{post.slug}</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-3.5 pr-4">
-                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#064E3B] text-[10px] font-bold border border-emerald-100">
-                          {post.category}
-                        </span>
-                      </td>
-                      <td className="py-3.5 pr-4 text-gray-600">
-                        {post.author}
-                      </td>
-                      <td className="py-3.5 pr-4">
-                        {post.published !== false ? (
-                          <span className="inline-flex items-center gap-1 text-emerald-700 text-[10px] font-bold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            Live
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 text-gray-400 text-[10px]">
-                            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                            Draft
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-3.5 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          {onViewPost && (
-                            <button
-                              onClick={() => onViewPost(post.slug)}
-                              title="View Article"
-                              className="p-1.5 text-gray-500 hover:text-[#064E3B] hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
-                            >
-                              <Eye className="w-4 h-4" />
-                            </button>
-                          )}
-                          <button
-                            onClick={() => handleEdit(post)}
-                            title="Edit Article"
-                            className="p-1.5 text-gray-500 hover:text-emerald-700 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
-                          >
-                            <PencilSimple className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(post.id, post.title)}
-                            title="Delete Article"
-                            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                          >
-                            <Trash className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
+          </div>
+
+          <div className="bg-[#FCFBF8] rounded-sm border border-[#E8E0D1] shadow-xs overflow-hidden">
+            {loading ? (
+              <div className="p-8 text-center text-xs font-sans text-gray-500">Loading articles...</div>
+            ) : posts.length === 0 ? (
+              <div className="p-12 text-center text-xs font-sans text-gray-500 space-y-2">
+                <BookOpen className="w-8 h-8 text-[#B79A62] mx-auto" />
+                <p>No blog posts published yet.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs font-sans">
+                  <thead className="bg-[#F8F5EE] text-[#0B332D] font-bold uppercase tracking-wider border-b border-[#E8E0D1] text-[10px]">
+                    <tr>
+                      <th className="p-3.5">Article</th>
+                      <th className="p-3.5">Category</th>
+                      <th className="p-3.5">Author</th>
+                      <th className="p-3.5">Status</th>
+                      <th className="p-3.5 text-right">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+                  <tbody className="divide-y divide-[#E8E0D1]/60">
+                    {posts.map(post => (
+                      <tr key={post.id} className="hover:bg-[#F8F5EE]/50 transition-colors">
+                        <td className="p-3.5 max-w-sm">
+                          <div className="font-bold text-[#0B332D] line-clamp-1">{post.title}</div>
+                          <div className="text-[10px] text-gray-400 font-mono">/blog/{post.slug}</div>
+                        </td>
+                        <td className="p-3.5">
+                          <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-[#F8F5EE] text-[#B79A62] border border-[#E8E0D1] rounded-xs">
+                            {post.category}
+                          </span>
+                        </td>
+                        <td className="p-3.5 text-gray-600">{post.author}</td>
+                        <td className="p-3.5">
+                          <span className={`px-2 py-0.5 text-[10px] font-bold rounded-xs ${
+                            post.published ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-gray-100 text-gray-600'
+                          }`}>
+                            {post.published ? 'Published' : 'Draft'}
+                          </span>
+                        </td>
+                        <td className="p-3.5 text-right">
+                          <div className="flex items-center justify-end gap-1.5">
+                            {onViewPost && (
+                              <button
+                                onClick={() => onViewPost(post.slug)}
+                                className="p-1.5 text-gray-600 hover:text-[#0B332D] cursor-pointer"
+                                title="View on site"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </button>
+                            )}
+                            <button
+                              onClick={() => handleEdit(post)}
+                              className="p-1.5 text-[#0B332D] hover:text-[#B79A62] cursor-pointer"
+                              title="Edit"
+                            >
+                              <PencilSimple className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(post.id, post.title)}
+                              className="p-1.5 text-red-600 hover:text-red-800 cursor-pointer"
+                              title="Delete"
+                            >
+                              <Trash className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
       )}
+
+      {/* Reusable Framing & Cropping Modal */}
+      <ImageCropModal
+        isOpen={isCropModalOpen}
+        imageSrc={rawImageForCrop}
+        title="Frame Blog Banner Image"
+        initialAspectRatio="16:9"
+        onClose={() => setIsCropModalOpen(false)}
+        onCropComplete={handleCropFinished}
+      />
     </div>
   );
 };
 
-export const BlogEditor: React.FC<BlogEditorProps> = (props) => {
-  return (
-    <BlogEditorErrorBoundary>
-      <BlogEditorContent {...props} />
-    </BlogEditorErrorBoundary>
-  );
-};
+export const BlogEditor: React.FC<BlogEditorProps> = (props) => (
+  <BlogEditorErrorBoundary>
+    <BlogEditorContent {...props} />
+  </BlogEditorErrorBoundary>
+);
