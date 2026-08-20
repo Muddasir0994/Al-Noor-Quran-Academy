@@ -992,22 +992,6 @@ async function startServer() {
     let cachedBaseHtml: string | null = null;
 
     app.get('*', (req, res) => {
-      // Server-side guard: Block admin routes for unauthenticated requests
-      const lowerPath = req.path.toLowerCase().replace(/\/+$/, '');
-      const isAdminRoute = [
-        '/admin', '/admin-portal', '/staff-portal', '/academy-admin'
-      ].some(prefix => lowerPath === prefix || lowerPath.startsWith(prefix + '/'));
-
-      if (isAdminRoute) {
-        // Check for valid admin token in cookie or Authorization header
-        const authHeader = req.headers.authorization;
-        const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : null;
-        if (!token || !dataStore.isValidToken(token)) {
-          res.status(403).setHeader('Content-Type', 'text/html; charset=utf-8');
-          return res.send('<html><body><h1>403 — Access Denied</h1><p>Admin authentication required. <a href="/">Return to homepage</a>.</p></body></html>');
-        }
-      }
-
       const { meta, is404 } = resolveRouteMetadata(req.path);
 
       if (is404) {
