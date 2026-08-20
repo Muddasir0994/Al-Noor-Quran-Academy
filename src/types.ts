@@ -174,6 +174,22 @@ export interface Article {
   status: 'published' | 'draft';
 }
 
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  metaDescription: string;
+  featuredImage: string;
+  content: string;
+  category: 'Tajweed' | 'Quran Learning' | 'Parenting' | 'Kids' | 'Hifz' | 'Duas & Salah' | 'Islamic Studies';
+  tags: string[];
+  author: string;
+  readTime: string;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface IslamicResource {
   id: string;
   title: string;

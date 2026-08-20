@@ -20,7 +20,7 @@ dotenv.config();
 // Helper to send email alerts to Admin if SMTP is configured
 async function sendAdminNotificationEmail(subject: string, htmlContent: string) {
   try {
-    const adminEmail = process.env.ADMIN_EMAIL || 'hameedmuddasir0786@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'info@alnoorquranacademy.com';
     const emailPassRaw = process.env.EMAIL_PASS || '';
     const emailPass = emailPassRaw.replace(/\s+/g, ''); // strip spaces if app password
 
@@ -51,7 +51,7 @@ async function sendAdminNotificationEmail(subject: string, htmlContent: string) 
 // Helper to send OTP directly to Student's Email
 async function sendStudentOtpEmail(toEmail: string, studentName: string, otpCode: string) {
   try {
-    const adminEmail = process.env.ADMIN_EMAIL || 'hameedmuddasir0786@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'info@alnoorquranacademy.com';
     const emailPassRaw = process.env.EMAIL_PASS || '';
     const emailPass = emailPassRaw.replace(/\s+/g, '');
 
@@ -105,34 +105,33 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 // Hardening: Disable Express technology fingerprinting header
 app.disable('x-powered-by');
 
-// Optional 301 Permanent Redirect to canonical custom domain if configured
-const CUSTOM_CANONICAL_DOMAIN = process.env.CUSTOM_DOMAIN || process.env.CANONICAL_HOST; // e.g. www.alnoorquranacademy.com
+// 301 Permanent Redirect to canonical custom domain (Noor-e-Quran Institute)
+const CUSTOM_CANONICAL_DOMAIN = process.env.CUSTOM_DOMAIN || process.env.CANONICAL_HOST || 'noorequraninstitute.me';
 
-if (CUSTOM_CANONICAL_DOMAIN) {
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    const host = req.get('host');
-    if (host && host !== CUSTOM_CANONICAL_DOMAIN && !host.includes('localhost') && !host.includes('127.0.0.1')) {
-      return res.redirect(301, `https://${CUSTOM_CANONICAL_DOMAIN}${req.originalUrl}`);
-    }
-    next();
-  });
-}
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const host = req.get('host') || '';
+  if (host.includes('onrender.com') || (CUSTOM_CANONICAL_DOMAIN && host !== CUSTOM_CANONICAL_DOMAIN && !host.includes('localhost') && !host.includes('127.0.0.1') && !host.includes('0.0.0.0'))) {
+    return res.redirect(301, `https://${CUSTOM_CANONICAL_DOMAIN}${req.originalUrl}`);
+  }
+  next();
+});
 
 // Comprehensive Security Headers Middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
-  // 1. Content Security Policy (Tailored for Vite + Firebase Auth/Firestore + Google Fonts + WebRTC Classroom)
+  // 1. Content Security Policy (Hardened for Production: No unsafe-eval, strict scripts)
   const cspDirectives = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.firebaseapp.com https://*.googleapis.com https://apis.google.com https://meet.jit.si https://*.jitsi.net https://8x8.vc https://*.8x8.vc",
+    "script-src 'self' https://*.firebaseapp.com https://*.googleapis.com https://apis.google.com https://meet.jit.si https://*.jitsi.net https://8x8.vc https://*.8x8.vc",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
-    "img-src 'self' data: blob: https: https://*.googleusercontent.com https://images.unsplash.com https://*.jitsi.net",
-    "connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://meet.jit.si https://*.jitsi.net wss://meet.jit.si wss://*.jitsi.net https://8x8.vc https://*.8x8.vc wss://8x8.vc wss://*.8x8.vc https://api.ipify.org",
+    "img-src 'self' data: blob: https: https://*.googleusercontent.com https://images.unsplash.com https://*.jitsi.net https://res.cloudinary.com",
+    "connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://meet.jit.si https://*.jitsi.net wss://meet.jit.si wss://*.jitsi.net https://8x8.vc https://*.8x8.vc wss://8x8.vc wss://*.8x8.vc https://api.ipify.org https://api.cloudinary.com",
     "frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://meet.jit.si https://*.jitsi.net https://8x8.vc https://*.8x8.vc",
     "media-src 'self' blob: data: https: https://meet.jit.si https://*.jitsi.net",
     "object-src 'none'",
     "base-uri 'self'",
-    "form-action 'self'"
+    "form-action 'self'",
+    "upgrade-insecure-requests"
   ];
   res.setHeader('Content-Security-Policy', cspDirectives.join('; '));
 
@@ -155,8 +154,15 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // High-Performance Compression (Gzip / Brotli)
 app.use(compression());
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ extended: true, limit: '25mb' }));
+
+// Static uploads folder for uploaded blog media
+const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  try { fs.mkdirSync(uploadsDir, { recursive: true }); } catch (_) {}
+}
+app.use('/uploads', express.static(uploadsDir));
 
 // Search Engine SEO & Agentic Browsing files
 app.get('/api/health', (req, res) => {
@@ -182,18 +188,23 @@ app.get('/robots.txt', (req, res) => {
     res.setHeader('Cache-Control', 'public, max-age=86400');
     return res.sendFile(robotsPath);
   }
+  const txt = generateRobotsTxt();
   res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
-  res.send("User-agent: *\nAllow: /\nSitemap: https://www.alnoorquranacademy.com/sitemap.xml\n");
+  res.setHeader('Cache-Control', 'public, max-age=86400');
+  res.send(txt);
 });
 
 app.get('/sitemap.xml', (req, res) => {
   const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
   if (fs.existsSync(sitemapPath)) {
     res.setHeader('Content-Type', 'application/xml; charset=UTF-8');
-    res.setHeader('Cache-Control', 'public, max-age=43200');
+    res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
     return res.sendFile(sitemapPath);
   }
-  res.status(404).send('Sitemap not found');
+  const xml = generateDynamicSitemapXml();
+  res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+  res.send(xml);
 });
 
 app.get('/llms.txt', (req, res) => {
@@ -204,7 +215,30 @@ app.get('/llms.txt', (req, res) => {
     return res.sendFile(llmsPath);
   }
   res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
-  res.send("# Al-Noor Quran Academy\nOnline 1-on-1 Quran Classes with Tajweed\nWebsite: https://www.alnoorquranacademy.com\n");
+  res.send("# Noor-e-Quran Institute\nOnline 1-on-1 Quran Classes with Tajweed\nWebsite: https://noorequraninstitute.me\n");
+});
+
+// RFC 9116 Security.txt for vulnerability reporting
+const handleSecurityTxt = (req: Request, res: Response) => {
+  const securityPath = path.join(process.cwd(), 'public', '.well-known', 'security.txt');
+  if (fs.existsSync(securityPath)) {
+    res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    return res.sendFile(securityPath);
+  }
+  res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+  res.send("Contact: mailto:info@noorequraninstitute.me\nContact: https://noorequraninstitute.me/contact-us\nExpires: 2027-12-31T23:59:59.000Z\nPreferred-Languages: en, ur, ar\nCanonical: https://noorequraninstitute.me/.well-known/security.txt\nPolicy: https://noorequraninstitute.me/about-us\n");
+};
+
+app.get('/.well-known/security.txt', handleSecurityTxt);
+app.get('/security.txt', handleSecurityTxt);
+
+// Security hardening: Reject dangerous HTTP methods (TRACE, TRACK)
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.method === 'TRACE' || req.method === 'TRACK') {
+    return res.status(405).send('Method Not Allowed');
+  }
+  next();
 });
 
 // Admin Authentication Middleware
@@ -841,24 +875,79 @@ app.get('/api/admin/contacts', requireAdmin, (req, res) => {
   res.json({ success: true, contacts: dataStore.getContacts() });
 });
 
-// -------------------------------------------------------------
-// SEO DYNAMIC SITEMAP & ROBOTS.TXT (CRAWLERS)
-// -------------------------------------------------------------
-app.get('/sitemap.xml', (req, res) => {
-  const xml = generateDynamicSitemapXml();
-  res.setHeader('Content-Type', 'application/xml; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
-  res.send(xml);
+// Image Upload API (Cloudinary with Local Disk Fallback)
+app.post('/api/upload-image', requireAdmin, async (req: Request, res: Response) => {
+  try {
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+    const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;
+
+    // Check if base64 or JSON payload
+    let base64Data: string | null = null;
+    let fileName = `img_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+
+    if (req.body && req.body.imageBase64) {
+      base64Data = req.body.imageBase64;
+    }
+
+    // If Cloudinary configured and base64 provided, send to Cloudinary API
+    if (cloudName && (uploadPreset || (apiKey && apiSecret)) && base64Data) {
+      try {
+        const timestamp = Math.round(new Date().getTime() / 1000);
+        const paramsToSign: Record<string, any> = { timestamp, folder: 'alnoor_blog' };
+        
+        let signature = '';
+        if (apiKey && apiSecret) {
+          const stringToSign = `folder=alnoor_blog&timestamp=${timestamp}${apiSecret}`;
+          signature = crypto.createHash('sha1').update(stringToSign).digest('hex');
+        }
+
+        const formData = new URLSearchParams();
+        formData.append('file', base64Data);
+        formData.append('timestamp', timestamp.toString());
+        formData.append('folder', 'alnoor_blog');
+        if (uploadPreset) formData.append('upload_preset', uploadPreset);
+        if (apiKey) formData.append('api_key', apiKey);
+        if (signature) formData.append('signature', signature);
+
+        const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const cloudData = await cloudRes.json();
+        if (cloudData.secure_url) {
+          return res.json({ success: true, imageUrl: cloudData.secure_url });
+        }
+      } catch (cloudErr: any) {
+        console.warn('Cloudinary upload fallback to local:', cloudErr.message);
+      }
+    }
+
+    // Local disk fallback
+    if (base64Data) {
+      const matches = base64Data.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+      if (matches) {
+        const ext = matches[1] === 'jpeg' ? 'jpg' : matches[1];
+        const buffer = Buffer.from(matches[2], 'base64');
+        const localFileName = `${fileName}.${ext}`;
+        const filePath = path.join(process.cwd(), 'public', 'uploads', localFileName);
+        fs.writeFileSync(filePath, buffer);
+        return res.json({ success: true, imageUrl: `/uploads/${localFileName}` });
+      }
+    }
+
+    // Generic fallback response
+    res.json({ success: true, imageUrl: req.body.url || `/uploads/${fileName}.jpg` });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || 'Image upload failed' });
+  }
 });
 
-app.get('/robots.txt', (req, res) => {
-  const txt = generateRobotsTxt();
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, max-age=86400');
-  res.send(txt);
-});
-
-// Google Search Console Site Verification Endpoint
+// -------------------------------------------------------------
+// GOOGLE SEARCH CONSOLE VERIFICATION
+// -------------------------------------------------------------
 app.get('/google:code.html', (req, res) => {
   const code = req.params.code;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -951,7 +1040,7 @@ async function startServer() {
     // Background Keep-Alive Worker (Every 4.5 minutes)
     // Helps maintain active network heartbeat for cloud hosting like Render
     const PING_INTERVAL_MS = 4.5 * 60 * 1000; // 4.5 minutes (Render sleeps after 15 mins)
-    const externalUrl = process.env.RENDER_EXTERNAL_URL || process.env.PUBLIC_APP_URL || 'https://al-noor-quran-academy.onrender.com';
+    const externalUrl = process.env.RENDER_EXTERNAL_URL || process.env.PUBLIC_APP_URL || 'https://noorequraninstitute.me';
 
     setInterval(async () => {
       try {

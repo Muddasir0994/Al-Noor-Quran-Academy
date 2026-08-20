@@ -1,9 +1,10 @@
 import { dataStore } from './dataStore.js';
 
-export const ACADEMY_BASE_URL = 'https://www.alnoorquranacademy.com';
+export const ACADEMY_BASE_URL = 'https://noorequraninstitute.me';
 
 export interface PageMeta {
   title: string;
+  h1?: string;
   description: string;
   canonical: string;
   ogType: string;
@@ -180,6 +181,17 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/blog': {
+    title: 'Islamic Educational Blog & Quran Learning Guides | Al-Noor Academy',
+    description: 'Helpful articles and practical guides on Tajweed rules, Quran memorization routines, Arabic phonetics, and Islamic parenting for Muslim families.',
+    canonical: `${ACADEMY_BASE_URL}/blog`,
+    ogType: 'website',
+    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    breadcrumbs: [
+      { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
+      { name: 'Blog', item: `${ACADEMY_BASE_URL}/blog` }
+    ]
+  },
+  '/blogs': {
     title: 'Islamic Educational Blog & Quran Learning Guides | Al-Noor Academy',
     description: 'Helpful articles and practical guides on Tajweed rules, Quran memorization routines, Arabic phonetics, and Islamic parenting for Muslim families.',
     canonical: `${ACADEMY_BASE_URL}/blog`,
@@ -521,7 +533,7 @@ export function generateDynamicSitemapXml(): string {
  * Generates search-engine compliant robots.txt with crawling guidelines
  */
 export function generateRobotsTxt(): string {
-  return `# Robots.txt for Al-Noor Quran Academy (https://www.alnoorquranacademy.com)
+  return `# Robots.txt for Al-Noor Quran Academy (${ACADEMY_BASE_URL})
 User-agent: *
 Allow: /
 Allow: /online-quran-classes
@@ -700,15 +712,15 @@ export function generateRoutePrerenderHtml(routePath: string, meta: PageMeta): s
     </header>
 
     <main style="max-width:1200px;margin:0 auto;padding:30px 20px;">
-      <!-- Hero Section with Visible H1 and Core Value Proposition -->
+      <!-- Hero Section with Exact Single H1 Matching Route -->
       <section style="background:#064E3B;color:#ffffff;border-radius:16px;padding:40px 30px;margin-bottom:40px;box-shadow:0 10px 25px rgba(0,0,0,0.1);">
         <div style="max-width:800px;">
           <span style="display:inline-block;background:rgba(212,167,44,0.2);border:1px solid #D4A72C;color:#D4A72C;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:16px;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ • Global Islamic Learning</span>
           <h1 style="font-size:36px;line-height:1.25;font-weight:800;color:#ffffff;margin-top:0;margin-bottom:16px;">
-            Learn Holy Quran Online with Tajweed from Certified Male & Female Tutors
+            ${meta.h1 || (meta.title.includes('|') ? meta.title.split('|')[0].trim() : meta.title)}
           </h1>
           <p style="font-size:18px;color:#E6F4EA;line-height:1.7;margin-bottom:24px;">
-            Al-Noor Quran Academy provides personalized, live 1-on-1 online Quran classes for kids and adults worldwide. Master Noorani Qaida, Nazra Quran recitation, practical Tajweed rules, and Quran memorization (Hifz) with flexible 24/7 schedules and a 3-day free trial.
+            ${meta.description}
           </p>
           <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
             <a href="/free-trial" style="background:#D4A72C;color:#064E3B;font-weight:800;font-size:16px;padding:14px 28px;border-radius:8px;text-decoration:none;">Book 3-Day Free Trial</a>

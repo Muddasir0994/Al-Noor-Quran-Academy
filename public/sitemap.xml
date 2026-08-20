@@ -7,150 +7,208 @@
 
   <!-- Core Commercial & Informational Pages -->
   <url>
-    <loc>https://www.alnoorquranacademy.com/</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/online-quran-classes</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/online-quran-classes</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/noorani-qaida</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/noorani-qaida</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/quran-reading-nazra</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/quran-reading-nazra</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/quran-with-tajweed</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/quran-with-tajweed</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/quran-memorization-hifz</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/quran-memorization-hifz</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/islamic-studies</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/islamic-studies</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/quran-classes-for-kids</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/quran-classes-for-kids</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/quran-classes-for-adults</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/quran-classes-for-adults</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/female-quran-teacher</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/female-quran-teacher</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/pricing</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/pricing</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/free-trial</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/free-trial</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/faculty</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/faculty</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/about-us</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/about-us</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/faq</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/faq</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/contact-us</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/contact-us</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/blog</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/blog</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <!-- International Regional Pages with Alternate Languages -->
   <url>
-    <loc>https://www.alnoorquranacademy.com/online-quran-classes-uk</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/online-quran-classes-uk</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/online-quran-classes-usa</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/online-quran-classes-usa</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/online-quran-classes-canada</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/online-quran-classes-canada</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/online-quran-classes-australia</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/online-quran-classes-australia</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/online-quran-classes-pakistan</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/online-quran-classes-pakistan</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <!-- Course Deep Links -->
   <url>
-    <loc>https://www.alnoorquranacademy.com/courses/noorani-qaida</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/courses/noorani-qaida</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/courses/quran-reading-nazra</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/courses/quran-reading-nazra</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/courses/quran-with-tajweed</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/courses/quran-with-tajweed</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/courses/quran-memorization-hifz</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/courses/quran-memorization-hifz</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <!-- Topical Authority Blog Articles -->
   <url>
-    <loc>https://www.alnoorquranacademy.com/blog/rules-of-tajweed-for-beginners</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/blog/rules-of-tajweed-for-beginners</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/blog/how-to-motivate-kids-to-love-quran</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/blog/how-to-motivate-kids-to-love-quran</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.alnoorquranacademy.com/blog/effective-hifz-memorization-system</loc>
-    <lastmod>2026-08-17</lastmod>
+    <loc>https://noorequraninstitute.me/blog/effective-hifz-memorization-system</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

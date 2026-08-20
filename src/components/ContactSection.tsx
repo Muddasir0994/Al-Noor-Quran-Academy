@@ -137,7 +137,7 @@ export const ContactSection: React.FC = () => {
 
               {/* Email */}
               <a
-                href="mailto:hameedmuddasir0786@gmail.com"
+                href="mailto:contact.noorequraninstitute@gmail.com"
                 className="flex items-start gap-3.5 p-3 rounded-2xl bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-700/60 transition-colors group"
               >
                 <div className="w-9 h-9 rounded-xl bg-[#064E3B] text-[#F3C64D] border border-[#F3C64D]/40 flex items-center justify-center shrink-0 shadow-xs">
@@ -146,7 +146,7 @@ export const ContactSection: React.FC = () => {
                 <div className="overflow-hidden">
                   <span className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider block">Official Email</span>
                   <span className="font-medium text-white group-hover:text-[#F3C64D] transition-colors break-all">
-                    hameedmuddasir0786@gmail.com
+                    contact.noorequraninstitute@gmail.com
                   </span>
                 </div>
               </a>

@@ -39,8 +39,10 @@ import {
   Calendar,
   CaretRight,
   ShieldCheck,
-  GraduationCap
+  GraduationCap,
+  PenNib
 } from '@phosphor-icons/react';
+import { BlogEditor } from './BlogEditor';
 
 interface AdminPortalProps {
   isOpen: boolean;
@@ -63,7 +65,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const [loggingIn, setLoggingIn] = useState(false);
 
   // Active view tab in admin
-  const [activeTab, setActiveTab] = useState<'overview' | 'leads' | 'enrollments' | 'students' | 'tutors' | 'courses' | 'notifications'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'leads' | 'enrollments' | 'students' | 'tutors' | 'courses' | 'blog' | 'notifications'>('overview');
 
   // Data states
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -673,6 +675,18 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
               >
                 <BookOpen className="w-4 h-4" weight="duotone" />
                 <span>Courses ({courses.length})</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('blog')}
+                className={`px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer ${
+                  activeTab === 'blog'
+                    ? 'bg-[#064E3B] text-[#D4A72C]'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <PenNib className="w-4 h-4" weight="duotone" />
+                <span>Blog CMS</span>
               </button>
 
               <button
@@ -1314,6 +1328,11 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                     ))}
                   </div>
                 </div>
+              )}
+
+              {/* TAB: BLOG CMS */}
+              {activeTab === 'blog' && (
+                <BlogEditor />
               )}
 
               {/* TAB 7: NOTIFICATIONS */}

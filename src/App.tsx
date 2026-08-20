@@ -44,6 +44,8 @@ const EnrollmentModal = lazy(() => import('./components/EnrollmentModal').then(m
 const CourseDetailModal = lazy(() => import('./components/CourseDetailModal').then(m => ({ default: m.CourseDetailModal })));
 const ArticleModal = lazy(() => import('./components/ArticleModal').then(m => ({ default: m.ArticleModal })));
 const LegalModal = lazy(() => import('./components/LegalModals').then(m => ({ default: m.LegalModal })));
+const BlogListPage = lazy(() => import('./components/BlogListPage').then(m => ({ default: m.BlogListPage })));
+const BlogPostPage = lazy(() => import('./components/BlogPostPage').then(m => ({ default: m.BlogPostPage })));
 
 function AppContent() {
   const { currentUser, userProfile } = useAuth();
@@ -66,6 +68,7 @@ function AppContent() {
   const [activeCountry, setActiveCountry] = useState<CountryKey>('uk');
   const [initialClassroomSurah, setInitialClassroomSurah] = useState<number>(1);
   const [isNotFound, setIsNotFound] = useState<boolean>(false);
+  const [currentBlogSlug, setCurrentBlogSlug] = useState<string | null>(null);
 
   // Synchronize browser URL & session storage on activeAppView changes (survives F5 refresh)
   useEffect(() => {
@@ -100,26 +103,15 @@ function AppContent() {
   // Auth Modal state
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authRole, setAuthRole] = useState<'student' | 'teacher'>('student');
-  const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
-  // Handle URL route matching on initial load & popstate
+  // Handle URL Deep-Linking & History Navigation
   useEffect(() => {
     const handleUrlRoute = () => {
-      // Normalize path (strip trailing slashes, clean query params)
-      const raw = window.location.pathname.toLowerCase();
-      const path = raw.replace(/\/+$/, '') || '/';
-      
-      if (path === '/' || path === '' || path === '/index.html') {
+      const path = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
+
+      if (path === '/' || path === '') {
         setActiveNavTab('home');
-        setIsNotFound(false);
-      } else if (
-        path === '/admin' || 
-        path.startsWith('/admin/') || 
-        path === '/admin-portal' || 
-        path === '/staff-portal' || 
-        path === '/academy-admin'
-      ) {
-        setActiveAppView('admin');
         setIsNotFound(false);
       } else if (path === '/classroom' || path.startsWith('/classroom/')) {
         setActiveAppView('classroom');
@@ -168,14 +160,40 @@ function AppContent() {
         setActiveNavTab('pakistan-program');
         setActiveCountry('pakistan');
         setIsNotFound(false);
+      } else if (path === '/noorani-qaida') {
+        setActiveNavTab('courses');
+        const c = ALL_COURSES.find(item => item.id === 'c-1' || item.slug === 'noorani-qaida');
+        if (c) setInspectCourse(c);
+        setIsNotFound(false);
+      } else if (path === '/quran-reading-nazra') {
+        setActiveNavTab('courses');
+        const c = ALL_COURSES.find(item => item.id === 'c-2' || item.slug === 'quran-reading-nazra');
+        if (c) setInspectCourse(c);
+        setIsNotFound(false);
+      } else if (path === '/quran-with-tajweed') {
+        setActiveNavTab('courses');
+        const c = ALL_COURSES.find(item => item.id === 'c-3' || item.slug === 'quran-with-tajweed');
+        if (c) setInspectCourse(c);
+        setIsNotFound(false);
+      } else if (path === '/quran-memorization-hifz') {
+        setActiveNavTab('courses');
+        const c = ALL_COURSES.find(item => item.id === 'c-4' || item.slug === 'quran-memorization-hifz');
+        if (c) setInspectCourse(c);
+        setIsNotFound(false);
+      } else if (path === '/islamic-studies') {
+        setActiveNavTab('courses');
+        const c = ALL_COURSES.find(item => item.id === 'c-5' || item.slug === 'islamic-studies');
+        if (c) setInspectCourse(c);
+        setIsNotFound(false);
       } else if (path === '/about-us' || path === '/about') {
         setActiveNavTab('about');
         setIsNotFound(false);
       } else if (path === '/faq') {
         setActiveNavTab('faq');
         setIsNotFound(false);
-      } else if (path === '/blog' || path === '/articles') {
-        setActiveNavTab('articles');
+      } else if (path === '/blog' || path === '/blogs' || path === '/articles') {
+        setActiveNavTab('blogs');
+        setCurrentBlogSlug(null);
         setIsNotFound(false);
       } else if (path === '/contact-us' || path === '/contact') {
         setActiveNavTab('contact');
@@ -193,26 +211,6 @@ function AppContent() {
       } else if (path === '/register') {
         handleOpenAuth('student', 'signup');
         setIsNotFound(false);
-      } else if (path === '/noorani-qaida' || path === '/courses/noorani-qaida') {
-        setActiveNavTab('courses');
-        const c = ALL_COURSES.find(item => item.id === 'noorani-qaida' || item.slug === 'noorani-qaida');
-        if (c) setInspectCourse(c);
-        setIsNotFound(false);
-      } else if (path === '/quran-reading-nazra' || path === '/courses/quran-reading-nazra') {
-        setActiveNavTab('courses');
-        const c = ALL_COURSES.find(item => item.id === 'nazra-quran' || item.slug === 'quran-reading-nazra');
-        if (c) setInspectCourse(c);
-        setIsNotFound(false);
-      } else if (path === '/quran-with-tajweed' || path === '/courses/quran-with-tajweed') {
-        setActiveNavTab('courses');
-        const c = ALL_COURSES.find(item => item.id === 'tajweed-course' || item.slug === 'quran-with-tajweed');
-        if (c) setInspectCourse(c);
-        setIsNotFound(false);
-      } else if (path === '/quran-memorization-hifz' || path === '/courses/quran-memorization-hifz') {
-        setActiveNavTab('courses');
-        const c = ALL_COURSES.find(item => item.id === 'hifz-quran' || item.slug === 'quran-memorization-hifz');
-        if (c) setInspectCourse(c);
-        setIsNotFound(false);
       } else if (path.startsWith('/courses/')) {
         const slug = path.replace('/courses/', '');
         const c = ALL_COURSES.find(item => item.slug === slug || item.id === slug);
@@ -225,13 +223,14 @@ function AppContent() {
         }
       } else if (path.startsWith('/blog/')) {
         const slug = path.replace('/blog/', '');
-        const art = INITIAL_ARTICLES.find(item => item.slug === slug || item.id === slug);
-        if (art) {
-          setActiveNavTab('articles');
-          setReadingArticle(art);
+        if (slug) {
+          setActiveNavTab('blog-post');
+          setCurrentBlogSlug(slug);
           setIsNotFound(false);
         } else {
-          setIsNotFound(true);
+          setActiveNavTab('blogs');
+          setCurrentBlogSlug(null);
+          setIsNotFound(false);
         }
       } else {
         // Fallback for safety in development / embedded preview
@@ -327,9 +326,38 @@ function AppContent() {
     }
   };
 
+  const handleBlogNavigate = (slug: string) => {
+    if (window.history.pushState) {
+      window.history.pushState({}, '', `/blog/${slug}`);
+    }
+    setCurrentBlogSlug(slug);
+    setActiveNavTab('blog-post');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBlogBack = () => {
+    if (window.history.pushState) {
+      window.history.pushState({}, '', '/blog');
+    }
+    setCurrentBlogSlug(null);
+    setActiveNavTab('blogs');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleNavClick = (sectionId: string) => {
     setIsNotFound(false);
     setActiveAppView('landing');
+
+    if (sectionId === 'articles' || sectionId === 'blog' || sectionId === 'blogs') {
+      setActiveNavTab('blogs');
+      setCurrentBlogSlug(null);
+      if (window.history.pushState) {
+        window.history.pushState({}, '', '/blog');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     setActiveNavTab(sectionId);
 
     // Map tab ID to clean URL
@@ -604,34 +632,22 @@ function AppContent() {
             />
           )}
 
-          {/* 8. BLOG & ISLAMIC RESOURCES PAGE */}
-          {activeNavTab === 'articles' && (
-            <div>
-              {/* Page Banner Header */}
-              <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                <div className="max-w-7xl mx-auto text-center space-y-3">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                    <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                    <span>/</span>
-                    <span className="text-white">Blog & Learning Guides</span>
-                  </div>
-                  <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                    Islamic Learning Guides & Academy Articles
-                  </h1>
-                  <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                    Practical tips on Quran recitation, Tajweed rules, child motivation, and Islamic spiritual development.
-                  </p>
-                </div>
-              </div>
+          {/* 8. BLOG & ARTICLES CMS PAGE */}
+          {(activeNavTab === 'blogs' || activeNavTab === 'articles') && (
+            <BlogListPage
+              onNavigate={handleBlogNavigate}
+              onOpenTrial={() => handleOpenTrial()}
+            />
+          )}
 
-              <ResourcesAndBlogSection
-                testimonials={testimonials}
-                articles={articles}
-                resources={resources}
-                onOpenArticle={(art) => setReadingArticle(art)}
-                onOpenTrial={() => handleOpenTrial()}
-              />
-            </div>
+          {/* 8B. SINGLE BLOG POST PAGE */}
+          {activeNavTab === 'blog-post' && currentBlogSlug && (
+            <BlogPostPage
+              slug={currentBlogSlug}
+              onNavigate={handleBlogNavigate}
+              onNavigateBack={handleBlogBack}
+              onOpenTrial={() => handleOpenTrial()}
+            />
           )}
 
           {/* 9. FAQ PAGE */}

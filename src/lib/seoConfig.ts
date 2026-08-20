@@ -11,7 +11,7 @@ export interface SEORouteMeta {
   schemaType?: string;
 }
 
-export const ACADEMY_BASE_URL = 'https://www.alnoorquranacademy.com';
+export const ACADEMY_BASE_URL = 'https://noorequraninstitute.me';
 
 export const SEO_PAGE_MAP: Record<string, SEORouteMeta> = {
   home: {
@@ -268,6 +268,25 @@ export const SEO_PAGE_MAP: Record<string, SEORouteMeta> = {
     ]
   },
   articles: {
+    path: '/blog',
+    title: 'Islamic Educational Blog & Quran Learning Guides | Al-Noor Academy',
+    description: 'Helpful articles and practical guides on Tajweed rules, Quran memorization routines, Arabic phonetics, and Islamic parenting for Muslim families.',
+    h1: 'Quran Learning Guides & Islamic Articles',
+    primaryKeyword: 'Quran Learning Blog',
+    secondaryKeywords: [
+      'Tajweed Guides',
+      'Hifz Tips and Tricks',
+      'Teaching Kids Quran',
+      'Islamic Parenting Advice'
+    ],
+    canonical: `${ACADEMY_BASE_URL}/blog`,
+    ogType: 'website',
+    breadcrumbs: [
+      { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
+      { name: 'Blog', item: `${ACADEMY_BASE_URL}/blog` }
+    ]
+  },
+  blogs: {
     path: '/blog',
     title: 'Islamic Educational Blog & Quran Learning Guides | Al-Noor Academy',
     description: 'Helpful articles and practical guides on Tajweed rules, Quran memorization routines, Arabic phonetics, and Islamic parenting for Muslim families.',

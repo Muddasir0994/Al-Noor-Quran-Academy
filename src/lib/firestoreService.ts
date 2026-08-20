@@ -25,6 +25,7 @@ import {
   Tutor,
   Testimonial,
   Article,
+  BlogPost,
   IslamicResource,
   UserAccount,
   UserRole
@@ -490,3 +491,64 @@ export async function seedInitialDataIfEmpty(): Promise<void> {
   }
 }
 
+// ==========================================
+// BLOG POSTS (CMS)
+// ==========================================
+const BLOG_COL = 'blogPosts';
+
+export async function getAllBlogPosts(): Promise<BlogPost[]> {
+  try {
+    const q = query(collection(db, BLOG_COL), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() } as BlogPost));
+  } catch (err) {
+    console.warn('Error fetching blog posts:', err);
+    return [];
+  }
+}
+
+export async function getPublishedBlogPosts(): Promise<BlogPost[]> {
+  try {
+    const q = query(
+      collection(db, BLOG_COL),
+      where('published', '==', true),
+      orderBy('createdAt', 'desc')
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() } as BlogPost));
+  } catch (err) {
+    console.warn('Error fetching published blog posts:', err);
+    return [];
+  }
+}
+
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  try {
+    const q = query(collection(db, BLOG_COL), where('slug', '==', slug), limit(1));
+    const snap = await getDocs(q);
+    if (!snap.empty) {
+      return { id: snap.docs[0].id, ...snap.docs[0].data() } as BlogPost;
+    }
+  } catch (err) {
+    console.warn('Error fetching blog post by slug:', err);
+  }
+  return null;
+}
+
+export async function saveBlogPost(post: BlogPost): Promise<void> {
+  try {
+    await setDoc(doc(db, BLOG_COL, post.id), post);
+  } catch (err) {
+    console.error('Error saving blog post:', err);
+    throw err;
+  }
+}
+
+export async function deleteBlogPost(id: string): Promise<void> {
+  try {
+    await deleteDoc(doc(db, BLOG_COL, id));
+  } catch (err) {
+    console.error('Error deleting blog post:', err);
+    throw err;
+  }
+}

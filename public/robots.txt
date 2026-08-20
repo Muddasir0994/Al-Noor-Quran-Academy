@@ -1,9 +1,23 @@
+# Robots.txt for Noor-e-Quran Institute (https://noorequraninstitute.me)
 User-agent: *
 Allow: /
-Disallow: /api/admin/
 Disallow: /admin
+Disallow: /admin/
+Disallow: /admin-portal
+Disallow: /staff-portal
 Disallow: /student-portal/private/
 Disallow: /teacher-portal/private/
+Disallow: /dashboard
+Disallow: /classroom/
+Disallow: /api/
 
-# Sitemaps
-Sitemap: https://al-noor-quran-academy.onrender.com/sitemap.xml
+# Googlebot & Bingbot
+User-agent: Googlebot
+Allow: /
+User-agent: Googlebot-Image
+Allow: /
+User-agent: Bingbot
+Allow: /
+
+# Sitemap Location
+Sitemap: https://noorequraninstitute.me/sitemap.xml

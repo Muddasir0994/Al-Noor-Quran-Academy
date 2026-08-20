@@ -54,7 +54,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
               </p>
               <h4 className="font-bold text-gray-900 text-sm pt-2">4. Contact Us</h4>
               <p>
-                For questions regarding your data privacy, contact our coordinator at <code>hameedmuddasir0786@gmail.com</code> or on WhatsApp at <code>+92 327 4496163</code>.
+                For questions regarding your data privacy, contact our coordinator at <code>info@alnoorquranacademy.com</code> or on WhatsApp at <code>+92 327 4496163</code>.
               </p>
             </>
           ) : (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { IMAGES } from '../config/images';
-import { BookOpen, Phone, Envelope, Globe, WhatsappLogo, Heart, ShieldCheck, MapPin } from '@phosphor-icons/react';
+import { BookOpen, Phone, Envelope, Globe, WhatsappLogo, Heart, ShieldCheck, MapPin, YoutubeLogo, InstagramLogo, FacebookLogo } from '@phosphor-icons/react';
 import { CountryKey } from './InternationalLanding';
 
 interface FooterProps {
@@ -18,6 +18,13 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenLegal,
   onSelectCountry
 }) => {
+  const socialLinks = [
+    { name: 'YouTube', url: 'https://www.youtube.com/@NooreQuranInstitute', icon: YoutubeLogo },
+    { name: 'Instagram', url: 'https://www.instagram.com/noore_quraninstitute', icon: InstagramLogo },
+    { name: 'Facebook', url: 'https://www.facebook.com/share/14pNXeMTM7o/', icon: FacebookLogo },
+    { name: 'Email', url: 'mailto:contact.noorequraninstitute@gmail.com', icon: Envelope }
+  ];
+
   return (
     <footer className="bg-[#032B21] text-gray-300 pt-16 pb-8 border-t border-[#D4A72C]/30 bg-islamic-pattern">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,7 +48,7 @@ export const Footer: React.FC<FooterProps> = ({
               <div className="w-12 h-12 rounded-xl bg-white p-1 shadow-md border border-[#D4A72C]/40 flex items-center justify-center shrink-0">
                 <img
                   src="/logo.webp"
-                  alt="Al-Noor Quran Academy"
+                  alt="Noor-e-Quran Institute"
                   width={48}
                   height={48}
                   loading="lazy"
@@ -57,10 +64,10 @@ export const Footer: React.FC<FooterProps> = ({
               </div>
               <div>
                 <span className="font-heading font-extrabold text-lg text-white block">
-                  AL-NOOR
+                  NOOR-E-QURAN
                 </span>
                 <span className="text-[#D4A72C] text-xs font-bold tracking-widest uppercase">
-                  QURAN ACADEMY
+                  INSTITUTE
                 </span>
               </div>
             </div>
@@ -68,6 +75,25 @@ export const Footer: React.FC<FooterProps> = ({
             <p className="text-xs sm:text-sm text-emerald-100/80 leading-relaxed max-w-sm">
               An authentic international online Quran institute delivering 1-on-1 personalized lessons in Tajweed, Hifz, Noorani Qaida, and Islamic studies with verified male and female scholars.
             </p>
+
+            {/* Social Media Links Bar */}
+            <div className="flex items-center gap-3 pt-2">
+              {socialLinks.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <a
+                    key={item.name}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit our ${item.name}`}
+                    className="w-9 h-9 rounded-xl bg-emerald-900/90 text-emerald-200 hover:text-[#D4A72C] hover:bg-emerald-800 border border-emerald-700/60 flex items-center justify-center transition-all duration-200 hover:scale-110 shadow-sm"
+                  >
+                    <IconComponent className="w-5 h-5" weight="duotone" />
+                  </a>
+                );
+              })}
+            </div>
 
             {/* Quick Action Badges */}
             <div className="pt-2 flex flex-wrap gap-2 text-xs">
@@ -241,15 +267,15 @@ export const Footer: React.FC<FooterProps> = ({
                 <span>+92 336 0796786 (Support Line)</span>
               </a>
               <a
-                href="mailto:hameedmuddasir0786@gmail.com"
-                aria-label="Email hameedmuddasir0786@gmail.com"
+                href="mailto:contact.noorequraninstitute@gmail.com"
+                aria-label="Email contact.noorequraninstitute@gmail.com"
                 className="flex items-center gap-2 hover:text-[#F3C64D] transition-colors font-medium break-all"
               >
                 <Envelope className="w-4 h-4 text-[#F3C64D] shrink-0" weight="duotone" />
-                <span>hameedmuddasir0786@gmail.com</span>
+                <span>contact.noorequraninstitute@gmail.com</span>
               </a>
               <a
-                href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Al-Noor%20Quran%20Academy"
+                href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="WhatsApp Coordinator (24/7)"
@@ -274,7 +300,7 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Bottom Bar: Copyright & Legal */}
         <div className="pt-8 border-t border-emerald-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-emerald-300/80 gap-4">
-          <p>© {new Date().getFullYear()} Al-Noor Quran Academy. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Noor-e-Quran Institute. All rights reserved.</p>
           
           <div className="flex items-center gap-4 text-xs font-semibold">
             <button
