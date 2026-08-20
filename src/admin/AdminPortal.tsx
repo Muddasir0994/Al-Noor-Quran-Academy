@@ -487,7 +487,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     const cleanPhone = lead.phone.replace(/[^0-9]/g, '');
     const text = encodeURIComponent(
       `Assalam-o-Alaikum ${lead.parentName || lead.studentName},\n\n` +
-      `This is Al-Noor Quraan Academy Coordinator regarding the 3-Day Free Trial request for ${lead.studentName}.\n\n` +
+      `This is Noor-e-Quran Institute Coordinator regarding the 3-Day Free Trial request for ${lead.studentName}.\n\n` +
       `Course: ${lead.courseName}\n` +
       `Preferred Tutor: ${lead.tutorGender}\n` +
       `Preferred Time: ${lead.timeSlot}\n\n` +
@@ -500,7 +500,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     const cleanPhone = (enr.phone || enr.parentPhone).replace(/[^0-9]/g, '');
     const text = encodeURIComponent(
       `Assalam-o-Alaikum ${enr.parentName || enr.studentName},\n\n` +
-      `Al-Noor Quraan Academy has reviewed your admission application for ${enr.studentName} (${enr.courseName}).\n\n` +
+      `Noor-e-Quran Institute has reviewed your admission application for ${enr.studentName} (${enr.courseName}).\n\n` +
       `Preferred Timing: ${enr.timeSlot}\n` +
       `Tutor: ${enr.assignedTutorName || enr.tutorPreference}\n\n` +
       `Please let us know your convenient start date.`
@@ -518,12 +518,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
         <div className="bg-[#043629] text-white px-4 sm:px-6 py-4 flex items-center justify-between border-b border-[#D4A72C]/40 bg-islamic-pattern shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-white p-0.5 shadow-md border border-[#D4A72C]/40 flex items-center justify-center shrink-0">
-              <img src="/logo.webp" alt="Al-Noor Logo" width={40} height={40} loading="lazy" decoding="async" className="w-full h-full object-contain" onError={(e) => { const target = e.currentTarget; target.onerror = null; target.src = '/logo.png'; }} />
+              <img src="/logo.webp" alt="Noor-e-Quran Institute Logo" width={40} height={40} loading="lazy" decoding="async" className="w-full h-full object-contain" onError={(e) => { const target = e.currentTarget; target.onerror = null; target.src = '/logo.png'; }} />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-base sm:text-lg font-heading font-bold text-white">
-                  Al-Noor Academy Management System
+                  Noor-e-Quran Institute Management System
                 </h2>
                 <span className="bg-[#D4A72C]/20 text-[#D4A72C] text-[11px] font-semibold px-2 py-0.5 rounded border border-[#D4A72C]/40 hidden sm:inline">
                   Admin Portal v1.0
@@ -571,7 +571,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
             <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-gray-200 text-center space-y-6">
               
               <div className="w-16 h-16 rounded-2xl bg-white p-1 shadow-md border border-[#D4A72C]/40 flex items-center justify-center mx-auto">
-                <img src="/logo.webp" alt="Al-Noor Logo" width={64} height={64} loading="lazy" decoding="async" className="w-full h-full object-contain" onError={(e) => { const target = e.currentTarget; target.onerror = null; target.src = '/logo.png'; }} />
+                <img src="/logo.webp" alt="Noor-e-Quran Institute Logo" width={64} height={64} loading="lazy" decoding="async" className="w-full h-full object-contain" onError={(e) => { const target = e.currentTarget; target.onerror = null; target.src = '/logo.png'; }} />
               </div>
 
               <div>

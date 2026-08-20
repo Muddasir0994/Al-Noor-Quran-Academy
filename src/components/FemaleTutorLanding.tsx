@@ -74,7 +74,7 @@ export const FemaleTutorLanding: React.FC<FemaleTutorLandingProps> = ({
                 </button>
 
                 <a
-                  href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Al-Noor%20Quran%20Academy.%20I%20am%20inquiring%20about%20a%20certified%20Female%20Quran%20Teacher."
+                  href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute.%20I%20am%20inquiring%20about%20a%20certified%20Female%20Quran%20Teacher."
                   target="_blank"
                   rel="noreferrer"
                   className="px-5 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-sm transition-all shadow-md flex items-center gap-2"
@@ -89,7 +89,7 @@ export const FemaleTutorLanding: React.FC<FemaleTutorLandingProps> = ({
             <div className="lg:col-span-5 relative group rounded-3xl overflow-hidden border-2 border-[#D4A72C]/40 shadow-2xl bg-emerald-950">
               <img
                 src="/images/female-program-banner.webp"
-                alt="Muslim sister learning Quran online in private comfortable environment at Al-Noor Academy"
+                alt="Muslim sister learning Quran online in private comfortable environment at Noor-e-Quran Institute"
                 width={1200}
                 height={800}
                 loading="lazy"

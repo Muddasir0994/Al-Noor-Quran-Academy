@@ -436,7 +436,7 @@ export const ClassroomStudio: React.FC<ClassroomStudioProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-base sm:text-lg font-heading font-bold text-white tracking-wide">
-                AL-NOOR DIGITAL QURAN STUDIO & CLASSROOM
+                NOOR-E-QURAN DIGITAL QURAN STUDIO & CLASSROOM
               </h1>
               <span className="bg-[#D4A72C] text-[#064E3B] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">
                 Live Interactive Lab
@@ -1208,7 +1208,7 @@ export const ClassroomStudio: React.FC<ClassroomStudioProps> = ({
                       { hex: '#059669', label: 'Ghunnah Green' },
                       { hex: '#0284C7', label: 'Idgham Azure' },
                       { hex: '#9333EA', label: 'Madd Purple' },
-                      { hex: '#D4A72C', label: 'Al-Noor Gold' }
+                      { hex: '#D4A72C', label: 'Noor-e-Quran Gold' }
                     ].map(c => (
                       <button
                         key={c.hex}

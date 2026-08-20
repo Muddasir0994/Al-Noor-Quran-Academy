@@ -1,5 +1,5 @@
 /**
- * Centralized Image Asset Configuration for Al-Noor Quran Academy
+ * Centralized Image Asset Configuration for Noor-e-Quran Institute
  * 
  * Optimized WebP format with high-fidelity compression for maximum performance.
  * All image assets reside in `/public/images/`.

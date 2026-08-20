@@ -427,7 +427,7 @@ function AppContent() {
             <div className="flex flex-col items-center gap-3">
               <div className="w-10 h-10 border-3 border-[#064E3B] border-t-transparent rounded-full animate-spin"></div>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest">
-                Loading Al-Noor Portal...
+                Loading Noor-e-Quran Portal...
               </p>
             </div>
           </div>
@@ -710,7 +710,7 @@ function AppContent() {
                     <span className="text-white">About Us</span>
                   </div>
                   <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                    About Al-Noor Quran Academy
+                    About Noor-e-Quran Institute
                   </h1>
                   <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
                     Dedicated to providing accessible, authentic, and certified Quranic education to families worldwide.

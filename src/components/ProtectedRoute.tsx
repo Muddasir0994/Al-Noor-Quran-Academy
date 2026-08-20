@@ -30,7 +30,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
           Verifying Academy Credentials...
         </p>
         <p className="text-xs text-gray-500 mt-1">
-          Securing session with Al-Noor Academy authentication servers.
+          Securing session with Noor-e-Quran Institute authentication servers.
         </p>
       </div>
     );

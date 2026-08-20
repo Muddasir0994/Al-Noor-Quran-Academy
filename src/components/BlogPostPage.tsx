@@ -22,7 +22,7 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onNavigate, on
       setPost(data);
 
       if (data) {
-        document.title = `${data.title} | Al-Noor Quran Academy Blog`;
+        document.title = `${data.title} | Noor-e-Quran Institute Blog`;
         const meta = document.querySelector('meta[name="description"]');
         if (meta) meta.setAttribute('content', data.metaDescription || '');
 

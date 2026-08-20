@@ -89,7 +89,7 @@ export const MethodologySection: React.FC<MethodologySectionProps> = ({
               "Every Student Learns at Their Own Pace" — Slow Learner Support
             </h2>
             <p className="text-emerald-100 text-sm sm:text-base mt-4 leading-relaxed">
-              Some students struggle with specific letter pronunciations (Makharij), memory retention, or reading speed. At Al-Noor Academy, <strong>no student is ever rushed or reprimanded</strong>. Our tutors adapt their pace entirely to the student's unique learning rhythm.
+              Some students struggle with specific letter pronunciations (Makharij), memory retention, or reading speed. At Noor-e-Quran Institute, <strong>no student is ever rushed or reprimanded</strong>. Our tutors adapt their pace entirely to the student's unique learning rhythm.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">

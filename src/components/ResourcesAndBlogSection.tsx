@@ -48,7 +48,7 @@ export const ResourcesAndBlogSection: React.FC<ResourcesAndBlogSectionProps> = (
               What Our Global Community Says
             </h2>
             <p className="text-gray-600 mt-2 text-sm sm:text-base max-w-2xl mx-auto">
-              Real feedback from parents, sisters, and adult students learning with Al-Noor Academy worldwide.
+              Real feedback from parents, sisters, and adult students learning with Noor-e-Quran Institute worldwide.
             </p>
           </div>
 

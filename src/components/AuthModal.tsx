@@ -309,7 +309,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         courseName
       });
 
-      setSuccessMsg(`✨ Verification Successful! Welcome to Al-Noor Academy, ${newUser.displayName}.`);
+      setSuccessMsg(`✨ Verification Successful! Welcome to Noor-e-Quran Institute, ${newUser.displayName}.`);
       setTimeout(() => {
         onSuccess?.('student');
         onClose();
@@ -370,7 +370,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <ShieldCheck className="w-5 h-5 text-amber-300" weight="duotone" />
             </div>
             <div>
-              <h2 className="text-base font-bold tracking-tight text-white">Al-Noor Quraan Portal</h2>
+              <h2 className="text-base font-bold tracking-tight text-white">Noor-e-Quran Institute Portal</h2>
               <p className="text-xs text-emerald-300 font-arabic tracking-wide">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
             </div>
           </div>

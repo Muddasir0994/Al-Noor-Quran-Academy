@@ -37,9 +37,9 @@ async function sendAdminNotificationEmail(subject: string, htmlContent: string) 
     });
 
     await transporter.sendMail({
-      from: `"Al-Noor Quraan Academy" <${adminEmail}>`,
+      from: `"Noor-e-Quran Institute" <${adminEmail}>`,
       to: adminEmail,
-      subject: `[Al-Noor Academy Alert] ${subject}`,
+      subject: `[Noor-e-Quran Alert] ${subject}`,
       html: htmlContent
     });
     console.log(`Notification email sent to ${adminEmail}: ${subject}`);
@@ -51,7 +51,7 @@ async function sendAdminNotificationEmail(subject: string, htmlContent: string) 
 // Helper to send OTP directly to Student's Email
 async function sendStudentOtpEmail(toEmail: string, studentName: string, otpCode: string) {
   try {
-    const adminEmail = process.env.ADMIN_EMAIL || 'info@alnoorquranacademy.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'contact.noorequraninstitute@gmail.com';
     const emailPassRaw = process.env.EMAIL_PASS || '';
     const emailPass = emailPassRaw.replace(/\s+/g, '');
 
@@ -69,13 +69,13 @@ async function sendStudentOtpEmail(toEmail: string, studentName: string, otpCode
     });
 
     await transporter.sendMail({
-      from: `"Al-Noor Quraan Academy" <${adminEmail}>`,
+      from: `"Noor-e-Quran Institute" <${adminEmail}>`,
       to: toEmail,
-      subject: `Your Al-Noor Quraan Academy Verification OTP Code: ${otpCode}`,
+      subject: `Your Noor-e-Quran Institute Verification OTP Code: ${otpCode}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e0e0e0; border-radius: 12px; background-color: #ffffff;">
           <div style="text-align: center; margin-bottom: 20px;">
-            <h2 style="color: #064E3B; margin: 0; font-size: 24px;">Al-Noor Quraan Academy</h2>
+            <h2 style="color: #064E3B; margin: 0; font-size: 24px;">Noor-e-Quran Institute</h2>
             <p style="color: #666; font-size: 13px; margin-top: 4px;">Online Quran Learning & Islamic Education</p>
           </div>
           <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 20px;">
@@ -88,7 +88,7 @@ async function sendStudentOtpEmail(toEmail: string, studentName: string, otpCode
           </div>
           <p style="color: #9ca3af; font-size: 11px; text-align: center; margin: 0;">
             If you did not request this OTP, please ignore this email.<br/>
-            Al-Noor Quraan Academy • Helpline: +92 327 4496163
+            Noor-e-Quran Institute • Helpline: +92 327 4496163
           </p>
         </div>
       `
@@ -169,7 +169,7 @@ app.get('/api/health', (req, res) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.status(200).json({
     status: 'ok',
-    message: 'Al-Noor Quran Academy server is healthy and active.',
+    message: 'Noor-e-Quran Institute server is healthy and active.',
     uptimeSeconds: Math.floor(process.uptime()),
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development'
@@ -298,11 +298,11 @@ app.post('/api/auth/send-phone-otp', (req, res) => {
       attempts: 0
     });
 
-    console.log(`[AL-NOOR OTP] Secure OTP created for student ${studentName || 'Student'} (${cleanPhone}, ${email || 'No email'})`);
+    console.log(`[NOOR-E-QURAN OTP] Secure OTP created for student ${studentName || 'Student'} (${cleanPhone}, ${email || 'No email'})`);
 
     // Prepare direct WhatsApp verification link for the student's number
     const waText = encodeURIComponent(
-      `Assalam-o-Alaikum ${studentName || ''}! Your Al-Noor Quraan Academy verification OTP code is: *${otpCode}*.\n\nPlease enter this code to verify your phone number and complete your student registration.`
+      `Assalam-o-Alaikum ${studentName || ''}! Your Noor-e-Quran Institute verification OTP code is: *${otpCode}*.\n\nPlease enter this code to verify your phone number and complete your student registration.`
     );
     const whatsappLink = `https://wa.me/${cleanPhone.replace('+', '')}?text=${waText}`;
 
@@ -387,7 +387,7 @@ app.post('/api/auth/verify-phone-otp', (req, res) => {
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', academy: 'Al-Noor Quraan Academy', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', academy: 'Noor-e-Quran Institute', timestamp: new Date().toISOString() });
 });
 
 // Courses
@@ -512,7 +512,7 @@ app.post('/api/book-trial', (req, res) => {
     });
 
     const waText = encodeURIComponent(
-      `Assalam-o-Alaikum Al-Noor Quraan Academy. I have registered for a 3-Day Free Trial.\n\n` +
+      `Assalam-o-Alaikum Noor-e-Quran Institute. I have registered for a 3-Day Free Trial.\n\n` +
       `*Student Name:* ${lead.studentName}\n` +
       `*Course:* ${lead.courseName}\n` +
       `*Tutor Preference:* ${lead.tutorGender}\n` +
@@ -525,7 +525,7 @@ app.post('/api/book-trial', (req, res) => {
     // Send email alert to admin
     sendAdminNotificationEmail(
       `New 3-Day Free Trial: ${lead.studentName} (${lead.courseName})`,
-      `<h2>New Free Trial Request - Al-Noor Quraan Academy</h2>
+      `<h2>New Free Trial Request - Noor-e-Quran Institute</h2>
       <p><strong>Student Name:</strong> ${lead.studentName}</p>
       <p><strong>Parent/Guardian:</strong> ${lead.parentName || 'N/A'}</p>
       <p><strong>WhatsApp / Phone:</strong> ${lead.phone}</p>
@@ -605,7 +605,7 @@ app.post('/api/enroll', (req, res) => {
     });
 
     const waText = encodeURIComponent(
-      `Assalam-o-Alaikum Al-Noor Quraan Academy. I have submitted an Enrollment Application.\n\n` +
+      `Assalam-o-Alaikum Noor-e-Quran Institute. I have submitted an Enrollment Application.\n\n` +
       `*Student Name:* ${application.studentName}\n` +
       `*Course:* ${application.courseName}\n` +
       `*Package:* ${application.packageName}\n` +
@@ -617,7 +617,7 @@ app.post('/api/enroll', (req, res) => {
 
     sendAdminNotificationEmail(
       `New Student Enrollment: ${application.studentName} (${application.courseName})`,
-      `<h2>New Enrollment Application - Al-Noor Quraan Academy</h2>
+      `<h2>New Enrollment Application - Noor-e-Quran Institute</h2>
       <p><strong>Student Name:</strong> ${application.studentName}</p>
       <p><strong>Parent/Guardian:</strong> ${application.parentName || 'N/A'}</p>
       <p><strong>WhatsApp / Phone:</strong> ${application.phone}</p>
@@ -665,7 +665,7 @@ app.post('/api/contact', (req, res) => {
 
     sendAdminNotificationEmail(
       `New Inquiry: ${msg.name} - ${msg.subject}`,
-      `<h2>New Contact Inquiry - Al-Noor Quraan Academy</h2>
+      `<h2>New Contact Inquiry - Noor-e-Quran Institute</h2>
       <p><strong>Name:</strong> ${msg.name}</p>
       <p><strong>WhatsApp / Phone:</strong> ${msg.phone || 'N/A'}</p>
       <p><strong>Country:</strong> ${msg.country || 'N/A'}</p>

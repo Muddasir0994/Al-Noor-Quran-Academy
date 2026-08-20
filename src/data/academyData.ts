@@ -561,7 +561,7 @@ export const INITIAL_TESTIMONIALS: Testimonial[] = [
     countryFlag: '🇬🇧',
     courseName: 'Noorani Qaida & Nazra with Tajweed',
     rating: 5,
-    comment: 'Living in the UK, finding reliable, punctual Quran teachers who speak fluent English was our biggest struggle. Al-Noor Academy matched us with Ustadha Maryam, and in just 4 months my children progressed from basic letters to reading Juz Amma smoothly! The 1-on-1 attention is unmatched.',
+    comment: 'Living in the UK, finding reliable, punctual Quran teachers who speak fluent English was our biggest struggle. Noor-e-Quran Institute matched us with Ustadha Maryam, and in just 4 months my children progressed from basic letters to reading Juz Amma smoothly! The 1-on-1 attention is unmatched.',
     date: 'February 2026',
     status: 'published'
   },
@@ -585,7 +585,7 @@ export const INITIAL_TESTIMONIALS: Testimonial[] = [
     countryFlag: '🇨🇦',
     courseName: 'Quran Memorization / Hifz',
     rating: 5,
-    comment: 'The Manzil and Sabqi tracking system at Al-Noor Academy is exceptional. Qari Bilal checks daily homework and sends monthly progress reports. Hamza has already memorized 6 Paras with rock-solid retention.',
+    comment: 'The Manzil and Sabqi tracking system at Noor-e-Quran Institute is exceptional. Qari Bilal checks daily homework and sends monthly progress reports. Hamza has already memorized 6 Paras with rock-solid retention.',
     date: 'January 2026',
     status: 'published'
   },
@@ -597,7 +597,7 @@ export const INITIAL_TESTIMONIALS: Testimonial[] = [
     countryFlag: '🇦🇺',
     courseName: 'Quran for Kids & Slow Learners Support',
     rating: 5,
-    comment: 'Daniyal is quite shy and used to get anxious during group Islamic classes. Al-Noor’s slow learner approach gave him confidence. His tutor teaches with games, rewards, and zero pressure. MashAllah great service!',
+    comment: 'Daniyal is quite shy and used to get anxious during group Islamic classes. Noor-e-Quran’s slow learner approach gave him confidence. His tutor teaches with games, rewards, and zero pressure. MashAllah great service!',
     date: 'December 2025',
     status: 'published'
   }
@@ -648,7 +648,7 @@ By practicing 1-on-1 with a qualified teacher, these rules transition from theor
 A 30-minute focused 1-on-1 class 3 to 4 days a week is far more effective for children than an exhausting 2-hour marathon. Young attention spans thrive on short, energetic sessions.
 
 ### 2. Choose Positive Reinforcement
-Celebrate every milestone: completing the Arabic alphabet, finishing their first Qaida lesson, or reciting Surah Al-Fatiha without errors. At Al-Noor Academy, our tutors use digital stars, verbal praise, and certificates of completion.
+Celebrate every milestone: completing the Arabic alphabet, finishing their first Qaida lesson, or reciting Surah Al-Fatiha without errors. At Noor-e-Quran Institute, our tutors use digital stars, verbal praise, and certificates of completion.
 
 ### 3. Let Them Learn in Their Comfort Zone
 Online 1-on-1 lessons from home remove the social anxiety of crowded classrooms and eliminate tiring commutes, allowing kids to learn relaxed beside their parents.`,

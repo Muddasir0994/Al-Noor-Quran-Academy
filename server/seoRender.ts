@@ -15,7 +15,7 @@ export interface PageMeta {
 
 export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
   '/': {
-    title: 'Al-Noor Quran Academy | 1-on-1 Quran Classes',
+    title: 'Noor-e-Quran Institute | 1-on-1 Quran Classes',
     description: 'Learn Quran online with qualified male & female teachers. 1-on-1 Tajweed classes for kids and adults worldwide with flexible timings and a free trial.',
     canonical: `${ACADEMY_BASE_URL}/`,
     ogType: 'website',
@@ -23,7 +23,7 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     breadcrumbs: [{ name: 'Home', item: `${ACADEMY_BASE_URL}/` }]
   },
   '/online-quran-classes': {
-    title: 'Online Quran Courses & Curriculum | Al-Noor Quran Academy',
+    title: 'Online Quran Courses & Curriculum | Noor-e-Quran Institute',
     description: 'Explore comprehensive online Quran courses: Noorani Qaida for beginners, Nazra Quran reading, Tajweed rules, and Hifz memorization with live 1-on-1 instruction.',
     canonical: `${ACADEMY_BASE_URL}/online-quran-classes`,
     ogType: 'website',
@@ -82,7 +82,7 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/islamic-studies': {
-    title: 'Islamic Studies for Kids & Adults Online | Al-Noor Quran Academy',
+    title: 'Islamic Studies for Kids & Adults Online | Noor-e-Quran Institute',
     description: 'Learn essential Islamic fundamentals: Daily Masnoon Duas, 6 Kalmas, Step-by-Step Salah (Prayer), Seerah, and Hadith stories.',
     canonical: `${ACADEMY_BASE_URL}/islamic-studies`,
     ogType: 'website',
@@ -126,7 +126,7 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/pricing': {
-    title: 'Affordable Online Quran Fee Packages | Al-Noor Quran Academy',
+    title: 'Affordable Online Quran Fee Packages | Noor-e-Quran Institute',
     description: 'Transparent and affordable monthly Quran tuition plans. Multi-currency support (PKR, USD, GBP, CAD, AUD) with family discounts and 3-day free trial.',
     canonical: `${ACADEMY_BASE_URL}/pricing`,
     ogType: 'website',
@@ -137,7 +137,7 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/free-trial': {
-    title: 'Book a 3-Day Free Trial Online Quran Class | Al-Noor Academy',
+    title: 'Book a 3-Day Free Trial Online Quran Class | Noor-e-Quran Institute',
     description: 'Start learning Quran online today with a 100% free 3-day trial. No credit card required. Choose your preferred tutor and convenient timing.',
     canonical: `${ACADEMY_BASE_URL}/free-trial`,
     ogType: 'website',
@@ -148,7 +148,7 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/faculty': {
-    title: 'Our Certified Quran Faculty & Scholars | Al-Noor Quran Academy',
+    title: 'Our Certified Quran Faculty & Scholars | Noor-e-Quran Institute',
     description: 'Meet our qualified male and female Islamic scholars and certified Huffaz with extensive online teaching experience.',
     canonical: `${ACADEMY_BASE_URL}/faculty`,
     ogType: 'website',
@@ -159,8 +159,8 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/about-us': {
-    title: 'About Al-Noor Quran Academy | Mission, Values & Global Education',
-    description: "Learn about Al-Noor Quran Academy's educational mission, verified teaching methodology, and commitment to authentic 1-on-1 online Quran learning.",
+    title: 'About Noor-e-Quran Institute | Mission, Values & Global Education',
+    description: "Learn about Noor-e-Quran Institute's educational mission, verified teaching methodology, and commitment to authentic 1-on-1 online Quran learning.",
     canonical: `${ACADEMY_BASE_URL}/about-us`,
     ogType: 'website',
     ogImage: `${ACADEMY_BASE_URL}/logo.png`,
@@ -181,7 +181,7 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/blog': {
-    title: 'Islamic Educational Blog & Quran Learning Guides | Al-Noor Academy',
+    title: 'Islamic Educational Blog & Quran Learning Guides | Noor-e-Quran Institute',
     description: 'Helpful articles and practical guides on Tajweed rules, Quran memorization routines, Arabic phonetics, and Islamic parenting for Muslim families.',
     canonical: `${ACADEMY_BASE_URL}/blog`,
     ogType: 'website',
@@ -192,7 +192,7 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/blogs': {
-    title: 'Islamic Educational Blog & Quran Learning Guides | Al-Noor Academy',
+    title: 'Islamic Educational Blog & Quran Learning Guides | Noor-e-Quran Institute',
     description: 'Helpful articles and practical guides on Tajweed rules, Quran memorization routines, Arabic phonetics, and Islamic parenting for Muslim families.',
     canonical: `${ACADEMY_BASE_URL}/blog`,
     ogType: 'website',
@@ -203,7 +203,7 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/contact-us': {
-    title: 'Contact Al-Noor Quran Academy | 24/7 WhatsApp & Admission Support',
+    title: 'Contact Noor-e-Quran Institute | 24/7 WhatsApp & Admission Support',
     description: 'Get in touch with our academic coordinators for course inquiries, tutor matching, and class scheduling via WhatsApp (+92 327 4496163) or email.',
     canonical: `${ACADEMY_BASE_URL}/contact-us`,
     ogType: 'website',
@@ -271,7 +271,7 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
   },
   // Application and Portal Pages
   '/portal': {
-    title: 'Student & Tutor Portal | Al-Noor Quran Academy',
+    title: 'Student & Tutor Portal | Noor-e-Quran Institute',
     description: 'Access your online Quran classroom, view class schedules, attendance, assignments, and monthly teacher progress assessments.',
     canonical: `${ACADEMY_BASE_URL}/portal`,
     ogType: 'website',
@@ -282,8 +282,8 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/login': {
-    title: 'Sign In | Al-Noor Quran Academy Portal',
-    description: 'Log into your student or teacher account at Al-Noor Quran Academy.',
+    title: 'Sign In | Noor-e-Quran Institute Portal',
+    description: 'Log into your student or teacher account at Noor-e-Quran Institute.',
     canonical: `${ACADEMY_BASE_URL}/login`,
     ogType: 'website',
     ogImage: `${ACADEMY_BASE_URL}/logo.png`,
@@ -293,7 +293,7 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/register': {
-    title: 'Student Registration & Enrollment | Al-Noor Quran Academy',
+    title: 'Student Registration & Enrollment | Noor-e-Quran Institute',
     description: 'Register for 1-on-1 online Quran classes with certified male or female tutors. Fast verification and flexible scheduling.',
     canonical: `${ACADEMY_BASE_URL}/register`,
     ogType: 'website',
@@ -304,8 +304,8 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/admin': {
-    title: 'Academy Admin Dashboard | Al-Noor Quran Academy',
-    description: 'Secure administration portal for Al-Noor Quran Academy management.',
+    title: 'Academy Admin Dashboard | Noor-e-Quran Institute',
+    description: 'Secure administration portal for Noor-e-Quran Institute management.',
     canonical: `${ACADEMY_BASE_URL}/admin`,
     ogType: 'website',
     ogImage: `${ACADEMY_BASE_URL}/logo.png`,
@@ -315,8 +315,8 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/admin-portal': {
-    title: 'Academy Admin Dashboard | Al-Noor Quran Academy',
-    description: 'Secure administration portal for Al-Noor Quran Academy management.',
+    title: 'Academy Admin Dashboard | Noor-e-Quran Institute',
+    description: 'Secure administration portal for Noor-e-Quran Institute management.',
     canonical: `${ACADEMY_BASE_URL}/admin`,
     ogType: 'website',
     ogImage: `${ACADEMY_BASE_URL}/logo.png`,
@@ -326,8 +326,8 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/staff-portal': {
-    title: 'Academy Admin Dashboard | Al-Noor Quran Academy',
-    description: 'Secure administration portal for Al-Noor Quran Academy management.',
+    title: 'Academy Admin Dashboard | Noor-e-Quran Institute',
+    description: 'Secure administration portal for Noor-e-Quran Institute management.',
     canonical: `${ACADEMY_BASE_URL}/admin`,
     ogType: 'website',
     ogImage: `${ACADEMY_BASE_URL}/logo.png`,
@@ -369,7 +369,7 @@ export function resolveRouteMetadata(rawPath: string): { meta: PageMeta | null; 
     if (course) {
       const canonical = `${ACADEMY_BASE_URL}/courses/${course.slug || course.id}`;
       const meta: PageMeta = {
-        title: `${course.name} Online Course with Tajweed | Al-Noor Quran Academy`,
+        title: `${course.name} Online Course with Tajweed | Noor-e-Quran Institute`,
         description: course.shortDescription || `Learn ${course.name} online with 1-on-1 certified tutors. Flexible timings and 3-day free trial.`,
         canonical,
         ogType: 'article',
@@ -386,7 +386,7 @@ export function resolveRouteMetadata(rawPath: string): { meta: PageMeta | null; 
           description: course.description || course.shortDescription,
           provider: {
             '@type': 'EducationalOrganization',
-            name: 'Al-Noor Quran Academy',
+            name: 'Noor-e-Quran Institute',
             sameAs: ACADEMY_BASE_URL
           },
           timeRequired: course.duration || '3-6 Months',
@@ -410,7 +410,7 @@ export function resolveRouteMetadata(rawPath: string): { meta: PageMeta | null; 
     if (article) {
       const canonical = `${ACADEMY_BASE_URL}/blog/${article.slug || article.id}`;
       const meta: PageMeta = {
-        title: `${article.title} | Al-Noor Quran Academy Blog`,
+        title: `${article.title} | Noor-e-Quran Institute Blog`,
         description: article.summary || `Read comprehensive educational guide: ${article.title}. Practical advice for Muslim learners and parents.`,
         canonical,
         ogType: 'article',
@@ -427,11 +427,11 @@ export function resolveRouteMetadata(rawPath: string): { meta: PageMeta | null; 
           description: article.summary,
           author: {
             '@type': article.author ? 'Person' : 'EducationalOrganization',
-            name: article.author || 'Al-Noor Quran Academy Editorial Team'
+            name: article.author || 'Noor-e-Quran Institute Editorial Team'
           },
           publisher: {
             '@type': 'EducationalOrganization',
-            name: 'Al-Noor Quran Academy',
+            name: 'Noor-e-Quran Institute',
             logo: {
               '@type': 'ImageObject',
               url: `${ACADEMY_BASE_URL}/logo.png`
@@ -533,7 +533,7 @@ export function generateDynamicSitemapXml(): string {
  * Generates search-engine compliant robots.txt with crawling guidelines
  */
 export function generateRobotsTxt(): string {
-  return `# Robots.txt for Al-Noor Quran Academy (${ACADEMY_BASE_URL})
+  return `# Robots.txt for Noor-e-Quran Institute (${ACADEMY_BASE_URL})
 User-agent: *
 Allow: /
 Allow: /online-quran-classes
@@ -600,7 +600,7 @@ export function generateRoutePrerenderHtml(routePath: string, meta: PageMeta): s
       <div id="ssr-container" class="ssr-content">
         <header style="background:#064E3B;color:#ffffff;padding:24px 20px;text-align:center;">
           <nav style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-            <a href="/" style="color:#D4A72C;font-weight:800;font-size:20px;text-decoration:none;">Al-Noor Quran Academy</a>
+            <a href="/" style="color:#D4A72C;font-weight:800;font-size:20px;text-decoration:none;">Noor-e-Quran Institute</a>
             <div style="display:flex;gap:16px;flex-wrap:wrap;">
               <a href="/online-quran-classes" style="color:#ffffff;text-decoration:none;">All Courses</a>
               <a href="/noorani-qaida" style="color:#ffffff;text-decoration:none;">Noorani Qaida</a>
@@ -631,7 +631,7 @@ export function generateRoutePrerenderHtml(routePath: string, meta: PageMeta): s
             </section>
 
             <section style="margin-bottom:30px;">
-              <h2 style="font-size:22px;color:#064E3B;">Why Enroll in This Course at Al-Noor Academy?</h2>
+              <h2 style="font-size:22px;color:#064E3B;">Why Enroll in This Course at Noor-e-Quran Institute?</h2>
               <p>Our online ${course.name} provides students with individual one-on-one attention from certified tutors who specialize in Makharij, Tajweed rules, and interactive pedagogy. Whether starting from the basics or mastering advanced recitation, each student progresses at their own comfortable pace.</p>
               <p>Classes are held over Zoom or Google Meet with screen sharing of high-resolution digital Quran pages, ensuring clear visual and auditory learning.</p>
             </section>
@@ -656,7 +656,7 @@ export function generateRoutePrerenderHtml(routePath: string, meta: PageMeta): s
       <div id="ssr-container" class="ssr-content">
         <header style="background:#064E3B;color:#ffffff;padding:24px 20px;text-align:center;">
           <nav style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-            <a href="/" style="color:#D4A72C;font-weight:800;font-size:20px;text-decoration:none;">Al-Noor Quran Academy</a>
+            <a href="/" style="color:#D4A72C;font-weight:800;font-size:20px;text-decoration:none;">Noor-e-Quran Institute</a>
             <div style="display:flex;gap:16px;flex-wrap:wrap;">
               <a href="/blog" style="color:#ffffff;text-decoration:none;">Blog Index</a>
               <a href="/online-quran-classes" style="color:#ffffff;text-decoration:none;">Courses</a>
@@ -667,7 +667,7 @@ export function generateRoutePrerenderHtml(routePath: string, meta: PageMeta): s
 
         <main style="max-width:900px;margin:30px auto;padding:0 20px;font-family:system-ui,-apple-system,sans-serif;color:#17201B;line-height:1.8;">
           <article>
-            <span style="color:#6B7280;font-size:14px;">Published by ${article.author || 'Al-Noor Academy Academic Team'} • ${article.publishedAt || '2026-01-15'}</span>
+            <span style="color:#6B7280;font-size:14px;">Published by ${article.author || 'Noor-e-Quran Institute Academic Team'} • ${article.publishedAt || '2026-01-15'}</span>
             <h1 style="font-size:32px;color:#064E3B;margin-top:8px;margin-bottom:16px;">${article.title}</h1>
             <p style="font-size:18px;color:#4B5563;font-weight:500;margin-bottom:24px;">${article.summary}</p>
             <hr style="border:0;border-top:1px solid #E5E7EB;margin:24px 0;" />
@@ -692,7 +692,7 @@ export function generateRoutePrerenderHtml(routePath: string, meta: PageMeta): s
     <header style="background:#064E3B;color:#ffffff;padding:16px 20px;border-bottom:3px solid #D4A72C;">
       <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
         <a href="/" style="color:#D4A72C;font-weight:800;font-size:22px;text-decoration:none;display:flex;align-items:center;gap:8px;">
-          <span>Al-Noor Quran Academy</span>
+          <span>Noor-e-Quran Institute</span>
         </a>
         <nav style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;font-size:15px;font-weight:500;">
           <a href="/online-quran-classes" style="color:#ffffff;text-decoration:none;">Quran Courses</a>
@@ -782,11 +782,11 @@ export function generateRoutePrerenderHtml(routePath: string, meta: PageMeta): s
         </div>
       </section>
 
-      <!-- Section: Why Choose Al-Noor Academy -->
+      <!-- Section: Why Choose Noor-e-Quran Institute -->
       <section style="background:#ffffff;border:1px solid #E5E7EB;border-radius:16px;padding:40px 30px;margin-bottom:50px;">
-        <h2 style="font-size:28px;color:#064E3B;margin-top:0;margin-bottom:16px;">Why Choose Al-Noor Quran Academy?</h2>
+        <h2 style="font-size:28px;color:#064E3B;margin-top:0;margin-bottom:16px;">Why Choose Noor-e-Quran Institute?</h2>
         <p style="color:#4B5563;font-size:16px;line-height:1.7;margin-bottom:24px;">
-          Finding a trustworthy, qualified, and patient Quran tutor can be challenging for Muslim families living abroad in the UK, USA, Canada, Australia, Europe, and the Middle East. Al-Noor Quran Academy bridges this gap by offering live one-on-one virtual classrooms that fit seamlessly into busy modern schedules.
+          Finding a trustworthy, qualified, and patient Quran tutor can be challenging for Muslim families living abroad in the UK, USA, Canada, Australia, Europe, and the Middle East. Noor-e-Quran Institute bridges this gap by offering live one-on-one virtual classrooms that fit seamlessly into busy modern schedules.
         </p>
 
         <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:20px;">
@@ -876,9 +876,9 @@ export function generateRoutePrerenderHtml(routePath: string, meta: PageMeta): s
     <footer style="background:#043629;color:#ffffff;padding:40px 20px 24px;border-top:1px solid #D4A72C;">
       <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:30px;margin-bottom:30px;">
         <div>
-          <h3 style="color:#D4A72C;font-size:18px;margin-top:0;">Al-Noor Quran Academy</h3>
+          <h3 style="color:#D4A72C;font-size:18px;margin-top:0;">Noor-e-Quran Institute</h3>
           <p style="color:#9CA3AF;font-size:14px;line-height:1.6;">Dedicated to providing authentic Quranic education to Muslim children and adults worldwide with qualified male and female tutors.</p>
-          <p style="color:#D4A72C;font-weight:700;font-size:14px;">WhatsApp: +92 327 4496163<br>Email: info@alnoorquranacademy.com</p>
+          <p style="color:#D4A72C;font-weight:700;font-size:14px;">WhatsApp: +92 327 4496163<br>Email: contact.noorequraninstitute@gmail.com</p>
         </div>
         <div>
           <h4 style="color:#ffffff;font-size:16px;margin-top:0;margin-bottom:12px;">Quran Courses</h4>
@@ -903,7 +903,7 @@ export function generateRoutePrerenderHtml(routePath: string, meta: PageMeta): s
         <div>
           <h4 style="color:#ffffff;font-size:16px;margin-top:0;margin-bottom:12px;">Academy Information</h4>
           <ul style="list-style:none;padding:0;margin:0;font-size:14px;line-height:2;">
-            <li><a href="/about-us" style="color:#9CA3AF;text-decoration:none;">About Al-Noor Academy</a></li>
+            <li><a href="/about-us" style="color:#9CA3AF;text-decoration:none;">About Noor-e-Quran Institute</a></li>
             <li><a href="/faq" style="color:#9CA3AF;text-decoration:none;">FAQs & Support</a></li>
             <li><a href="/blog" style="color:#9CA3AF;text-decoration:none;">Islamic Articles & Blog</a></li>
             <li><a href="/contact-us" style="color:#9CA3AF;text-decoration:none;">Contact & Admissions</a></li>
@@ -912,7 +912,7 @@ export function generateRoutePrerenderHtml(routePath: string, meta: PageMeta): s
         </div>
       </div>
       <div style="border-top:1px solid #1F2937;padding-top:20px;text-align:center;color:#6B7280;font-size:13px;">
-        © 2026 Al-Noor Quran Academy. All rights reserved. Registered Islamic Education Institution.
+        © 2026 Noor-e-Quran Institute. All rights reserved. Registered Islamic Education Institution.
       </div>
     </footer>
   </div>`;
@@ -1003,7 +1003,7 @@ export function generate404Html(): string {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>404 - Page Not Found | Al-Noor Quran Academy</title>
+    <title>404 - Page Not Found | Noor-e-Quran Institute</title>
     <meta name="robots" content="noindex, follow" />
     <link rel="icon" type="image/png" href="/logo.png" />
     <style>

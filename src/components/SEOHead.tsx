@@ -29,7 +29,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     let extraSchema: any = null;
 
     if (inspectCourse) {
-      title = `${inspectCourse.name} Online Course with Tajweed | Al-Noor Quran Academy`;
+      title = `${inspectCourse.name} Online Course with Tajweed | Noor-e-Quran Institute`;
       description = inspectCourse.shortDescription || `Learn ${inspectCourse.name} with 1-on-1 certified male and female tutors. Flexible timings and 3-day free trial.`;
       canonical = `${ACADEMY_BASE_URL}/courses/${inspectCourse.slug || inspectCourse.id}`;
       ogType = 'article';
@@ -46,7 +46,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
         description: inspectCourse.description || inspectCourse.shortDescription,
         provider: {
           '@type': 'EducationalOrganization',
-          name: 'Al-Noor Quran Academy',
+          name: 'Noor-e-Quran Institute',
           sameAs: ACADEMY_BASE_URL
         },
         timeRequired: inspectCourse.duration || '3-6 Months',
@@ -60,7 +60,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
         }
       };
     } else if (readingArticle) {
-      title = `${readingArticle.title} | Al-Noor Quran Academy Blog`;
+      title = `${readingArticle.title} | Noor-e-Quran Institute Blog`;
       description = readingArticle.summary || `Read complete educational guide: ${readingArticle.title}. Practical advice for Muslim learners and parents.`;
       canonical = `${ACADEMY_BASE_URL}/blog/${readingArticle.slug || readingArticle.id}`;
       ogType = 'article';
@@ -77,11 +77,11 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
         description: readingArticle.summary,
         author: {
           '@type': readingArticle.author ? 'Person' : 'EducationalOrganization',
-          name: readingArticle.author || 'Al-Noor Quran Academy Editorial Team'
+          name: readingArticle.author || 'Noor-e-Quran Institute Editorial Team'
         },
         publisher: {
           '@type': 'EducationalOrganization',
-          name: 'Al-Noor Quran Academy',
+          name: 'Noor-e-Quran Institute',
           logo: {
             '@type': 'ImageObject',
             url: `${ACADEMY_BASE_URL}/logo.png`
@@ -139,7 +139,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     updateOrCreateMeta('property', 'og:url', canonical);
     updateOrCreateMeta('property', 'og:type', ogType);
     updateOrCreateMeta('property', 'og:image', ogImage);
-    updateOrCreateMeta('property', 'og:site_name', 'Al-Noor Quran Academy');
+    updateOrCreateMeta('property', 'og:site_name', 'Noor-e-Quran Institute');
     updateOrCreateMeta('property', 'og:locale', 'en_US');
 
     updateOrCreateMeta('name', 'twitter:card', 'summary_large_image');

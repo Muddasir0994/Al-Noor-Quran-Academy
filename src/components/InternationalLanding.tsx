@@ -255,7 +255,7 @@ export const InternationalLanding: React.FC<InternationalLandingProps> = ({
               </button>
 
               <a
-                href={`https://wa.me/923274496163?text=Assalam-o-Alaikum%20Al-Noor%20Quran%20Academy.%20I%20am%20inquiring%20for%20classes%20in%20${encodeURIComponent(data.name)}.`}
+                href={`https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute.%20I%20am%20inquiring%20for%20classes%20in%20${encodeURIComponent(data.name)}.`}
                 target="_blank"
                 rel="noreferrer"
                 className="px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-sm transition-all shadow-md flex items-center gap-2"

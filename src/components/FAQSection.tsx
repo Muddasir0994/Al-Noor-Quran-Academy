@@ -84,7 +84,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenTrial }) => {
 
             <div className="space-y-3">
               <a
-                href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Al-Noor%20Quraan%20Academy.%20I%20have%20a%20question%20regarding%20the%20classes."
+                href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute.%20I%20have%20a%20question%20regarding%20the%20classes."
                 target="_blank"
                 rel="noreferrer"
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold bg-[#25D366] text-white hover:bg-[#20bd5a] transition-all shadow-sm"

@@ -16,13 +16,13 @@ export const ACADEMY_BASE_URL = 'https://noorequraninstitute.me';
 export const SEO_PAGE_MAP: Record<string, SEORouteMeta> = {
   home: {
     path: '/',
-    title: 'Al-Noor Quran Academy | 1-on-1 Online Quran Classes with Certified Tutors',
+    title: 'Noor-e-Quran Institute | 1-on-1 Online Quran Classes with Certified Tutors',
     description: 'Learn Quran online with Tajweed from qualified male & female teachers. Personalized 1-on-1 classes for kids and adults worldwide with flexible timings and 3-day free trial.',
     h1: 'Learn Holy Quran with Tajweed From Certified Tutors',
     primaryKeyword: 'Online Quran Classes',
     secondaryKeywords: [
       'Learn Quran Online',
-      'Online Quran Academy',
+      'Online Quran Institute',
       'Quran with Tajweed',
       'Online Quran Tutor',
       'Quran Classes for Kids',
@@ -36,7 +36,7 @@ export const SEO_PAGE_MAP: Record<string, SEORouteMeta> = {
   },
   courses: {
     path: '/online-quran-classes',
-    title: 'Online Quran Courses & Curriculum | Al-Noor Quran Academy',
+    title: 'Online Quran Courses & Curriculum | Noor-e-Quran Institute',
     description: 'Explore comprehensive online Quran courses: Noorani Qaida for beginners, Nazra Quran reading, Tajweed rules, and Hifz memorization with live 1-on-1 instruction.',
     h1: 'Comprehensive Online Quran Learning Programs',
     primaryKeyword: 'Online Quran Courses',
@@ -193,7 +193,7 @@ export const SEO_PAGE_MAP: Record<string, SEORouteMeta> = {
   },
   packages: {
     path: '/pricing',
-    title: 'Affordable Online Quran Fee Packages | Al-Noor Quran Academy',
+    title: 'Affordable Online Quran Fee Packages | Noor-e-Quran Institute',
     description: 'Transparent and affordable monthly Quran tuition plans. Multi-currency support (PKR, USD, GBP, CAD, AUD) with family discounts and 3-day free trial.',
     h1: 'Transparent Tuition & Class Packages',
     primaryKeyword: 'Affordable Online Quran Classes',
@@ -212,7 +212,7 @@ export const SEO_PAGE_MAP: Record<string, SEORouteMeta> = {
   },
   tutors: {
     path: '/faculty',
-    title: 'Our Certified Quran Faculty & Scholars | Al-Noor Quran Academy',
+    title: 'Our Certified Quran Faculty & Scholars | Noor-e-Quran Institute',
     description: 'Meet our qualified male and female Islamic scholars and certified Huffaz. Verified Ijazah holders with extensive online teaching experience.',
     h1: 'Certified Male & Female Quran Teachers',
     primaryKeyword: 'Online Quran Teacher',
@@ -231,12 +231,12 @@ export const SEO_PAGE_MAP: Record<string, SEORouteMeta> = {
   },
   about: {
     path: '/about-us',
-    title: 'About Al-Noor Quran Academy | Mission, Values & Global Education',
-    description: 'Learn about Al-Noor Quran Academy\'s educational mission, verified teaching methodology, and commitment to authentic 1-on-1 online Quran learning.',
-    h1: 'About Al-Noor Quran Academy',
-    primaryKeyword: 'Online Quran Academy',
+    title: 'About Noor-e-Quran Institute | Mission, Values & Global Education',
+    description: 'Learn about Noor-e-Quran Institute\'s educational mission, verified teaching methodology, and commitment to authentic 1-on-1 online Quran learning.',
+    h1: 'About Noor-e-Quran Institute',
+    primaryKeyword: 'Online Quran Institute',
     secondaryKeywords: [
-      'About Al-Noor Academy',
+      'About Noor-e-Quran Institute',
       'Quran Teaching Methodology',
       'Islamic Online Education',
       'Trusted Quran Institution'
@@ -269,7 +269,7 @@ export const SEO_PAGE_MAP: Record<string, SEORouteMeta> = {
   },
   articles: {
     path: '/blog',
-    title: 'Islamic Educational Blog & Quran Learning Guides | Al-Noor Academy',
+    title: 'Islamic Educational Blog & Quran Learning Guides | Noor-e-Quran Institute',
     description: 'Helpful articles and practical guides on Tajweed rules, Quran memorization routines, Arabic phonetics, and Islamic parenting for Muslim families.',
     h1: 'Quran Learning Guides & Islamic Articles',
     primaryKeyword: 'Quran Learning Blog',
@@ -288,7 +288,7 @@ export const SEO_PAGE_MAP: Record<string, SEORouteMeta> = {
   },
   blogs: {
     path: '/blog',
-    title: 'Islamic Educational Blog & Quran Learning Guides | Al-Noor Academy',
+    title: 'Islamic Educational Blog & Quran Learning Guides | Noor-e-Quran Institute',
     description: 'Helpful articles and practical guides on Tajweed rules, Quran memorization routines, Arabic phonetics, and Islamic parenting for Muslim families.',
     h1: 'Quran Learning Guides & Islamic Articles',
     primaryKeyword: 'Quran Learning Blog',
@@ -307,7 +307,7 @@ export const SEO_PAGE_MAP: Record<string, SEORouteMeta> = {
   },
   contact: {
     path: '/contact-us',
-    title: 'Contact Al-Noor Quran Academy | 24/7 WhatsApp & Admission Support',
+    title: 'Contact Noor-e-Quran Institute | 24/7 WhatsApp & Admission Support',
     description: 'Get in touch with our academic coordinators for course inquiries, tutor matching, and class scheduling via WhatsApp (+92 327 4496163) or email.',
     h1: 'Contact Our Academic Coordinators',
     primaryKeyword: 'Contact Quran Academy',

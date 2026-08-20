@@ -37,7 +37,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenTrial }) => {
             <span>Excellence In Teaching</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-extrabold text-[#064E3B] tracking-tight">
-            Why Discerning Families Choose Al-Noor
+            Why Discerning Families Choose Noor-e-Quran
           </h2>
           <p className="mt-2 text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
             We combine authentic classical Islamic scholarship with modern, compassionate 1-on-1 digital teaching methods to build genuine Quranic fluency.
@@ -121,11 +121,11 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenTrial }) => {
 
         </div>
 
-        {/* Traditional vs Al-Noor Comparison Matrix */}
+        {/* Traditional vs Noor-e-Quran Comparison Matrix */}
         <div className="mb-14 glass-card-light rounded-3xl p-6 sm:p-10 border border-emerald-950/10 shadow-xs">
           <div className="text-center max-w-2xl mx-auto mb-8">
             <h3 className="text-xl sm:text-2xl font-heading font-extrabold text-[#064E3B]">
-              How Al-Noor Compares to Traditional Madrasas
+              How Noor-e-Quran Compares to Traditional Madrasas
             </h3>
             <p className="text-xs sm:text-sm text-gray-600 mt-1">
               A modern, personalized approach designed for the reality of today's Muslim families.
@@ -138,7 +138,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenTrial }) => {
                 <tr className="border-b-2 border-emerald-900/20 text-gray-500 font-extrabold uppercase text-[11px]">
                   <th className="py-3 px-4">Feature</th>
                   <th className="py-3 px-4 text-red-600/90">Traditional / Group Madrasa</th>
-                  <th className="py-3 px-4 text-[#064E3B] bg-emerald-100/50 rounded-t-xl">Al-Noor Quran Academy</th>
+                  <th className="py-3 px-4 text-[#064E3B] bg-emerald-100/50 rounded-t-xl">Noor-e-Quran Institute</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 font-medium">

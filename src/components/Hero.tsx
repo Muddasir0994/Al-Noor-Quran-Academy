@@ -125,7 +125,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onOpenEnroll, onViewCou
               <div className="relative group rounded-3xl overflow-hidden border-2 border-[#D4A72C]/40 shadow-2xl bg-emerald-950 aspect-[4/3] sm:aspect-[3/2] md:aspect-auto md:h-72 w-full">
                 <img
                   src="/images/hero-banner.webp"
-                  alt="Muslim child learning Quran online with certified teacher at Al-Noor Academy"
+                  alt="Muslim child learning Quran online with certified teacher at Noor-e-Quran Institute"
                   width={1200}
                   height={800}
                   loading="eager"
@@ -171,7 +171,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onOpenEnroll, onViewCou
 
                 <a
                   id="hero-cta-whatsapp"
-                  href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Al-Noor%20Quran%20Academy.%20I%20want%20to%20inquire%20about%20Quran%20classes%20and%20Free%20Trial."
+                  href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute.%20I%20want%20to%20inquire%20about%20Quran%20classes%20and%20Free%20Trial."
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-3.5 rounded-xl font-bold text-sm sm:text-base backdrop-blur-md transition-all hover:translate-y-[-1px]"
@@ -223,7 +223,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onOpenEnroll, onViewCou
                     JazakAllah Khair! Our academic coordinator will message you on WhatsApp to confirm your preferred class slot.
                   </p>
                   <a
-                    href={`https://wa.me/923274496163?text=Assalam-o-Alaikum%20Al-Noor%20Academy.%20I%20just%20booked%20a%20trial%20for%20${encodeURIComponent(studentName)}.%20Please%20schedule%20our%20class.`}
+                    href={`https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute.%20I%20just%20booked%20a%20trial%20for%20${encodeURIComponent(studentName)}.%20Please%20schedule%20our%20class.`}
                     target="_blank"
                     rel="noreferrer"
                     aria-label="Confirm your booked trial via WhatsApp"

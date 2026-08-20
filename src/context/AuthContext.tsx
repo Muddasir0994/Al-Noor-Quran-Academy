@@ -131,7 +131,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const resetInactivityTimer = () => {
       if (inactivityTimer) clearTimeout(inactivityTimer);
       inactivityTimer = setTimeout(() => {
-        console.warn('Al-Noor Security: Session expired due to 30 minutes of inactivity.');
+        console.warn('Noor-e-Quran Security: Session expired due to 30 minutes of inactivity.');
         logout();
       }, INACTIVITY_LIMIT_MS);
     };

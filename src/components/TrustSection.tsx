@@ -107,14 +107,14 @@ export const TrustSection: React.FC = () => {
           </div>
         </div>
 
-        {/* 2. Section Header: Why Choose Al-Noor? */}
+        {/* 2. Section Header: Why Choose Noor-e-Quran? */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full glass-badge text-[#064E3B] text-[11px] font-extrabold uppercase tracking-widest mb-2.5">
             <ShieldCheck className="w-3.5 h-3.5 text-[#A16207]" weight="duotone" />
             <span>Sacred Mission & Standards</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-extrabold text-[#064E3B] tracking-tight">
-            Why Discerning Muslim Families Trust Al-Noor
+            Why Discerning Muslim Families Trust Noor-e-Quran
           </h2>
           <p className="mt-2 text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
             We merge traditional Tajweed mastery with modern 1-on-1 digital teaching methods to nurture lifelong love for the Holy Quran.

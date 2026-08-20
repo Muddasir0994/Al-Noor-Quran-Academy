@@ -171,7 +171,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         },
         {
           id: 'about',
-          label: 'About Al-Noor Academy',
+          label: 'About Noor-e-Quran Institute',
           desc: 'Our educational philosophy, verified Sanad, and global mission',
           icon: ShieldCheck
         }
@@ -261,7 +261,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <a
             href="tel:+923274496163"
-            aria-label="Call Al-Noor Quran Academy at +92 327 4496163"
+            aria-label="Call Noor-e-Quran Institute at +92 327 4496163"
             className="flex items-center gap-1 text-emerald-100/90 hover:text-[#F3C64D] transition-colors font-medium"
           >
             <Phone className="w-3.5 h-3.5 text-[#F3C64D]" weight="duotone" />
@@ -269,10 +269,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           </a>
 
           <a
-            href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Al-Noor%20Quran%20Academy.%20I%20want%20to%20inquire%20about%20online%20Quran%20classes%20and%203-day%20free%20trial."
+            href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute.%20I%20want%20to%20inquire%20about%20online%20Quran%20classes%20and%203-day%20free%20trial."
             target="_blank"
             rel="noreferrer"
-            aria-label="Contact Al-Noor Quran Academy on WhatsApp"
+            aria-label="Contact Noor-e-Quran Institute on WhatsApp"
             className="flex items-center gap-1 text-emerald-100/90 hover:text-[#25D366] transition-colors font-medium"
           >
             <WhatsappLogo className="w-3.5 h-3.5 text-[#25D366]" weight="fill" />
@@ -366,7 +366,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-xs border border-[#D4A72C]/50 transition-transform group-hover:scale-105 shrink-0">
             <img
               src="/logo.webp"
-              alt="Al-Noor Quran Academy Emblem"
+              alt="Noor-e-Quran Institute Emblem"
               width={48}
               height={48}
               loading="eager"
@@ -383,11 +383,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div>
             <div className="flex items-center gap-1.5">
               <span className="text-lg sm:text-xl font-heading font-extrabold text-[#064E3B] tracking-tight">
-                AL-NOOR <span className="text-[#D4A72C]">QURAN</span> ACADEMY
+                NOOR-E-<span className="text-[#D4A72C]">QURAN</span> INSTITUTE
               </span>
             </div>
             <p className="text-[10px] text-emerald-900/70 font-arabic hidden sm:block font-bold">
-              معهد النور لتعليم القرآن الكريم والتجويد
+              معهد نور القرآن الكريم والتجويد
             </p>
           </div>
         </button>

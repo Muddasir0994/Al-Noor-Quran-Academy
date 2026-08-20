@@ -86,7 +86,7 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({
           </button>
 
           <a
-            href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Al-Noor%20Quran%20Academy.%20I%20need%20assistance%20on%20the%20website."
+            href="https://wa.me/923274496163?text=Assalam-o-Alaikum%20Noor-e-Quran%20Institute.%20I%20need%20assistance%20on%20the%20website."
             target="_blank"
             rel="noreferrer"
             className="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs sm:text-sm transition flex items-center gap-1.5 shadow-sm"
