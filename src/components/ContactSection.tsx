@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Envelope, Globe, WhatsappLogo, PaperPlaneTilt, CheckCircle, MapPin, Clock } from '@phosphor-icons/react';
+import { Phone, Envelope, Globe, WhatsappLogo, PaperPlaneTilt, CheckCircle, MapPin, Clock, YoutubeLogo, InstagramLogo, FacebookLogo, LinkedinLogo } from '@phosphor-icons/react';
 
 export const ContactSection: React.FC = () => {
   const [name, setName] = useState('');
@@ -162,6 +162,49 @@ export const ContactSection: React.FC = () => {
                 </div>
               </div>
 
+              {/* Official Social Media Channels */}
+              <div className="pt-2">
+                <span className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider block mb-2">Connect On Social Media</span>
+                <div className="flex items-center gap-2.5">
+                  <a
+                    href="https://www.youtube.com/@NooreQuranInstitute"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="YouTube Channel"
+                    className="w-8 h-8 rounded-lg bg-emerald-950/90 hover:bg-emerald-800 border border-emerald-700/60 flex items-center justify-center text-emerald-200 hover:text-[#F3C64D] transition-all"
+                  >
+                    <YoutubeLogo className="w-4 h-4" weight="duotone" />
+                  </a>
+                  <a
+                    href="https://www.instagram.com/noore_quraninstitute"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram Profile"
+                    className="w-8 h-8 rounded-lg bg-emerald-950/90 hover:bg-emerald-800 border border-emerald-700/60 flex items-center justify-center text-emerald-200 hover:text-[#F3C64D] transition-all"
+                  >
+                    <InstagramLogo className="w-4 h-4" weight="duotone" />
+                  </a>
+                  <a
+                    href="https://www.facebook.com/share/14pNXeMTM7o/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook Page"
+                    className="w-8 h-8 rounded-lg bg-emerald-950/90 hover:bg-emerald-800 border border-emerald-700/60 flex items-center justify-center text-emerald-200 hover:text-[#F3C64D] transition-all"
+                  >
+                    <FacebookLogo className="w-4 h-4" weight="duotone" />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/muddasir-hameed"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn Profile"
+                    className="w-8 h-8 rounded-lg bg-emerald-950/90 hover:bg-emerald-800 border border-emerald-700/60 flex items-center justify-center text-emerald-200 hover:text-[#F3C64D] transition-all"
+                  >
+                    <LinkedinLogo className="w-4 h-4" weight="duotone" />
+                  </a>
+                </div>
+              </div>
+
             </div>
 
             <div className="pt-3 border-t border-emerald-800 flex items-center gap-2 text-xs text-emerald-200">
@@ -185,7 +228,7 @@ export const ContactSection: React.FC = () => {
             {success ? (
               <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-3">
                 <div className="w-12 h-12 rounded-full bg-[#064E3B] text-[#D4A72C] flex items-center justify-center mx-auto">
-                  <CheckCircle2 className="w-7 h-7" />
+                  <CheckCircle className="w-7 h-7" weight="fill" />
                 </div>
                 <h4 className="font-heading font-bold text-lg text-[#064E3B]">
                   JazakAllah Khair! Message Received.

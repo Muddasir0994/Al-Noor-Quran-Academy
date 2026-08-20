@@ -1,6 +1,6 @@
 import React from 'react';
 import { IMAGES } from '../config/images';
-import { BookOpen, Phone, Envelope, Globe, WhatsappLogo, Heart, ShieldCheck, MapPin, YoutubeLogo, InstagramLogo, FacebookLogo } from '@phosphor-icons/react';
+import { BookOpen, Phone, Envelope, Globe, WhatsappLogo, Heart, ShieldCheck, MapPin, YoutubeLogo, InstagramLogo, FacebookLogo, LinkedinLogo } from '@phosphor-icons/react';
 import { CountryKey } from './InternationalLanding';
 
 interface FooterProps {
@@ -22,6 +22,7 @@ export const Footer: React.FC<FooterProps> = ({
     { name: 'YouTube', url: 'https://www.youtube.com/@NooreQuranInstitute', icon: YoutubeLogo },
     { name: 'Instagram', url: 'https://www.instagram.com/noore_quraninstitute', icon: InstagramLogo },
     { name: 'Facebook', url: 'https://www.facebook.com/share/14pNXeMTM7o/', icon: FacebookLogo },
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/muddasir-hameed', icon: LinkedinLogo },
     { name: 'Email', url: 'mailto:contact.noorequraninstitute@gmail.com', icon: Envelope }
   ];
 
