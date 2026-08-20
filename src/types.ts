@@ -440,6 +440,6 @@ export interface ActivityLog {
   id: string;
   timestamp: string;
   action: string;
-  category: 'Student' | 'Enrollment' | 'Faculty' | 'Course' | 'Finance' | 'Settings';
+  category: 'Student' | 'Enrollment' | 'Faculty' | 'Course' | 'Finance' | 'Settings' | 'System';
   user: string;
 }
