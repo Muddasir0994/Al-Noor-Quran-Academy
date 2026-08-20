@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BlogPost } from '../types';
+import { INITIAL_ARTICLES } from '../data/academyData';
 import { getBlogPostBySlug, getPublishedBlogPosts } from '../lib/firestoreService';
 import { Calendar, Clock, User, ArrowLeft, BookOpen, Tag, ArrowRight } from '@phosphor-icons/react';
 
@@ -18,7 +19,34 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onNavigate, on
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const data = await getBlogPostBySlug(slug);
+      let data: BlogPost | null = null;
+      try {
+        data = await getBlogPostBySlug(slug);
+      } catch (err) {
+        console.warn('Error querying Firestore for blog post:', err);
+      }
+
+      if (!data) {
+        const article = INITIAL_ARTICLES.find(a => a.slug === slug || a.id === slug);
+        if (article) {
+          data = {
+            id: article.id,
+            slug: article.slug,
+            title: article.title,
+            metaDescription: article.summary,
+            featuredImage: article.category === 'Tajweed' ? '/images/course-nazra-tajweed.webp' : article.category === 'Hifz' ? '/images/course-hifz.webp' : '/images/hero-banner.webp',
+            content: article.content,
+            category: (article.category === 'Tajweed' || article.category === 'Kids' || article.category === 'Hifz') ? article.category as any : 'Quran Learning',
+            tags: [article.category, 'Quran', 'Islamic Education'],
+            author: article.author,
+            readTime: article.readTime,
+            published: true,
+            createdAt: article.publishedAt || '2026-02-01',
+            updatedAt: article.publishedAt || '2026-02-01'
+          };
+        }
+      }
+
       setPost(data);
 
       if (data) {
@@ -26,11 +54,53 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onNavigate, on
         const meta = document.querySelector('meta[name="description"]');
         if (meta) meta.setAttribute('content', data.metaDescription || '');
 
-        // Get related posts from same category
+        // Get related posts from baseline or Firestore
         try {
           const all = await getPublishedBlogPosts();
-          setRelated(all.filter(p => p.category === data.category && p.id !== data.id).slice(0, 3));
-        } catch { /* ignore */ }
+          if (all && all.length > 0) {
+            setRelated(all.filter(p => p.category === data!.category && p.id !== data!.id).slice(0, 3));
+          } else {
+            const fallbackRelated = INITIAL_ARTICLES
+              .filter(a => a.slug !== slug)
+              .slice(0, 3)
+              .map(a => ({
+                id: a.id,
+                slug: a.slug,
+                title: a.title,
+                metaDescription: a.summary,
+                featuredImage: a.category === 'Tajweed' ? '/images/course-nazra-tajweed.webp' : a.category === 'Hifz' ? '/images/course-hifz.webp' : '/images/hero-banner.webp',
+                content: a.content,
+                category: (a.category === 'Tajweed' || a.category === 'Kids' || a.category === 'Hifz') ? a.category as any : 'Quran Learning',
+                tags: [a.category],
+                author: a.author,
+                readTime: a.readTime,
+                published: true,
+                createdAt: a.publishedAt || '2026-02-01',
+                updatedAt: a.publishedAt || '2026-02-01'
+              }));
+            setRelated(fallbackRelated);
+          }
+        } catch {
+          const fallbackRelated = INITIAL_ARTICLES
+            .filter(a => a.slug !== slug)
+            .slice(0, 3)
+            .map(a => ({
+              id: a.id,
+              slug: a.slug,
+              title: a.title,
+              metaDescription: a.summary,
+              featuredImage: a.category === 'Tajweed' ? '/images/course-nazra-tajweed.webp' : a.category === 'Hifz' ? '/images/course-hifz.webp' : '/images/hero-banner.webp',
+              content: a.content,
+              category: (a.category === 'Tajweed' || a.category === 'Kids' || a.category === 'Hifz') ? a.category as any : 'Quran Learning',
+              tags: [a.category],
+              author: a.author,
+              readTime: a.readTime,
+              published: true,
+              createdAt: a.publishedAt || '2026-02-01',
+              updatedAt: a.publishedAt || '2026-02-01'
+            }));
+          setRelated(fallbackRelated);
+        }
       }
       setLoading(false);
     })();

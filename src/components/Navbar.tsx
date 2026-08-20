@@ -192,14 +192,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           label: 'Frequently Asked Questions',
           desc: 'Clear answers on trial classes, teachers, scheduling & payments',
           icon: Question
-        },
-        {
-          id: 'articles',
-          label: 'Educational Blog & Guides',
-          desc: 'Practical guides on Tajweed rules, memorization & Islamic parenting',
-          icon: FileText
         }
       ]
+    },
+    {
+      id: 'blog-parent',
+      label: 'Blog & Articles',
+      isDirectLink: true,
+      targetId: 'blogs'
     },
     {
       id: 'contact-parent',
@@ -223,6 +223,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   // Helper to check if any child item is currently active
   const isParentActive = (parent: NavParentItem) => {
     if (parent.isDirectLink) {
+      if (parent.targetId === 'blogs') {
+        return activeTab === 'blogs' || activeTab === 'articles' || activeTab === 'blog-post';
+      }
       return activeTab === parent.targetId;
     }
     return parent.items?.some(item => item.id === activeTab) || false;

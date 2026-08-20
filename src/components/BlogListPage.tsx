@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BlogPost } from '../types';
+import { INITIAL_ARTICLES } from '../data/academyData';
 import { getPublishedBlogPosts } from '../lib/firestoreService';
 import { BookOpen, Calendar, Clock, ArrowRight, MagnifyingGlass, User } from '@phosphor-icons/react';
 
@@ -21,12 +22,35 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute('content', 'Read expert articles on Tajweed rules, Quran memorization tips, kids Islamic education, and online Quran learning guides from certified scholars.');
 
+    const mapInitialArticlesToBlogPosts = (): BlogPost[] => {
+      return INITIAL_ARTICLES.map(a => ({
+        id: a.id,
+        slug: a.slug,
+        title: a.title,
+        metaDescription: a.summary,
+        featuredImage: a.category === 'Tajweed' ? '/images/course-nazra-tajweed.webp' : a.category === 'Hifz' ? '/images/course-hifz.webp' : '/images/hero-banner.webp',
+        content: a.content,
+        category: (a.category === 'Tajweed' || a.category === 'Kids' || a.category === 'Hifz') ? a.category as any : 'Quran Learning',
+        tags: [a.category, 'Quran', 'Islamic Education'],
+        author: a.author,
+        readTime: a.readTime,
+        published: true,
+        createdAt: a.publishedAt || '2026-02-01',
+        updatedAt: a.publishedAt || '2026-02-01'
+      }));
+    };
+
     (async () => {
       try {
         const data = await getPublishedBlogPosts();
-        setPosts(data);
-      } catch {
-        console.warn('Could not load blog posts from Firestore');
+        if (data && data.length > 0) {
+          setPosts(data);
+        } else {
+          setPosts(mapInitialArticlesToBlogPosts());
+        }
+      } catch (err) {
+        console.warn('Could not load blog posts from Firestore, using built-in baseline articles:', err);
+        setPosts(mapInitialArticlesToBlogPosts());
       } finally {
         setLoading(false);
       }

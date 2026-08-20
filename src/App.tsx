@@ -64,11 +64,37 @@ function AppContent() {
     return 'landing';
   });
 
-  const [activeNavTab, setActiveNavTab] = useState<string>('home');
+  const [activeNavTab, setActiveNavTab] = useState<string>(() => {
+    const raw = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
+    if (raw === '/blog' || raw === '/blogs' || raw === '/articles') return 'blogs';
+    if (raw.startsWith('/blog/')) return 'blog-post';
+    if (raw === '/online-quran-classes' || raw === '/courses' || raw === '/noorani-qaida' || raw === '/quran-reading-nazra' || raw === '/quran-with-tajweed' || raw === '/quran-memorization-hifz' || raw === '/islamic-studies') return 'courses';
+    if (raw === '/pricing' || raw === '/packages') return 'packages';
+    if (raw === '/faculty' || raw === '/tutors') return 'tutors';
+    if (raw === '/quran-classes-for-kids' || raw === '/kids-program' || raw === '/kids') return 'kids-program';
+    if (raw === '/female-quran-teacher' || raw === '/female-tutor' || raw === '/female-tutors') return 'female-tutor';
+    if (raw === '/quran-classes-for-adults' || raw === '/slow-learners' || raw === '/adults') return 'slow-learners';
+    if (raw === '/online-quran-classes-uk') return 'uk-program';
+    if (raw === '/online-quran-classes-usa') return 'usa-program';
+    if (raw === '/online-quran-classes-canada') return 'canada-program';
+    if (raw === '/online-quran-classes-australia') return 'australia-program';
+    if (raw === '/online-quran-classes-pakistan') return 'pakistan-program';
+    if (raw === '/about-us' || raw === '/about') return 'about';
+    if (raw === '/faq') return 'faq';
+    if (raw === '/contact-us' || raw === '/contact') return 'contact';
+    return 'home';
+  });
+
   const [activeCountry, setActiveCountry] = useState<CountryKey>('uk');
   const [initialClassroomSurah, setInitialClassroomSurah] = useState<number>(1);
   const [isNotFound, setIsNotFound] = useState<boolean>(false);
-  const [currentBlogSlug, setCurrentBlogSlug] = useState<string | null>(null);
+  const [currentBlogSlug, setCurrentBlogSlug] = useState<string | null>(() => {
+    const raw = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
+    if (raw.startsWith('/blog/')) {
+      return raw.replace('/blog/', '') || null;
+    }
+    return null;
+  });
 
   // Synchronize browser URL & session storage on activeAppView changes (survives F5 refresh)
   useEffect(() => {
@@ -500,249 +526,259 @@ function AppContent() {
       {/* 4. PUBLIC ACADEMY LANDING WEBSITE */}
       {!isNotFound && activeAppView === 'landing' && (
         <main className="flex-1 min-h-[600px]">
-
-          {/* ========================================================= */}
-          {/* MULTI-PAGE PUBLIC ROUTING */}
-          {/* ========================================================= */}
-
-          {/* 1. HOME PAGE */}
-          {activeNavTab === 'home' && (
-            <HomePageView
-              courses={courses}
-              testimonials={testimonials}
-              onOpenTrial={handleOpenTrial}
-              onOpenEnroll={handleOpenEnroll}
-              onInspectCourse={handleInspectCourse}
-              onNavClick={handleNavClick}
-            />
-          )}
-
-          {/* 2. COURSES PAGE */}
-          {activeNavTab === 'courses' && (
-            <div>
-              {/* Page Banner Header */}
-              <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                <div className="max-w-7xl mx-auto text-center space-y-3">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                    <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                    <span>/</span>
-                    <span className="text-white">Quran Courses</span>
-                  </div>
-                  <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                    Certified 1-on-1 Online Quran Courses
-                  </h1>
-                  <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                    From foundational Noorani Qaida to advanced Tajweed, Hifz, and Islamic Studies. Personalized curricula with flexible schedules.
-                  </p>
+          <Suspense
+            fallback={
+              <div className="py-28 flex items-center justify-center bg-[#FAFAF7]">
+                <div className="text-center space-y-3">
+                  <div className="w-10 h-10 border-3 border-[#064E3B] border-t-[#D4A72C] rounded-full animate-spin mx-auto" />
+                  <p className="text-sm font-semibold text-[#064E3B]">Loading Noor-e-Quran Institute...</p>
                 </div>
               </div>
+            }
+          >
+            {/* ========================================================= */}
+            {/* MULTI-PAGE PUBLIC ROUTING */}
+            {/* ========================================================= */}
 
-              <CoursesSection
+            {/* 1. HOME PAGE */}
+            {activeNavTab === 'home' && (
+              <HomePageView
                 courses={courses}
+                testimonials={testimonials}
                 onOpenTrial={handleOpenTrial}
                 onOpenEnroll={handleOpenEnroll}
                 onInspectCourse={handleInspectCourse}
+                onNavClick={handleNavClick}
               />
-              <MethodologySection
+            )}
+
+            {/* 2. COURSES PAGE */}
+            {activeNavTab === 'courses' && (
+              <div>
+                {/* Page Banner Header */}
+                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
+                  <div className="max-w-7xl mx-auto text-center space-y-3">
+                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
+                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
+                      <span>/</span>
+                      <span className="text-white">Quran Courses</span>
+                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
+                      Certified 1-on-1 Online Quran Courses
+                    </h1>
+                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
+                      From foundational Noorani Qaida to advanced Tajweed, Hifz, and Islamic Studies. Personalized curricula with flexible schedules.
+                    </p>
+                  </div>
+                </div>
+
+                <CoursesSection
+                  courses={courses}
+                  onOpenTrial={handleOpenTrial}
+                  onOpenEnroll={handleOpenEnroll}
+                  onInspectCourse={handleInspectCourse}
+                />
+                <MethodologySection
+                  onOpenTrial={() => handleOpenTrial()}
+                  onOpenEnroll={() => handleOpenEnroll()}
+                />
+              </div>
+            )}
+
+            {/* 3. PACKAGES & PRICING PAGE */}
+            {activeNavTab === 'packages' && (
+              <div>
+                {/* Page Banner Header */}
+                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
+                  <div className="max-w-7xl mx-auto text-center space-y-3">
+                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
+                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
+                      <span>/</span>
+                      <span className="text-white">Packages & Pricing</span>
+                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
+                      Affordable 1-on-1 Quran Tuition Plans
+                    </h1>
+                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
+                      Transparent monthly plans with multi-student family discounts and a 3-day free trial. Choose classes 2 to 5 days per week.
+                    </p>
+                  </div>
+                </div>
+
+                <PackagesSection
+                  packages={packages}
+                  onSelectPackage={handleSelectPackage}
+                  onOpenTrial={() => handleOpenTrial()}
+                />
+              </div>
+            )}
+
+            {/* 4. FACULTY / TUTORS PAGE */}
+            {activeNavTab === 'tutors' && (
+              <div>
+                {/* Page Banner Header */}
+                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
+                  <div className="max-w-7xl mx-auto text-center space-y-3">
+                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
+                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
+                      <span>/</span>
+                      <span className="text-white">Faculty & Scholars</span>
+                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
+                      Certified Male & Female Quran Teachers
+                    </h1>
+                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
+                      Verified Ijazah holders and Islamic university graduates dedicated to patient, interactive 1-on-1 Quran education.
+                    </p>
+                  </div>
+                </div>
+
+                <TutorsSection
+                  tutors={tutors}
+                  onOpenTrialWithGender={(g) => handleOpenTrial(undefined, g)}
+                />
+              </div>
+            )}
+
+            {/* 5. KIDS PROGRAM PAGE */}
+            {activeNavTab === 'kids-program' && (
+              <KidsProgramLanding
+                onOpenTrial={handleOpenTrial}
+                onOpenEnroll={handleOpenEnroll}
+                onNavClick={handleNavClick}
+              />
+            )}
+
+            {/* 6. FEMALE TUTORS PAGE */}
+            {activeNavTab === 'female-tutor' && (
+              <FemaleTutorLanding
+                onOpenTrial={handleOpenTrial}
+                onOpenEnroll={handleOpenEnroll}
+                onNavClick={handleNavClick}
+              />
+            )}
+
+            {/* 7. ADULTS & SLOW LEARNERS PAGE */}
+            {activeNavTab === 'slow-learners' && (
+              <AdultsProgramLanding
+                onOpenTrial={handleOpenTrial}
+                onOpenEnroll={handleOpenEnroll}
+                onNavClick={handleNavClick}
+              />
+            )}
+
+            {/* 8. BLOG & ARTICLES CMS PAGE */}
+            {(activeNavTab === 'blogs' || activeNavTab === 'articles') && (
+              <BlogListPage
+                onNavigate={handleBlogNavigate}
                 onOpenTrial={() => handleOpenTrial()}
-                onOpenEnroll={() => handleOpenEnroll()}
               />
-            </div>
-          )}
+            )}
 
-          {/* 3. PACKAGES & PRICING PAGE */}
-          {activeNavTab === 'packages' && (
-            <div>
-              {/* Page Banner Header */}
-              <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                <div className="max-w-7xl mx-auto text-center space-y-3">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                    <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                    <span>/</span>
-                    <span className="text-white">Packages & Pricing</span>
-                  </div>
-                  <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                    Affordable 1-on-1 Quran Tuition Plans
-                  </h1>
-                  <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                    Transparent monthly plans with multi-student family discounts and a 3-day free trial. Choose classes 2 to 5 days per week.
-                  </p>
-                </div>
-              </div>
-
-              <PackagesSection
-                packages={packages}
-                onSelectPackage={handleSelectPackage}
+            {/* 8B. SINGLE BLOG POST PAGE */}
+            {activeNavTab === 'blog-post' && currentBlogSlug && (
+              <BlogPostPage
+                slug={currentBlogSlug}
+                onNavigate={handleBlogNavigate}
+                onNavigateBack={handleBlogBack}
                 onOpenTrial={() => handleOpenTrial()}
               />
-            </div>
-          )}
+            )}
 
-          {/* 4. FACULTY / TUTORS PAGE */}
-          {activeNavTab === 'tutors' && (
-            <div>
-              {/* Page Banner Header */}
-              <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                <div className="max-w-7xl mx-auto text-center space-y-3">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                    <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                    <span>/</span>
-                    <span className="text-white">Faculty & Scholars</span>
+            {/* 9. FAQ PAGE */}
+            {activeNavTab === 'faq' && (
+              <div>
+                {/* Page Banner Header */}
+                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
+                  <div className="max-w-7xl mx-auto text-center space-y-3">
+                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
+                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
+                      <span>/</span>
+                      <span className="text-white">FAQ</span>
+                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
+                      Frequently Asked Questions
+                    </h1>
+                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
+                      Everything you need to know about our online classes, trial lessons, fee structure, tutors, and technical setup.
+                    </p>
                   </div>
-                  <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                    Certified Male & Female Quran Teachers
-                  </h1>
-                  <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                    Verified Ijazah holders and Islamic university graduates dedicated to patient, interactive 1-on-1 Quran education.
-                  </p>
                 </div>
-              </div>
 
-              <TutorsSection
-                tutors={tutors}
-                onOpenTrialWithGender={(g) => handleOpenTrial(undefined, g)}
+                <FAQSection onOpenTrial={() => handleOpenTrial()} />
+              </div>
+            )}
+
+            {/* 10. CONTACT PAGE */}
+            {activeNavTab === 'contact' && (
+              <div>
+                {/* Page Banner Header */}
+                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
+                  <div className="max-w-7xl mx-auto text-center space-y-3">
+                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
+                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
+                      <span>/</span>
+                      <span className="text-white">Contact Us</span>
+                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
+                      Get in Touch with Academic Support
+                    </h1>
+                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
+                      Have questions or need help selecting a course? Reach out via WhatsApp, phone, or direct inquiry form.
+                    </p>
+                  </div>
+                </div>
+
+                <ContactSection />
+              </div>
+            )}
+
+            {/* 11. ABOUT US PAGE */}
+            {activeNavTab === 'about' && (
+              <div>
+                {/* Page Banner Header */}
+                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
+                  <div className="max-w-7xl mx-auto text-center space-y-3">
+                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
+                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
+                      <span>/</span>
+                      <span className="text-white">About Us</span>
+                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
+                      About Noor-e-Quran Institute
+                    </h1>
+                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
+                      Dedicated to providing accessible, authentic, and certified Quranic education to families worldwide.
+                    </p>
+                  </div>
+                </div>
+
+                <AboutSection
+                  onOpenTrial={() => handleOpenTrial()}
+                  onOpenEnroll={() => handleOpenEnroll()}
+                />
+                <TrustSection />
+                <WhyChooseUs onOpenTrial={() => handleOpenTrial()} />
+              </div>
+            )}
+
+            {/* 12. INTERNATIONAL LOCALIZED PAGES */}
+            {(activeNavTab === 'uk-program' ||
+              activeNavTab === 'usa-program' ||
+              activeNavTab === 'canada-program' ||
+              activeNavTab === 'australia-program' ||
+              activeNavTab === 'pakistan-program') && (
+              <InternationalLanding
+                countryCode={activeCountry}
+                onOpenTrial={handleOpenTrial}
+                onOpenEnroll={handleOpenEnroll}
+                onSelectCountry={(c) => {
+                  setActiveCountry(c);
+                  handleNavClick(`${c}-program`);
+                }}
               />
-            </div>
-          )}
-
-          {/* 5. KIDS PROGRAM PAGE */}
-          {activeNavTab === 'kids-program' && (
-            <KidsProgramLanding
-              onOpenTrial={handleOpenTrial}
-              onOpenEnroll={handleOpenEnroll}
-              onNavClick={handleNavClick}
-            />
-          )}
-
-          {/* 6. FEMALE TUTORS PAGE */}
-          {activeNavTab === 'female-tutor' && (
-            <FemaleTutorLanding
-              onOpenTrial={handleOpenTrial}
-              onOpenEnroll={handleOpenEnroll}
-              onNavClick={handleNavClick}
-            />
-          )}
-
-          {/* 7. ADULTS & SLOW LEARNERS PAGE */}
-          {activeNavTab === 'slow-learners' && (
-            <AdultsProgramLanding
-              onOpenTrial={handleOpenTrial}
-              onOpenEnroll={handleOpenEnroll}
-              onNavClick={handleNavClick}
-            />
-          )}
-
-          {/* 8. BLOG & ARTICLES CMS PAGE */}
-          {(activeNavTab === 'blogs' || activeNavTab === 'articles') && (
-            <BlogListPage
-              onNavigate={handleBlogNavigate}
-              onOpenTrial={() => handleOpenTrial()}
-            />
-          )}
-
-          {/* 8B. SINGLE BLOG POST PAGE */}
-          {activeNavTab === 'blog-post' && currentBlogSlug && (
-            <BlogPostPage
-              slug={currentBlogSlug}
-              onNavigate={handleBlogNavigate}
-              onNavigateBack={handleBlogBack}
-              onOpenTrial={() => handleOpenTrial()}
-            />
-          )}
-
-          {/* 9. FAQ PAGE */}
-          {activeNavTab === 'faq' && (
-            <div>
-              {/* Page Banner Header */}
-              <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                <div className="max-w-7xl mx-auto text-center space-y-3">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                    <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                    <span>/</span>
-                    <span className="text-white">FAQ</span>
-                  </div>
-                  <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                    Frequently Asked Questions
-                  </h1>
-                  <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                    Everything you need to know about our online classes, trial lessons, fee structure, tutors, and technical setup.
-                  </p>
-                </div>
-              </div>
-
-              <FAQSection onOpenTrial={() => handleOpenTrial()} />
-            </div>
-          )}
-
-          {/* 10. CONTACT PAGE */}
-          {activeNavTab === 'contact' && (
-            <div>
-              {/* Page Banner Header */}
-              <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                <div className="max-w-7xl mx-auto text-center space-y-3">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                    <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                    <span>/</span>
-                    <span className="text-white">Contact Us</span>
-                  </div>
-                  <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                    Get in Touch with Academic Support
-                  </h1>
-                  <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                    Have questions or need help selecting a course? Reach out via WhatsApp, phone, or direct inquiry form.
-                  </p>
-                </div>
-              </div>
-
-              <ContactSection />
-            </div>
-          )}
-
-          {/* 11. ABOUT US PAGE */}
-          {activeNavTab === 'about' && (
-            <div>
-              {/* Page Banner Header */}
-              <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                <div className="max-w-7xl mx-auto text-center space-y-3">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                    <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                    <span>/</span>
-                    <span className="text-white">About Us</span>
-                  </div>
-                  <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                    About Noor-e-Quran Institute
-                  </h1>
-                  <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                    Dedicated to providing accessible, authentic, and certified Quranic education to families worldwide.
-                  </p>
-                </div>
-              </div>
-
-              <AboutSection
-                onOpenTrial={() => handleOpenTrial()}
-                onOpenEnroll={() => handleOpenEnroll()}
-              />
-              <TrustSection />
-              <WhyChooseUs onOpenTrial={() => handleOpenTrial()} />
-            </div>
-          )}
-
-          {/* 12. INTERNATIONAL LOCALIZED PAGES */}
-          {(activeNavTab === 'uk-program' ||
-            activeNavTab === 'usa-program' ||
-            activeNavTab === 'canada-program' ||
-            activeNavTab === 'australia-program' ||
-            activeNavTab === 'pakistan-program') && (
-            <InternationalLanding
-              countryCode={activeCountry}
-              onOpenTrial={handleOpenTrial}
-              onOpenEnroll={handleOpenEnroll}
-              onSelectCountry={(c) => {
-                setActiveCountry(c);
-                handleNavClick(`${c}-program`);
-              }}
-            />
-          )}
+            )}
+          </Suspense>
         </main>
       )}
 
