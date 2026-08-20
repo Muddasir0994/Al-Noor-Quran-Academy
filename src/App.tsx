@@ -1,891 +1,527 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { IconContext } from '@phosphor-icons/react';
-import { Course, PackagePlan, Tutor, Testimonial, Article, IslamicResource } from './types';
-import { ALL_COURSES, ALL_PACKAGES, INITIAL_TUTORS, INITIAL_TESTIMONIALS, INITIAL_ARTICLES, INITIAL_RESOURCES } from './data/academyData';
+import { Course, PackagePlan, Tutor, Testimonial, Article } from './types';
+import { ALL_COURSES, ALL_PACKAGES, INITIAL_TUTORS, INITIAL_TESTIMONIALS, INITIAL_ARTICLES } from './data/academyData';
 import { AuthProvider, useAuth } from './context/AuthContext';
-
 import { SEOHead } from './components/SEOHead';
 import { SEO_PAGE_MAP } from './lib/seoConfig';
 import type { CountryKey } from './components/InternationalLanding';
-import { NotFoundPage } from './components/NotFoundPage';
 
-// Lazy-loaded Specialized Landing Tracks
+import { Navbar } from './components/Navbar';
+import { Footer } from './components/Footer';
+import { WhatsAppWidget } from './components/WhatsAppWidget';
+
+// Pages
+import { HomePage } from './pages/HomePage';
+import { CoursesPage } from './pages/CoursesPage';
+import { TeachersPage } from './pages/TeachersPage';
+import { TuitionPage } from './pages/TuitionPage';
+import { HowItWorksPage } from './pages/HowItWorksPage';
+import { AboutPage } from './pages/AboutPage';
+import { BlogListPage } from './pages/BlogListPage';
+import { BlogPostPage } from './pages/BlogPostPage';
+import { ContactPage } from './pages/ContactPage';
+import { FAQPage } from './pages/FAQPage';
+import { NotFoundPage } from './pages/NotFoundPage';
+
+// Lazy-loaded specialized landings & portals
 const InternationalLanding = lazy(() => import('./components/InternationalLanding').then(m => ({ default: m.InternationalLanding })));
 const KidsProgramLanding = lazy(() => import('./components/KidsProgramLanding').then(m => ({ default: m.KidsProgramLanding })));
 const AdultsProgramLanding = lazy(() => import('./components/AdultsProgramLanding').then(m => ({ default: m.AdultsProgramLanding })));
 const FemaleTutorLanding = lazy(() => import('./components/FemaleTutorLanding').then(m => ({ default: m.FemaleTutorLanding })));
 
-import { Navbar } from './components/Navbar';
-import { HomePageView } from './components/HomePageView';
-import { TrustSection } from './components/TrustSection';
-import { CoursesSection } from './components/CoursesSection';
-import { PackagesSection } from './components/PackagesSection';
-import { TutorsSection } from './components/TutorsSection';
-import { MethodologySection } from './components/MethodologySection';
-import { ResourcesAndBlogSection } from './components/ResourcesAndBlogSection';
-import { WhyChooseUs } from './components/WhyChooseUs';
-import { AboutSection } from './components/AboutSection';
-import { FAQSection } from './components/FAQSection';
-import { ContactSection } from './components/ContactSection';
-import { Footer } from './components/Footer';
-import { WhatsAppWidget } from './components/WhatsAppWidget';
-import { ProtectedRoute } from './components/ProtectedRoute';
-
-// Lazy-loaded Interactive Learning & Management Portals (reduces initial JS bundle size)
 const ClassroomStudio = lazy(() => import('./components/ClassroomStudio').then(m => ({ default: m.ClassroomStudio })));
 const StudentPortal = lazy(() => import('./components/StudentPortal').then(m => ({ default: m.StudentPortal })));
 const TeacherPortal = lazy(() => import('./components/TeacherPortal').then(m => ({ default: m.TeacherPortal })));
 const AdminPortal = lazy(() => import('./admin/AdminPortal').then(m => ({ default: m.AdminPortal })));
 
-// Lazy-loaded on-demand interactive modals
+// Lazy-loaded interactive modals
 const AuthModal = lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })));
 const FreeTrialModal = lazy(() => import('./components/FreeTrialModal').then(m => ({ default: m.FreeTrialModal })));
 const EnrollmentModal = lazy(() => import('./components/EnrollmentModal').then(m => ({ default: m.EnrollmentModal })));
 const CourseDetailModal = lazy(() => import('./components/CourseDetailModal').then(m => ({ default: m.CourseDetailModal })));
-const ArticleModal = lazy(() => import('./components/ArticleModal').then(m => ({ default: m.ArticleModal })));
 const LegalModal = lazy(() => import('./components/LegalModals').then(m => ({ default: m.LegalModal })));
-const BlogListPage = lazy(() => import('./components/BlogListPage').then(m => ({ default: m.BlogListPage })));
-const BlogPostPage = lazy(() => import('./components/BlogPostPage').then(m => ({ default: m.BlogPostPage })));
 
 function AppContent() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { currentUser, userProfile } = useAuth();
 
-  // Active Application Subview: 'landing' (Public Website), 'classroom' (Studio), 'student', 'teacher', 'admin'
-  const [activeAppView, setActiveAppView] = useState<'landing' | 'classroom' | 'student' | 'teacher' | 'admin'>(() => {
-    const raw = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
-    if (raw === '/student' || raw === '/student-portal') return 'student';
-    if (raw === '/teacher' || raw === '/teacher-portal') return 'teacher';
-    if (raw === '/classroom' || raw.startsWith('/classroom/')) return 'classroom';
-    if (raw === '/admin' || raw.startsWith('/admin/')) return 'admin';
-    const saved = sessionStorage.getItem('alnoor_active_app_view');
-    if (saved === 'student' || saved === 'teacher' || saved === 'classroom' || saved === 'admin') {
-      return saved as any;
-    }
-    return 'landing';
-  });
-
-  const [activeNavTab, setActiveNavTab] = useState<string>(() => {
-    const raw = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
-    if (raw === '/blog' || raw === '/blogs' || raw === '/articles') return 'blogs';
-    if (raw.startsWith('/blog/')) return 'blog-post';
-    if (raw === '/online-quran-classes' || raw === '/courses' || raw === '/noorani-qaida' || raw === '/quran-reading-nazra' || raw === '/quran-with-tajweed' || raw === '/quran-memorization-hifz' || raw === '/islamic-studies') return 'courses';
-    if (raw === '/pricing' || raw === '/packages') return 'packages';
-    if (raw === '/faculty' || raw === '/tutors') return 'tutors';
-    if (raw === '/quran-classes-for-kids' || raw === '/kids-program' || raw === '/kids') return 'kids-program';
-    if (raw === '/female-quran-teacher' || raw === '/female-tutor' || raw === '/female-tutors') return 'female-tutor';
-    if (raw === '/quran-classes-for-adults' || raw === '/slow-learners' || raw === '/adults') return 'slow-learners';
-    if (raw === '/online-quran-classes-uk') return 'uk-program';
-    if (raw === '/online-quran-classes-usa') return 'usa-program';
-    if (raw === '/online-quran-classes-canada') return 'canada-program';
-    if (raw === '/online-quran-classes-australia') return 'australia-program';
-    if (raw === '/online-quran-classes-pakistan') return 'pakistan-program';
-    if (raw === '/about-us' || raw === '/about') return 'about';
-    if (raw === '/faq') return 'faq';
-    if (raw === '/contact-us' || raw === '/contact') return 'contact';
-    return 'home';
-  });
-
-  const [activeCountry, setActiveCountry] = useState<CountryKey>('uk');
-  const [initialClassroomSurah, setInitialClassroomSurah] = useState<number>(1);
-  const [isNotFound, setIsNotFound] = useState<boolean>(false);
-  const [currentBlogSlug, setCurrentBlogSlug] = useState<string | null>(() => {
-    const raw = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
-    if (raw.startsWith('/blog/')) {
-      return raw.replace('/blog/', '') || null;
-    }
-    return null;
-  });
-
-  // Synchronize browser URL & session storage on activeAppView changes (survives F5 refresh)
-  useEffect(() => {
-    sessionStorage.setItem('alnoor_active_app_view', activeAppView);
-    if (window.history.pushState) {
-      if (activeAppView === 'student') window.history.pushState({}, '', '/student');
-      else if (activeAppView === 'teacher') window.history.pushState({}, '', '/teacher');
-      else if (activeAppView === 'classroom') window.history.pushState({}, '', '/classroom');
-      else if (activeAppView === 'admin') window.history.pushState({}, '', '/admin');
-    }
-  }, [activeAppView]);
-
-  // Core Academy Data
+  // Dynamic Content Data State (fetched from backend/database with fallbacks)
   const [courses, setCourses] = useState<Course[]>(ALL_COURSES);
   const [packages, setPackages] = useState<PackagePlan[]>(ALL_PACKAGES);
   const [tutors, setTutors] = useState<Tutor[]>(INITIAL_TUTORS);
   const [testimonials, setTestimonials] = useState<Testimonial[]>(INITIAL_TESTIMONIALS);
-  const [articles, setArticles] = useState<Article[]>(INITIAL_ARTICLES);
-  const [resources, setResources] = useState<IslamicResource[]>(INITIAL_RESOURCES);
 
-  // Modals
-  const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
-  const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
-  const [selectedCourseName, setSelectedCourseName] = useState<string>('Noorani Qaida for Beginners');
-  const [selectedGenderPreference, setSelectedGenderPreference] = useState<'Male' | 'Female' | 'No Preference'>('No Preference');
-  const [selectedPackage, setSelectedPackage] = useState<PackagePlan | null>(null);
-
-  const [inspectCourse, setInspectCourse] = useState<Course | null>(null);
-  const [readingArticle, setReadingArticle] = useState<Article | null>(null);
-  const [legalModalType, setLegalModalType] = useState<'privacy' | 'terms' | null>(null);
-
-  // Auth Modal state
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  // Modals & Interactive Overlays
+  const [showTrialModal, setShowTrialModal] = useState<boolean>(false);
+  const [showEnrollModal, setShowEnrollModal] = useState<boolean>(false);
+  const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
   const [authRole, setAuthRole] = useState<'student' | 'teacher'>('student');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
-  // Handle URL Deep-Linking & History Navigation
-  useEffect(() => {
-    const handleUrlRoute = () => {
-      const path = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
+  const [selectedCourseForTrial, setSelectedCourseForTrial] = useState<string | undefined>(undefined);
+  const [selectedGenderForTrial, setSelectedGenderForTrial] = useState<'Male' | 'Female' | 'No Preference'>('No Preference');
+  const [selectedPackageForEnroll, setSelectedPackageForEnroll] = useState<PackagePlan | undefined>(undefined);
+  const [inspectCourse, setInspectCourse] = useState<Course | null>(null);
 
-      if (path === '/' || path === '') {
-        setActiveNavTab('home');
-        setIsNotFound(false);
-      } else if (path === '/classroom' || path.startsWith('/classroom/')) {
-        setActiveAppView('classroom');
-        setIsNotFound(false);
-      } else if (path === '/student-portal' || path === '/student') {
-        setActiveAppView('student');
-        setIsNotFound(false);
-      } else if (path === '/teacher-portal' || path === '/teacher') {
-        setActiveAppView('teacher');
-        setIsNotFound(false);
-      } else if (path === '/online-quran-classes' || path === '/courses') {
-        setActiveNavTab('courses');
-        setIsNotFound(false);
-      } else if (path === '/pricing' || path === '/packages') {
-        setActiveNavTab('packages');
-        setIsNotFound(false);
-      } else if (path === '/faculty' || path === '/tutors') {
-        setActiveNavTab('tutors');
-        setIsNotFound(false);
-      } else if (path === '/quran-classes-for-kids' || path === '/kids-program' || path === '/kids') {
-        setActiveNavTab('kids-program');
-        setIsNotFound(false);
-      } else if (path === '/quran-classes-for-adults' || path === '/slow-learners' || path === '/adults') {
-        setActiveNavTab('slow-learners');
-        setIsNotFound(false);
-      } else if (path === '/female-quran-teacher' || path === '/female-tutor' || path === '/female-tutors') {
-        setActiveNavTab('female-tutor');
-        setIsNotFound(false);
-      } else if (path === '/online-quran-classes-uk') {
-        setActiveNavTab('uk-program');
-        setActiveCountry('uk');
-        setIsNotFound(false);
-      } else if (path === '/online-quran-classes-usa') {
-        setActiveNavTab('usa-program');
-        setActiveCountry('usa');
-        setIsNotFound(false);
-      } else if (path === '/online-quran-classes-canada') {
-        setActiveNavTab('canada-program');
-        setActiveCountry('canada');
-        setIsNotFound(false);
-      } else if (path === '/online-quran-classes-australia') {
-        setActiveNavTab('australia-program');
-        setActiveCountry('australia');
-        setIsNotFound(false);
-      } else if (path === '/online-quran-classes-pakistan') {
-        setActiveNavTab('pakistan-program');
-        setActiveCountry('pakistan');
-        setIsNotFound(false);
-      } else if (path === '/noorani-qaida') {
-        setActiveNavTab('courses');
-        const c = ALL_COURSES.find(item => item.id === 'c-1' || item.slug === 'noorani-qaida');
-        if (c) setInspectCourse(c);
-        setIsNotFound(false);
-      } else if (path === '/quran-reading-nazra') {
-        setActiveNavTab('courses');
-        const c = ALL_COURSES.find(item => item.id === 'c-2' || item.slug === 'quran-reading-nazra');
-        if (c) setInspectCourse(c);
-        setIsNotFound(false);
-      } else if (path === '/quran-with-tajweed') {
-        setActiveNavTab('courses');
-        const c = ALL_COURSES.find(item => item.id === 'c-3' || item.slug === 'quran-with-tajweed');
-        if (c) setInspectCourse(c);
-        setIsNotFound(false);
-      } else if (path === '/quran-memorization-hifz') {
-        setActiveNavTab('courses');
-        const c = ALL_COURSES.find(item => item.id === 'c-4' || item.slug === 'quran-memorization-hifz');
-        if (c) setInspectCourse(c);
-        setIsNotFound(false);
-      } else if (path === '/islamic-studies') {
-        setActiveNavTab('courses');
-        const c = ALL_COURSES.find(item => item.id === 'c-5' || item.slug === 'islamic-studies');
-        if (c) setInspectCourse(c);
-        setIsNotFound(false);
-      } else if (path === '/about-us' || path === '/about') {
-        setActiveNavTab('about');
-        setIsNotFound(false);
-      } else if (path === '/how-it-works' || path === '/methodology') {
-        setActiveNavTab('how-it-works');
-        setIsNotFound(false);
-      } else if (path === '/faq') {
-        setActiveNavTab('faq');
-        setIsNotFound(false);
-      } else if (path === '/blog' || path === '/blogs' || path === '/articles') {
-        setActiveNavTab('blogs');
-        setCurrentBlogSlug(null);
-        setIsNotFound(false);
-      } else if (path === '/contact-us' || path === '/contact') {
-        setActiveNavTab('contact');
-        setIsNotFound(false);
-      } else if (path === '/free-trial') {
-        setActiveNavTab('home');
-        setIsTrialModalOpen(true);
-        setIsNotFound(false);
-      } else if (path === '/admin' || path === '/admin-portal' || path === '/admin/dashboard' || path === '/staff-portal') {
-        setActiveAppView('admin');
-        setIsNotFound(false);
-      } else if (path === '/portal' || path === '/login') {
-        handleOpenAuth('student', 'login');
-        setIsNotFound(false);
-      } else if (path === '/register') {
-        handleOpenAuth('student', 'signup');
-        setIsNotFound(false);
-      } else if (path.startsWith('/courses/')) {
-        const slug = path.replace('/courses/', '');
-        const c = ALL_COURSES.find(item => item.slug === slug || item.id === slug);
-        if (c) {
-          setActiveNavTab('courses');
-          setInspectCourse(c);
-          setIsNotFound(false);
-        } else {
-          setIsNotFound(true);
+  const [showLegalModal, setShowLegalModal] = useState<boolean>(false);
+  const [legalModalType, setLegalModalType] = useState<'privacy' | 'terms'>('privacy');
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  // Fetch real data on mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [cRes, pRes, tRes, testRes] = await Promise.all([
+          fetch('/api/courses'),
+          fetch('/api/packages'),
+          fetch('/api/tutors'),
+          fetch('/api/testimonials')
+        ]);
+        if (cRes.ok) {
+          const data = await cRes.json();
+          if (Array.isArray(data) && data.length > 0) setCourses(data);
         }
-      } else if (path.startsWith('/blog/')) {
-        const slug = path.replace('/blog/', '');
-        if (slug) {
-          setActiveNavTab('blog-post');
-          setCurrentBlogSlug(slug);
-          setIsNotFound(false);
-        } else {
-          setActiveNavTab('blogs');
-          setCurrentBlogSlug(null);
-          setIsNotFound(false);
+        if (pRes.ok) {
+          const data = await pRes.json();
+          if (Array.isArray(data) && data.length > 0) setPackages(data);
         }
-      } else {
-        // Fallback for safety in development / embedded preview
-        setActiveNavTab('home');
-        setIsNotFound(false);
+        if (tRes.ok) {
+          const data = await tRes.json();
+          if (Array.isArray(data) && data.length > 0) setTutors(data);
+        }
+        if (testRes.ok) {
+          const data = await testRes.json();
+          if (Array.isArray(data) && data.length > 0) setTestimonials(data);
+        }
+      } catch (err) {
+        console.warn('Using baseline academy data:', err);
       }
     };
-
-    handleUrlRoute();
-    window.addEventListener('popstate', handleUrlRoute);
-    return () => window.removeEventListener('popstate', handleUrlRoute);
+    fetchData();
   }, []);
-
-  // Fetch live server data
-  const fetchData = async () => {
-    try {
-      const [cRes, pRes, tRes, testRes, artRes, resRes] = await Promise.all([
-        fetch('/api/courses'),
-        fetch('/api/packages'),
-        fetch('/api/tutors'),
-        fetch('/api/testimonials'),
-        fetch('/api/articles'),
-        fetch('/api/resources')
-      ]);
-
-      if (cRes.ok) {
-        const d = await cRes.json();
-        if (d.courses && d.courses.length > 0) setCourses(d.courses);
-      }
-      if (pRes.ok) {
-        const d = await pRes.json();
-        if (d.packages && d.packages.length > 0) setPackages(d.packages);
-      }
-      if (tRes.ok) {
-        const d = await tRes.json();
-        if (d.tutors && d.tutors.length > 0) setTutors(d.tutors);
-      }
-      if (testRes.ok) {
-        const d = await testRes.json();
-        if (d.testimonials && d.testimonials.length > 0) setTestimonials(d.testimonials);
-      }
-      if (artRes.ok) {
-        const d = await artRes.json();
-        if (d.articles && d.articles.length > 0) setArticles(d.articles);
-      }
-      if (resRes.ok) {
-        const d = await resRes.json();
-        if (d.resources && d.resources.length > 0) setResources(d.resources);
-      }
-    } catch (err) {
-      console.log('Loaded static baseline academy data');
-    }
-  };
-
-  useEffect(() => {
-    // Non-blocking background sync after initial page paint
-    if ('requestIdleCallback' in window) {
-      (window as any).requestIdleCallback(() => fetchData(), { timeout: 2000 });
-    } else {
-      const timer = setTimeout(fetchData, 1200);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  const handleOpenAuth = (role: 'student' | 'teacher' = 'student', mode: 'login' | 'signup' = 'signup') => {
-    setAuthRole(role);
-    setAuthMode(mode);
-    setIsAuthModalOpen(true);
-  };
 
   const handleOpenTrial = (courseName?: string, genderPref?: 'Male' | 'Female' | 'No Preference') => {
-    setSelectedCourseName(courseName || 'Noorani Qaida for Beginners');
-    setSelectedGenderPreference(genderPref || 'No Preference');
-    setIsTrialModalOpen(true);
+    setSelectedCourseForTrial(courseName);
+    if (genderPref) setSelectedGenderForTrial(genderPref);
+    setShowTrialModal(true);
   };
 
-  const handleOpenEnroll = (courseName?: string, pkg?: PackagePlan) => {
-    setSelectedCourseName(courseName || 'Nazra Quran with Tajweed');
-    if (pkg) setSelectedPackage(pkg);
-    setIsEnrollModalOpen(true);
+  const handleOpenEnroll = (courseName?: string) => {
+    if (courseName) {
+      const foundPkg = packages.find(p => p.name.toLowerCase().includes(courseName.toLowerCase()));
+      setSelectedPackageForEnroll(foundPkg || packages[0]);
+    }
+    setShowEnrollModal(true);
   };
 
   const handleSelectPackage = (pkg: PackagePlan) => {
-    setSelectedPackage(pkg);
-    setIsEnrollModalOpen(true);
+    setSelectedPackageForEnroll(pkg);
+    setShowEnrollModal(true);
   };
 
   const handleInspectCourse = (course: Course) => {
     setInspectCourse(course);
-    const seoMap = SEO_PAGE_MAP[course.id] || SEO_PAGE_MAP.courses;
-    if (window.history.pushState) {
-      window.history.pushState({}, '', seoMap.path);
-    }
   };
 
-  const handleBlogNavigate = (slug: string) => {
-    if (window.history.pushState) {
-      window.history.pushState({}, '', `/blog/${slug}`);
-    }
-    setCurrentBlogSlug(slug);
-    setActiveNavTab('blog-post');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleOpenAuth = (role: 'student' | 'teacher' = 'student', mode: 'login' | 'signup' = 'login') => {
+    setAuthRole(role);
+    setAuthMode(mode);
+    setShowAuthModal(true);
   };
 
-  const handleBlogBack = () => {
-    if (window.history.pushState) {
-      window.history.pushState({}, '', '/blog');
-    }
-    setCurrentBlogSlug(null);
-    setActiveNavTab('blogs');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleOpenLegal = (type: 'privacy' | 'terms') => {
+    setLegalModalType(type);
+    setShowLegalModal(true);
   };
 
-  const handleNavClick = (sectionId: string) => {
-    setIsNotFound(false);
-    setActiveAppView('landing');
-
-    if (sectionId === 'articles' || sectionId === 'blog' || sectionId === 'blogs') {
-      setActiveNavTab('blogs');
-      setCurrentBlogSlug(null);
-      if (window.history.pushState) {
-        window.history.pushState({}, '', '/blog');
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    setActiveNavTab(sectionId);
-
-    // Map tab ID to clean URL
-    const routeMeta = SEO_PAGE_MAP[sectionId];
-    if (routeMeta && window.history.pushState) {
-      window.history.pushState({}, '', routeMeta.path);
-    }
-
-    if (sectionId === 'uk-program') setActiveCountry('uk');
-    if (sectionId === 'usa-program') setActiveCountry('usa');
-    if (sectionId === 'canada-program') setActiveCountry('canada');
-    if (sectionId === 'australia-program') setActiveCountry('australia');
-    if (sectionId === 'pakistan-program') setActiveCountry('pakistan');
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Determine current SEO config
+  const currentPath = location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
+  const seoData = SEO_PAGE_MAP[currentPath] || {
+    title: 'Noor Al-Quran Institute | Certified Online Quran & Tajweed Academy',
+    description: 'Premier online Quran academy offering 1-on-1 personalized classes with certified male & female teachers. 3-day free trial.',
+    canonicalUrl: `https://noorequraninstitute.me${currentPath === '/' ? '' : currentPath}`,
+    structuredDataType: 'EducationalOrganization' as const
   };
 
-  const [classroomOriginView, setClassroomOriginView] = useState<'student' | 'teacher' | 'landing'>('landing');
-
-  const handleOpenClassroomWithSurah = (surahNum: number = 1, origin: 'student' | 'teacher' | 'landing' = 'landing') => {
-    setInitialClassroomSurah(surahNum);
-    setClassroomOriginView(origin);
-    setActiveAppView('classroom');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const isPortalView = location.pathname === '/classroom' || location.pathname.startsWith('/classroom/') ||
+    location.pathname === '/student' || location.pathname.startsWith('/student/') ||
+    location.pathname === '/teacher' || location.pathname.startsWith('/teacher/') ||
+    location.pathname === '/admin' || location.pathname.startsWith('/admin/');
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAF7] text-[#17201B] font-body selection:bg-[#D4A72C]/30 selection:text-[#064E3B]">
-      
-      {/* Dynamic SEO synchronization component for <title>, <meta description>, <link canonical>, OpenGraph & Schema */}
+    <div className="min-h-screen flex flex-col bg-[#F8F5EE] text-[#12201D] font-sans antialiased selection:bg-[#B79A62]/30 selection:text-[#0B332D]">
       <SEOHead
-        currentTab={activeNavTab}
-        inspectCourse={inspectCourse}
-        readingArticle={readingArticle}
+        title={seoData.title}
+        description={seoData.description}
+        canonicalUrl={(seoData as any).canonical || (seoData as any).canonicalUrl || `https://noorequraninstitute.me${currentPath === '/' ? '' : currentPath}`}
+        structuredDataType={((seoData as any).schemaType || (seoData as any).structuredDataType || 'EducationalOrganization') as any}
       />
 
-      {/* Global Navigation Bar with Multi-Portal Switcher & Auth */}
-      <Navbar
-        activeTab={activeNavTab}
-        activeAppView={activeAppView}
-        onSelectAppView={(v) => {
-          setActiveAppView(v);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        onNavClick={handleNavClick}
-        onOpenTrial={() => handleOpenTrial()}
-        onOpenEnroll={() => handleOpenEnroll()}
-        onOpenAuth={handleOpenAuth}
-      />
-
-      {/* ============================================================== */}
-      {/* MAIN VIEWPORT SWITCHER */}
-      {/* ============================================================== */}
-
-      {/* 404 Not Found Handling */}
-      {isNotFound && (
-        <NotFoundPage
-          onGoHome={() => handleNavClick('home')}
-          onSelectTab={handleNavClick}
-          onOpenTrial={() => handleOpenTrial()}
+      {/* Main Navbar */}
+      {!isPortalView && (
+        <Navbar
+          onOpenTrial={handleOpenTrial}
+          onOpenEnroll={handleOpenEnroll}
+          onOpenAuth={handleOpenAuth}
+          onSelectAppView={(v) => navigate(`/${v}`)}
         />
       )}
 
-      <Suspense
-        fallback={
-          <div className="flex-1 flex items-center justify-center min-h-[50vh] p-8">
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-10 h-10 border-3 border-[#064E3B] border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest">
-                Loading Noor-e-Quran Portal...
-              </p>
-            </div>
-          </div>
-        }
-      >
-        {/* 1. DIGITAL QURAN CLASSROOM STUDIO (Interactive learning studio & video room) */}
-        {!isNotFound && activeAppView === 'classroom' && (
-          <ClassroomStudio
-            initialSurahNumber={initialClassroomSurah}
-            initialMode="whiteboard"
-            portalOrigin={classroomOriginView !== 'landing' ? classroomOriginView : null}
-            onReturnToPortal={classroomOriginView !== 'landing' ? () => setActiveAppView(classroomOriginView) : undefined}
-            onBackToLanding={() => setActiveAppView('landing')}
-            onOpenEnroll={() => handleOpenEnroll()}
-            onOpenTrial={() => handleOpenTrial()}
-          />
-        )}
-
-        {/* 2. STUDENT & PARENT LEARNING HUB (Protected: Requires Student Role) */}
-        {!isNotFound && activeAppView === 'student' && (
-          <ProtectedRoute
-            requiredRole="student"
-            onRequireAuth={(role, mode) => {
-              setAuthRole(role || 'student');
-              setAuthMode(mode || 'login');
-              setIsAuthModalOpen(true);
-            }}
-            onBackToLanding={() => setActiveAppView('landing')}
-          >
-            <StudentPortal
-              onOpenClassroom={(sNum) => handleOpenClassroomWithSurah(sNum || 1, 'student')}
-              onBackToLanding={() => setActiveAppView('landing')}
-            />
-          </ProtectedRoute>
-        )}
-
-        {/* 3. TEACHER & FACULTY EVALUATION PORTAL (Protected: Requires Teacher Role) */}
-        {!isNotFound && activeAppView === 'teacher' && (
-          <ProtectedRoute
-            requiredRole="teacher"
-            onRequireAuth={(role, mode) => {
-              setAuthRole(role || 'teacher');
-              setAuthMode(mode || 'login');
-              setIsAuthModalOpen(true);
-            }}
-            onBackToLanding={() => setActiveAppView('landing')}
-            onGoToStudentPortal={() => setActiveAppView('student')}
-          >
-            <TeacherPortal
-              onOpenClassroom={(sNum) => handleOpenClassroomWithSurah(sNum || 1, 'teacher')}
-              onBackToLanding={() => setActiveAppView('landing')}
-            />
-          </ProtectedRoute>
-        )}
-
-        {/* 4. ACADEMY MANAGEMENT & ADMIN PORTAL (Protected: Requires Admin Role) */}
-        {!isNotFound && activeAppView === 'admin' && (
-          <AdminPortal
-            isOpen={true}
-            onClose={() => {
-              window.history.pushState({}, '', '/');
-              setActiveAppView('landing');
-            }}
-            courses={courses}
-            onRefreshCourses={fetchData}
-          />
-        )}
-      </Suspense>
-
-      {/* 4. PUBLIC ACADEMY LANDING WEBSITE */}
-      {!isNotFound && activeAppView === 'landing' && (
-        <main className="flex-1 min-h-[600px]">
-          <Suspense
-            fallback={
-              <div className="py-28 flex items-center justify-center bg-[#FAFAF7]">
-                <div className="text-center space-y-3">
-                  <div className="w-10 h-10 border-3 border-[#064E3B] border-t-[#D4A72C] rounded-full animate-spin mx-auto" />
-                  <p className="text-sm font-semibold text-[#064E3B]">Loading Noor-e-Quran Institute...</p>
-                </div>
+      {/* Main Content Router */}
+      <main className="flex-1">
+        <Suspense
+          fallback={
+            <div className="py-28 flex items-center justify-center bg-[#F8F5EE]">
+              <div className="text-center space-y-3">
+                <div className="w-10 h-10 border-2 border-[#0B332D] border-t-[#B79A62] rounded-full animate-spin mx-auto" />
+                <p className="text-xs font-semibold text-[#0B332D] font-sans tracking-wide">Loading Noor Al-Quran Institute...</p>
               </div>
-            }
-          >
-            {/* ========================================================= */}
-            {/* MULTI-PAGE PUBLIC ROUTING */}
-            {/* ========================================================= */}
-
-            {/* 1. HOME PAGE */}
-            {activeNavTab === 'home' && (
-              <HomePageView
-                courses={courses}
-                tutors={tutors}
-                testimonials={testimonials}
-                onOpenTrial={handleOpenTrial}
-                onOpenEnroll={handleOpenEnroll}
-                onInspectCourse={handleInspectCourse}
-                onNavClick={handleNavClick}
-              />
-            )}
-
-            {/* 2. COURSES PAGE */}
-            {activeNavTab === 'courses' && (
-              <div>
-                {/* Page Banner Header */}
-                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                  <div className="max-w-7xl mx-auto text-center space-y-3">
-                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                      <span>/</span>
-                      <span className="text-white">Quran Courses</span>
-                    </div>
-                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                      Certified 1-on-1 Online Quran Courses
-                    </h1>
-                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                      From foundational Noorani Qaida to advanced Tajweed, Hifz, and Islamic Studies. Personalized curricula with flexible schedules.
-                    </p>
-                  </div>
-                </div>
-
-                <CoursesSection
+            </div>
+          }
+        >
+          <Routes>
+            {/* 1. Home Page */}
+            <Route
+              path="/"
+              element={
+                <HomePage
                   courses={courses}
+                  tutors={tutors}
+                  testimonials={testimonials}
                   onOpenTrial={handleOpenTrial}
-                  onOpenEnroll={handleOpenEnroll}
                   onInspectCourse={handleInspectCourse}
                 />
-                <MethodologySection
-                  onOpenTrial={() => handleOpenTrial()}
-                  onOpenEnroll={() => handleOpenEnroll()}
+              }
+            />
+
+            {/* 2. Courses Pages & Course Slugs */}
+            <Route
+              path="/courses"
+              element={
+                <CoursesPage
+                  courses={courses}
+                  onOpenTrial={handleOpenTrial}
+                  onInspectCourse={handleInspectCourse}
                 />
-              </div>
-            )}
+              }
+            />
+            <Route path="/online-quran-classes" element={<CoursesPage courses={courses} onOpenTrial={handleOpenTrial} onInspectCourse={handleInspectCourse} />} />
+            <Route path="/noorani-qaida" element={<CoursesPage courses={courses} onOpenTrial={handleOpenTrial} onInspectCourse={handleInspectCourse} />} />
+            <Route path="/quran-reading-nazra" element={<CoursesPage courses={courses} onOpenTrial={handleOpenTrial} onInspectCourse={handleInspectCourse} />} />
+            <Route path="/quran-with-tajweed" element={<CoursesPage courses={courses} onOpenTrial={handleOpenTrial} onInspectCourse={handleInspectCourse} />} />
+            <Route path="/quran-memorization-hifz" element={<CoursesPage courses={courses} onOpenTrial={handleOpenTrial} onInspectCourse={handleInspectCourse} />} />
+            <Route path="/islamic-studies" element={<CoursesPage courses={courses} onOpenTrial={handleOpenTrial} onInspectCourse={handleInspectCourse} />} />
 
-            {/* 3. PACKAGES & PRICING PAGE */}
-            {activeNavTab === 'packages' && (
-              <div>
-                {/* Page Banner Header */}
-                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                  <div className="max-w-7xl mx-auto text-center space-y-3">
-                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                      <span>/</span>
-                      <span className="text-white">Packages & Pricing</span>
-                    </div>
-                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                      Affordable 1-on-1 Quran Tuition Plans
-                    </h1>
-                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                      Transparent monthly plans with multi-student family discounts and a 3-day free trial. Choose classes 2 to 5 days per week.
-                    </p>
-                  </div>
-                </div>
+            {/* 3. Teachers / Faculty Pages */}
+            <Route
+              path="/teachers"
+              element={
+                <TeachersPage
+                  tutors={tutors}
+                  onOpenTrial={handleOpenTrial}
+                />
+              }
+            />
+            <Route path="/faculty" element={<TeachersPage tutors={tutors} onOpenTrial={handleOpenTrial} />} />
+            <Route path="/tutors" element={<TeachersPage tutors={tutors} onOpenTrial={handleOpenTrial} />} />
 
-                <PackagesSection
+            {/* 4. Tuition & Fee Plans */}
+            <Route
+              path="/packages"
+              element={
+                <TuitionPage
                   packages={packages}
                   onSelectPackage={handleSelectPackage}
                   onOpenTrial={() => handleOpenTrial()}
                 />
-              </div>
-            )}
+              }
+            />
+            <Route path="/pricing" element={<TuitionPage packages={packages} onSelectPackage={handleSelectPackage} onOpenTrial={() => handleOpenTrial()} />} />
 
-            {/* 4. FACULTY / TUTORS PAGE */}
-            {activeNavTab === 'tutors' && (
-              <div>
-                {/* Page Banner Header */}
-                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                  <div className="max-w-7xl mx-auto text-center space-y-3">
-                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                      <span>/</span>
-                      <span className="text-white">Faculty & Scholars</span>
-                    </div>
-                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                      Certified Male & Female Quran Teachers
-                    </h1>
-                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                      Verified Ijazah holders and Islamic university graduates dedicated to patient, interactive 1-on-1 Quran education.
-                    </p>
-                  </div>
-                </div>
+            {/* 5. How It Works / Methodology */}
+            <Route
+              path="/how-it-works"
+              element={<HowItWorksPage onOpenTrial={() => handleOpenTrial()} />}
+            />
+            <Route
+              path="/methodology"
+              element={<HowItWorksPage onOpenTrial={() => handleOpenTrial()} />}
+            />
 
-                <TutorsSection
-                  tutors={tutors}
-                  onOpenTrialWithGender={(g) => handleOpenTrial(undefined, g)}
+            {/* 6. About Us */}
+            <Route
+              path="/about"
+              element={<AboutPage onOpenTrial={() => handleOpenTrial()} onOpenEnroll={() => handleOpenEnroll()} />}
+            />
+            <Route
+              path="/about-us"
+              element={<AboutPage onOpenTrial={() => handleOpenTrial()} onOpenEnroll={() => handleOpenEnroll()} />}
+            />
+
+            {/* 7. Blog & Articles Dynamic Routes */}
+            <Route path="/blog" element={<BlogListPage onOpenTrial={() => handleOpenTrial()} />} />
+            <Route path="/blogs" element={<BlogListPage onOpenTrial={() => handleOpenTrial()} />} />
+            <Route path="/articles" element={<BlogListPage onOpenTrial={() => handleOpenTrial()} />} />
+            <Route path="/blog/:slug" element={<BlogPostPage onOpenTrial={() => handleOpenTrial()} />} />
+            <Route path="/articles/:slug" element={<BlogPostPage onOpenTrial={() => handleOpenTrial()} />} />
+
+            {/* 8. Contact Us */}
+            <Route path="/contact" element={<ContactPage onOpenTrial={() => handleOpenTrial()} />} />
+            <Route path="/contact-us" element={<ContactPage onOpenTrial={() => handleOpenTrial()} />} />
+
+            {/* 9. FAQ */}
+            <Route path="/faq" element={<FAQPage onOpenTrial={() => handleOpenTrial()} />} />
+
+            {/* 10. Specialized Program Tracks */}
+            <Route
+              path="/kids-program"
+              element={
+                <KidsProgramLanding
+                  onOpenTrial={handleOpenTrial}
+                  onOpenEnroll={handleOpenEnroll}
+                  onNavClick={(tab) => navigate(`/${tab}`)}
                 />
-              </div>
-            )}
+              }
+            />
+            <Route
+              path="/quran-classes-for-kids"
+              element={
+                <KidsProgramLanding
+                  onOpenTrial={handleOpenTrial}
+                  onOpenEnroll={handleOpenEnroll}
+                  onNavClick={(tab) => navigate(`/${tab}`)}
+                />
+              }
+            />
 
-            {/* 5. KIDS PROGRAM PAGE */}
-            {activeNavTab === 'kids-program' && (
-              <KidsProgramLanding
-                onOpenTrial={handleOpenTrial}
-                onOpenEnroll={handleOpenEnroll}
-                onNavClick={handleNavClick}
-              />
-            )}
+            <Route
+              path="/female-tutor"
+              element={
+                <FemaleTutorLanding
+                  onOpenTrial={handleOpenTrial}
+                  onOpenEnroll={handleOpenEnroll}
+                  onNavClick={(tab) => navigate(`/${tab}`)}
+                />
+              }
+            />
+            <Route
+              path="/female-quran-teacher"
+              element={
+                <FemaleTutorLanding
+                  onOpenTrial={handleOpenTrial}
+                  onOpenEnroll={handleOpenEnroll}
+                  onNavClick={(tab) => navigate(`/${tab}`)}
+                />
+              }
+            />
 
-            {/* 6. FEMALE TUTORS PAGE */}
-            {activeNavTab === 'female-tutor' && (
-              <FemaleTutorLanding
-                onOpenTrial={handleOpenTrial}
-                onOpenEnroll={handleOpenEnroll}
-                onNavClick={handleNavClick}
-              />
-            )}
+            <Route
+              path="/slow-learners"
+              element={
+                <AdultsProgramLanding
+                  onOpenTrial={handleOpenTrial}
+                  onOpenEnroll={handleOpenEnroll}
+                  onNavClick={(tab) => navigate(`/${tab}`)}
+                />
+              }
+            />
+            <Route
+              path="/quran-classes-for-adults"
+              element={
+                <AdultsProgramLanding
+                  onOpenTrial={handleOpenTrial}
+                  onOpenEnroll={handleOpenEnroll}
+                  onNavClick={(tab) => navigate(`/${tab}`)}
+                />
+              }
+            />
 
-            {/* 7. ADULTS & SLOW LEARNERS PAGE */}
-            {activeNavTab === 'slow-learners' && (
-              <AdultsProgramLanding
-                onOpenTrial={handleOpenTrial}
-                onOpenEnroll={handleOpenEnroll}
-                onNavClick={handleNavClick}
-              />
-            )}
+            {/* 11. International Regional Tracks */}
+            <Route path="/online-quran-classes-uk" element={<InternationalLanding countryKey="uk" onOpenTrial={handleOpenTrial} onOpenEnroll={handleOpenEnroll} onSelectCountry={(c) => navigate(`/online-quran-classes-${c}`)} />} />
+            <Route path="/online-quran-classes-usa" element={<InternationalLanding countryKey="usa" onOpenTrial={handleOpenTrial} onOpenEnroll={handleOpenEnroll} onSelectCountry={(c) => navigate(`/online-quran-classes-${c}`)} />} />
+            <Route path="/online-quran-classes-canada" element={<InternationalLanding countryKey="canada" onOpenTrial={handleOpenTrial} onOpenEnroll={handleOpenEnroll} onSelectCountry={(c) => navigate(`/online-quran-classes-${c}`)} />} />
+            <Route path="/online-quran-classes-australia" element={<InternationalLanding countryKey="australia" onOpenTrial={handleOpenTrial} onOpenEnroll={handleOpenEnroll} onSelectCountry={(c) => navigate(`/online-quran-classes-${c}`)} />} />
+            <Route path="/online-quran-classes-pakistan" element={<InternationalLanding countryKey="pakistan" onOpenTrial={handleOpenTrial} onOpenEnroll={handleOpenEnroll} onSelectCountry={(c) => navigate(`/online-quran-classes-${c}`)} />} />
 
-            {/* 8. BLOG & ARTICLES CMS PAGE */}
-            {(activeNavTab === 'blogs' || activeNavTab === 'articles') && (
-              <BlogListPage
-                onNavigate={handleBlogNavigate}
-                onOpenTrial={() => handleOpenTrial()}
-              />
-            )}
+            {/* 12. Interactive Classroom Studio */}
+            <Route
+              path="/classroom"
+              element={
+                <ClassroomStudio
+                  user={currentUser}
+                  onClose={() => navigate('/')}
+                  initialSurah={1}
+                />
+              }
+            />
+            <Route
+              path="/classroom/:surah"
+              element={
+                <ClassroomStudio
+                  user={currentUser}
+                  onClose={() => navigate('/')}
+                  initialSurah={1}
+                />
+              }
+            />
 
-            {/* 8B. SINGLE BLOG POST PAGE */}
-            {activeNavTab === 'blog-post' && currentBlogSlug && (
-              <BlogPostPage
-                slug={currentBlogSlug}
-                onNavigate={handleBlogNavigate}
-                onNavigateBack={handleBlogBack}
-                onOpenTrial={() => handleOpenTrial()}
-              />
-            )}
-
-            {/* 8C. HOW IT WORKS DEDICATED PAGE */}
-            {(activeNavTab === 'how-it-works' || activeNavTab === 'methodology') && (
-              <div>
-                <MethodologySection onOpenTrial={() => handleOpenTrial()} />
-                <WhyChooseUs onOpenTrial={() => handleOpenTrial()} />
-                <TrustSection />
-              </div>
-            )}
-
-            {/* 9. FAQ PAGE */}
-            {activeNavTab === 'faq' && (
-              <div>
-                {/* Page Banner Header */}
-                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                  <div className="max-w-7xl mx-auto text-center space-y-3">
-                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                      <span>/</span>
-                      <span className="text-white">FAQ</span>
-                    </div>
-                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                      Frequently Asked Questions
-                    </h1>
-                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                      Everything you need to know about our online classes, trial lessons, fee structure, tutors, and technical setup.
-                    </p>
-                  </div>
-                </div>
-
-                <FAQSection onOpenTrial={() => handleOpenTrial()} />
-              </div>
-            )}
-
-            {/* 10. CONTACT PAGE */}
-            {activeNavTab === 'contact' && (
-              <div>
-                {/* Page Banner Header */}
-                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                  <div className="max-w-7xl mx-auto text-center space-y-3">
-                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                      <span>/</span>
-                      <span className="text-white">Contact Us</span>
-                    </div>
-                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                      Get in Touch with Academic Support
-                    </h1>
-                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                      Have questions or need help selecting a course? Reach out via WhatsApp, phone, or direct inquiry form.
-                    </p>
-                  </div>
-                </div>
-
-                <ContactSection />
-              </div>
-            )}
-
-            {/* 11. ABOUT US PAGE */}
-            {activeNavTab === 'about' && (
-              <div>
-                {/* Page Banner Header */}
-                <div className="bg-[#064E3B] text-white py-12 px-4 sm:px-6 lg:px-8 border-b border-[#D4A72C]/30 bg-islamic-pattern">
-                  <div className="max-w-7xl mx-auto text-center space-y-3">
-                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#D4A72C] uppercase tracking-wider">
-                      <button onClick={() => handleNavClick('home')} className="hover:underline cursor-pointer">Home</button>
-                      <span>/</span>
-                      <span className="text-white">About Us</span>
-                    </div>
-                    <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-white">
-                      About Noor-e-Quran Institute
-                    </h1>
-                    <p className="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto">
-                      Dedicated to providing accessible, authentic, and certified Quranic education to families worldwide.
-                    </p>
-                  </div>
-                </div>
-
-                <AboutSection
+            {/* 13. Student & Teacher & Admin Portals */}
+            <Route
+              path="/student"
+              element={
+                <StudentPortal
+                  onClose={() => navigate('/')}
                   onOpenTrial={() => handleOpenTrial()}
-                  onOpenEnroll={() => handleOpenEnroll()}
+                  onJoinClassroom={() => navigate('/classroom')}
                 />
-                <TrustSection />
-                <WhyChooseUs onOpenTrial={() => handleOpenTrial()} />
-              </div>
-            )}
+              }
+            />
+            <Route
+              path="/student-portal"
+              element={
+                <StudentPortal
+                  onClose={() => navigate('/')}
+                  onOpenTrial={() => handleOpenTrial()}
+                  onJoinClassroom={() => navigate('/classroom')}
+                />
+              }
+            />
 
-            {/* 12. INTERNATIONAL LOCALIZED PAGES */}
-            {(activeNavTab === 'uk-program' ||
-              activeNavTab === 'usa-program' ||
-              activeNavTab === 'canada-program' ||
-              activeNavTab === 'australia-program' ||
-              activeNavTab === 'pakistan-program') && (
-              <InternationalLanding
-                countryCode={activeCountry}
-                onOpenTrial={handleOpenTrial}
-                onOpenEnroll={handleOpenEnroll}
-                onSelectCountry={(c) => {
-                  setActiveCountry(c);
-                  handleNavClick(`${c}-program`);
-                }}
-              />
-            )}
-          </Suspense>
-        </main>
+            <Route
+              path="/teacher"
+              element={
+                <TeacherPortal
+                  onClose={() => navigate('/')}
+                  onStartClassroom={() => navigate('/classroom')}
+                />
+              }
+            />
+            <Route
+              path="/teacher-portal"
+              element={
+                <TeacherPortal
+                  onClose={() => navigate('/')}
+                  onStartClassroom={() => navigate('/classroom')}
+                />
+              }
+            />
+
+            <Route
+              path="/admin"
+              element={
+                <AdminPortal
+                  onClose={() => navigate('/')}
+                  courses={courses}
+                  onRefreshCourses={() => {}}
+                />
+              }
+            />
+            <Route
+              path="/admin-portal"
+              element={
+                <AdminPortal
+                  onClose={() => navigate('/')}
+                  courses={courses}
+                  onRefreshCourses={() => {}}
+                />
+              }
+            />
+
+            {/* 14. 404 Fallback Catch-all Route */}
+            <Route
+              path="*"
+              element={<NotFoundPage onOpenTrial={() => handleOpenTrial()} />}
+            />
+          </Routes>
+        </Suspense>
+      </main>
+
+      {/* Global Footer */}
+      {!isPortalView && (
+        <Footer
+          onOpenTrial={handleOpenTrial}
+          onOpenLegal={handleOpenLegal}
+        />
       )}
 
-      {/* Academy Footer */}
-      <Footer
-        onNavClick={handleNavClick}
-        onOpenTrial={() => handleOpenTrial()}
-        onOpenEnroll={() => handleOpenEnroll()}
-        onOpenLegal={(type) => setLegalModalType(type)}
-        onSelectCountry={(c) => {
-          setActiveCountry(c);
-          handleNavClick(`${c}-program`);
-        }}
+      {/* WhatsApp Floating Contact Widget */}
+      {!isPortalView && <WhatsAppWidget />}
 
-      />
-
-      {/* Floating 24/7 WhatsApp Chat Widget */}
-      <WhatsAppWidget onOpenTrial={() => handleOpenTrial()} />
-
+      {/* Global Interactive Modals */}
       <Suspense fallback={null}>
-        {/* Student Self-Signup, Google Sign-In & Teacher/Admin Auth Modal */}
-        {isAuthModalOpen && (
+        {showTrialModal && (
+          <FreeTrialModal
+            isOpen={showTrialModal}
+            onClose={() => setShowTrialModal(false)}
+            courses={courses}
+            preselectedCourse={selectedCourseForTrial}
+            preselectedGender={selectedGenderForTrial}
+            onSuccess={() => setShowTrialModal(false)}
+          />
+        )}
+
+        {showEnrollModal && (
+          <EnrollmentModal
+            isOpen={showEnrollModal}
+            onClose={() => setShowEnrollModal(false)}
+            packages={packages}
+            selectedPackage={selectedPackageForEnroll}
+            onSuccess={() => setShowEnrollModal(false)}
+          />
+        )}
+
+        {showAuthModal && (
           <AuthModal
-            isOpen={isAuthModalOpen}
-            onClose={() => setIsAuthModalOpen(false)}
+            isOpen={showAuthModal}
+            onClose={() => setShowAuthModal(false)}
             initialRole={authRole}
             initialMode={authMode}
-            onSuccess={(role) => {
-              if (role === 'teacher') {
-                setActiveAppView('teacher');
-              } else {
-                setActiveAppView('student');
-              }
-            }}
           />
         )}
 
-        {/* 3-Day Free Trial Modal */}
-        {isTrialModalOpen && (
-          <FreeTrialModal
-            isOpen={isTrialModalOpen}
-            onClose={() => setIsTrialModalOpen(false)}
-            initialCourseName={selectedCourseName}
-            defaultGender={selectedGenderPreference}
-          />
-        )}
-
-        {/* Course Enrollment Modal */}
-        {isEnrollModalOpen && (
-          <EnrollmentModal
-            isOpen={isEnrollModalOpen}
-            onClose={() => setIsEnrollModalOpen(false)}
-            initialCourseName={selectedCourseName}
-            initialPackage={selectedPackage}
-          />
-        )}
-
-        {/* Syllabus / Course Details Breakdown Modal */}
         {inspectCourse && (
           <CourseDetailModal
             course={inspectCourse}
+            isOpen={!!inspectCourse}
             onClose={() => setInspectCourse(null)}
             onOpenTrial={(courseName) => handleOpenTrial(courseName)}
             onOpenEnroll={(courseName) => handleOpenEnroll(courseName)}
           />
         )}
 
-        {/* Article Reader Modal */}
-        {readingArticle && (
-          <ArticleModal
-            article={readingArticle}
-            onClose={() => setReadingArticle(null)}
-            onOpenTrial={() => handleOpenTrial()}
-          />
-        )}
-
-        {/* Privacy Policy / Terms & Conditions Modal */}
-        {legalModalType && (
+        {showLegalModal && (
           <LegalModal
-            type={legalModalType}
-            onClose={() => setLegalModalType(null)}
+            isOpen={showLegalModal}
+            onClose={() => setShowLegalModal(false)}
+            initialTab={legalModalType}
           />
         )}
       </Suspense>
-
     </div>
   );
 }
 
 export default function App() {
   return (
-    <IconContext.Provider value={{ weight: 'duotone' }}>
+    <IconContext.Provider
+      value={{
+        color: 'currentColor',
+        size: 20,
+        weight: 'regular',
+        mirrored: false
+      }}
+    >
       <AuthProvider>
-        <AppContent />
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
       </AuthProvider>
     </IconContext.Provider>
   );

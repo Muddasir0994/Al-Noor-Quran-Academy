@@ -1,41 +1,41 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Course, Tutor, Testimonial } from '../types';
-import { Hero } from './Hero';
-import { CoursesSection } from './CoursesSection';
-import { WhyChooseUs } from './WhyChooseUs';
-import { TutorsSection } from './TutorsSection';
-import { MethodologySection } from './MethodologySection';
-import { TrustSection } from './TrustSection';
-import { StorySection } from './StorySection';
-import { FinalCTASection } from './FinalCTASection';
+import { Hero } from '../components/Hero';
+import { CoursesSection } from '../components/CoursesSection';
+import { WhyChooseUs } from '../components/WhyChooseUs';
+import { TutorsSection } from '../components/TutorsSection';
+import { MethodologySection } from '../components/MethodologySection';
+import { TrustSection } from '../components/TrustSection';
+import { StorySection } from '../components/StorySection';
+import { FinalCTASection } from '../components/FinalCTASection';
 
-interface HomePageViewProps {
+interface HomePageProps {
   courses: Course[];
-  tutors?: Tutor[];
+  tutors: Tutor[];
   testimonials: Testimonial[];
   onOpenTrial: (courseName?: string, genderPref?: 'Male' | 'Female' | 'No Preference') => void;
-  onOpenEnroll: (courseName?: string) => void;
   onInspectCourse: (course: Course) => void;
-  onNavClick: (tabId: string) => void;
 }
 
-export const HomePageView: React.FC<HomePageViewProps> = ({
+export const HomePage: React.FC<HomePageProps> = ({
   courses,
-  tutors = [],
+  tutors,
   testimonials,
   onOpenTrial,
-  onInspectCourse,
-  onNavClick
+  onInspectCourse
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="space-y-0 bg-[#F8F5EE]">
-      {/* 1. Hero Section: Editorial Composition & 5 Restrained Trust Principles */}
+      {/* 1. Hero Section */}
       <Hero
         onOpenTrial={() => onOpenTrial()}
-        onViewCourses={() => onNavClick('courses')}
+        onViewCourses={() => navigate('/courses')}
       />
 
-      {/* 2. Numbered Courses Curriculum System */}
+      {/* 2. Numbered Courses Curriculum Preview */}
       <CoursesSection
         courses={courses}
         onOpenTrial={onOpenTrial}
@@ -45,17 +45,17 @@ export const HomePageView: React.FC<HomePageViewProps> = ({
       {/* 3. Why Choose Us: Full-Width Deep Emerald Section */}
       <WhyChooseUs onOpenTrial={() => onOpenTrial()} />
 
-      {/* 4. Teachers Section: Authentic Editorial Showcase with Real Data */}
+      {/* 4. Certified Faculty Showcase */}
       <TutorsSection
         tutors={tutors}
         onOpenTrialWithGender={(g) => onOpenTrial(undefined, g)}
         onOpenTrial={onOpenTrial}
       />
 
-      {/* 5. How It Works: 4-Step Process Timeline */}
+      {/* 5. How It Works 4-Step Timeline */}
       <MethodologySection onOpenTrial={() => onOpenTrial()} />
 
-      {/* 6. Authentic Magazine Testimonial with Real Data */}
+      {/* 6. Authentic Testimonials */}
       <TrustSection testimonials={testimonials} />
 
       {/* 7. Image & Story Section */}
@@ -64,7 +64,7 @@ export const HomePageView: React.FC<HomePageViewProps> = ({
       {/* 8. Final Call to Action */}
       <FinalCTASection
         onOpenTrial={() => onOpenTrial()}
-        onViewCourses={() => onNavClick('courses')}
+        onViewCourses={() => navigate('/courses')}
       />
     </div>
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   YoutubeLogo,
   InstagramLogo,
@@ -9,15 +10,11 @@ import {
 } from '@phosphor-icons/react';
 
 interface FooterProps {
-  onNavClick: (tab: string) => void;
-  onOpenTrial: (courseName?: string) => void;
-  onOpenEnroll?: (courseName?: string) => void;
-  onOpenLegal: (type: 'privacy' | 'terms') => void;
-  onSelectCountry?: (country: any) => void;
+  onOpenTrial?: (courseName?: string) => void;
+  onOpenLegal?: (type: 'privacy' | 'terms') => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
-  onNavClick,
   onOpenTrial,
   onOpenLegal
 }) => {
@@ -48,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({
           
           {/* Brand Column (Col 1-4) */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-sm border border-[#B79A62]/40 bg-[#0B332D] flex items-center justify-center text-[#B79A62]">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 21V10C4 6 8 3 12 3C16 3 20 6 20 10V21" />
@@ -58,7 +55,7 @@ export const Footer: React.FC<FooterProps> = ({
               <span className="font-editorial text-xl font-bold text-[#F8F5EE] tracking-tight">
                 Noor Al-Quran Institute
               </span>
-            </div>
+            </Link>
 
             <p className="text-xs text-[#E8E0D1]/70 font-sans leading-relaxed max-w-xs">
               Premier international Islamic academy dedicated to patient, certified 1-on-1 Quran and Tajweed education for families worldwide.
@@ -76,24 +73,24 @@ export const Footer: React.FC<FooterProps> = ({
             </p>
             <ul className="space-y-2 text-xs font-sans text-[#E8E0D1]/80">
               <li>
-                <button onClick={() => onNavClick('courses')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/courses" className="hover:text-white transition-colors">
                   Quran Reading
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavClick('courses')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/courses" className="hover:text-white transition-colors">
                   Tajweed
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavClick('courses')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/courses" className="hover:text-white transition-colors">
                   Hifz-ul-Quran
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavClick('courses')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/courses" className="hover:text-white transition-colors">
                   Islamic Studies
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -105,29 +102,29 @@ export const Footer: React.FC<FooterProps> = ({
             </p>
             <ul className="space-y-2 text-xs font-sans text-[#E8E0D1]/80">
               <li>
-                <button onClick={() => onNavClick('about')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/about" className="hover:text-white transition-colors">
                   About Us
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavClick('tutors')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/teachers" className="hover:text-white transition-colors">
                   Teachers
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavClick('how-it-works')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/how-it-works" className="hover:text-white transition-colors">
                   How It Works
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavClick('packages')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/packages" className="hover:text-white transition-colors">
                   Fee Packages
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavClick('blogs')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/blog" className="hover:text-white transition-colors">
                   Blog & Guides
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -139,22 +136,22 @@ export const Footer: React.FC<FooterProps> = ({
             </p>
             <ul className="space-y-2 text-xs font-sans text-[#E8E0D1]/80">
               <li>
-                <button onClick={() => onNavClick('faq')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/faq" className="hover:text-white transition-colors">
                   Help Center & FAQ
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onNavClick('contact')} className="hover:text-white transition-colors cursor-pointer">
+                <Link to="/contact" className="hover:text-white transition-colors">
                   Contact Us
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => onOpenLegal('privacy')} className="hover:text-white transition-colors cursor-pointer">
+                <button onClick={() => onOpenLegal && onOpenLegal('privacy')} className="hover:text-white transition-colors cursor-pointer text-left">
                   Privacy Policy
                 </button>
               </li>
               <li>
-                <button onClick={() => onOpenLegal('terms')} className="hover:text-white transition-colors cursor-pointer">
+                <button onClick={() => onOpenLegal && onOpenLegal('terms')} className="hover:text-white transition-colors cursor-pointer text-left">
                   Terms & Conditions
                 </button>
               </li>
@@ -195,9 +192,9 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="pt-8 border-t border-[#B79A62]/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#E8E0D1]/50 font-sans">
           <p>© {new Date().getFullYear()} Noor Al-Quran Institute. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <button onClick={() => onOpenLegal('privacy')} className="hover:underline">Privacy</button>
+            <button onClick={() => onOpenLegal && onOpenLegal('privacy')} className="hover:underline cursor-pointer">Privacy</button>
             <span>•</span>
-            <button onClick={() => onOpenLegal('terms')} className="hover:underline">Terms</button>
+            <button onClick={() => onOpenLegal && onOpenLegal('terms')} className="hover:underline cursor-pointer">Terms</button>
             <span>•</span>
             <span>Worldwide Online Education</span>
           </div>

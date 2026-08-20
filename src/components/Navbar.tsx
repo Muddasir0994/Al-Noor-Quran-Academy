@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
   List,
@@ -12,27 +13,22 @@ import {
 } from '@phosphor-icons/react';
 
 interface NavbarProps {
-  activeTab: string;
-  activeAppView: 'landing' | 'classroom' | 'student' | 'teacher' | 'admin';
-  onSelectAppView: (view: 'landing' | 'classroom' | 'student' | 'teacher' | 'admin') => void;
-  onNavClick: (tabId: string) => void;
   onOpenTrial: (courseName?: string) => void;
-  onOpenEnroll: (courseName?: string) => void;
+  onOpenEnroll?: (courseName?: string) => void;
   onOpenAuth?: (role?: 'student' | 'teacher', mode?: 'login' | 'signup') => void;
+  onSelectAppView?: (view: 'landing' | 'classroom' | 'student' | 'teacher' | 'admin') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  activeTab,
-  activeAppView,
-  onSelectAppView,
-  onNavClick,
   onOpenTrial,
   onOpenEnroll,
-  onOpenAuth
+  onOpenAuth,
+  onSelectAppView
 }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { currentUser, userProfile, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState('English');
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,11 +42,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close dropdowns on click outside
+  // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(event.target as Node)) {
-        setUserDropdownOpen(false);
         setLangDropdownOpen(false);
       }
     };
@@ -58,31 +53,37 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
   const navLinks = [
-    { id: 'home', label: 'Home' },
-    { id: 'courses', label: 'Courses' },
-    { id: 'tutors', label: 'Teachers' },
-    { id: 'packages', label: 'Tuition & Plans' },
-    { id: 'how-it-works', label: 'How It Works' },
-    { id: 'about', label: 'About Us' },
-    { id: 'blogs', label: 'Blog' },
-    { id: 'contact', label: 'Contact' }
+    { path: '/', label: 'Home' },
+    { path: '/courses', label: 'Courses' },
+    { path: '/teachers', label: 'Teachers' },
+    { path: '/packages', label: 'Tuition & Plans' },
+    { path: '/how-it-works', label: 'How It Works' },
+    { path: '/about', label: 'About Us' },
+    { path: '/blog', label: 'Blog' },
+    { path: '/contact', label: 'Contact' }
   ];
 
-  const handleLinkClick = (tabId: string) => {
-    onSelectAppView('landing');
-    onNavClick(tabId);
-    setMobileMenuOpen(false);
+  const isLinkActive = (path: string) => {
+    if (path === '/') return location.pathname === '/';
+    if (path === '/blog') return location.pathname.startsWith('/blog');
+    if (path === '/courses') return location.pathname.startsWith('/courses') || location.pathname.startsWith('/online-quran-classes');
+    if (path === '/teachers') return location.pathname.startsWith('/teachers') || location.pathname.startsWith('/faculty');
+    if (path === '/packages') return location.pathname.startsWith('/packages') || location.pathname.startsWith('/pricing');
+    return location.pathname.startsWith(path);
   };
 
-  const isLinkActive = (id: string) => {
-    if (id === 'blogs') {
-      return activeTab === 'blogs' || activeTab === 'articles' || activeTab === 'blog-post';
+  const handlePortalNavigation = (view: 'student' | 'teacher' | 'classroom' | 'admin') => {
+    if (onSelectAppView) {
+      onSelectAppView(view);
+    } else {
+      navigate(`/${view}`);
     }
-    if (id === 'how-it-works') {
-      return activeTab === 'how-it-works' || activeTab === 'methodology';
-    }
-    return activeTab === id;
   };
 
   return (
@@ -109,7 +110,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </a>
           <span className="text-[#B79A62]/40 hidden sm:inline">|</span>
           <button
-            onClick={() => onSelectAppView('classroom')}
+            onClick={() => handlePortalNavigation('classroom')}
             className="hover:text-white transition-colors cursor-pointer"
           >
             Classroom Studio
@@ -117,7 +118,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span className="text-[#B79A62]/40">|</span>
           {currentUser ? (
             <button
-              onClick={() => onSelectAppView(userProfile?.role === 'teacher' ? 'teacher' : 'student')}
+              onClick={() => handlePortalNavigation(userProfile?.role === 'teacher' ? 'teacher' : userProfile?.role === 'admin' ? 'admin' : 'student')}
               className="text-[#B79A62] font-medium hover:underline cursor-pointer"
             >
               My Portal
@@ -138,11 +139,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
           {/* Brand Logo: Architectural Minimal Arch + Typography */}
-          <button
-            onClick={() => handleLinkClick('home')}
+          <Link
+            to="/"
             className="flex items-center gap-3 text-left group cursor-pointer"
           >
-            {/* Minimal Architectural Islamic Arch Mark */}
             <div className="w-9 h-9 rounded-sm border border-[#B79A62]/40 bg-[#0B332D] flex items-center justify-center text-[#B79A62] shadow-xs group-hover:border-[#B79A62] transition-colors shrink-0">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 21V10C4 6 8 3 12 3C16 3 20 6 20 10V21" />
@@ -151,7 +151,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               </svg>
             </div>
 
-            {/* Typography */}
             <div>
               <div className="flex items-baseline gap-1.5">
                 <span className="font-editorial text-xl sm:text-2xl font-bold tracking-tight text-[#0B332D]">
@@ -165,16 +164,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 معهد نور القرآن الكريم
               </span>
             </div>
-          </button>
+          </Link>
 
           {/* Desktop Navigation Links: Editorial, Spacious */}
           <nav className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => {
-              const active = isLinkActive(link.id);
+              const active = isLinkActive(link.path);
               return (
-                <button
-                  key={link.id}
-                  onClick={() => handleLinkClick(link.id)}
+                <Link
+                  key={link.path}
+                  to={link.path}
                   className={`text-sm font-sans font-medium transition-colors relative py-1 cursor-pointer ${
                     active
                       ? 'text-[#0B332D] font-semibold'
@@ -183,40 +182,37 @@ export const Navbar: React.FC<NavbarProps> = ({
                 >
                   {link.label}
                   {active && (
-                    <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#B79A62]" />
+                    <span className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#B79A62] rounded-full" />
                   )}
-                </button>
+                </Link>
               );
             })}
           </nav>
 
-          {/* Right Action Area: Language & Primary CTA */}
-          <div className="hidden sm:flex items-center gap-4">
+          {/* Right Action: Language Switcher & Book Free Trial CTA */}
+          <div className="hidden lg:flex items-center gap-5">
             
             {/* Language Selector */}
             <div className="relative">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-[#0B332D] px-2 py-1.5 rounded-sm border border-transparent hover:border-[#E8E0D1] transition-all cursor-pointer"
-                title="Select Language"
+                className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-[#0B332D] py-1 px-2 rounded-sm border border-transparent hover:border-[#E8E0D1] transition-all cursor-pointer"
               >
                 <Globe className="w-3.5 h-3.5 text-[#B79A62]" />
-                <span className="font-medium">{selectedLang}</span>
+                <span>{selectedLang}</span>
                 <CaretDown className="w-3 h-3 text-gray-400" />
               </button>
 
               {langDropdownOpen && (
-                <div className="absolute right-0 mt-1 w-32 bg-[#FCFBF8] border border-[#E8E0D1] shadow-md rounded-sm py-1 z-50 text-xs">
-                  {['English', 'العربية', 'اردو'].map((lang) => (
+                <div className="absolute right-0 mt-2 w-32 bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-md py-1 z-50 text-xs font-sans">
+                  {['English', 'العربية (Arabic)', 'اردو (Urdu)'].map((lang) => (
                     <button
                       key={lang}
                       onClick={() => {
-                        setSelectedLang(lang);
+                        setSelectedLang(lang.split(' ')[0]);
                         setLangDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-1.5 hover:bg-[#F8F5EE] transition-colors ${
-                        selectedLang === lang ? 'font-bold text-[#0B332D]' : 'text-gray-600'
-                      }`}
+                      className="w-full text-left px-3 py-1.5 hover:bg-[#F8F5EE] text-gray-700 hover:text-[#0B332D]"
                     >
                       {lang}
                     </button>
@@ -225,85 +221,97 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            {/* Primary CTA Button: Deep Emerald with subtle squared corners */}
+            {/* Primary Action Button: Squared, Editorial, Deep Emerald */}
             <button
               onClick={() => onOpenTrial()}
-              className="inline-flex items-center justify-center px-5 py-2.5 bg-[#0B332D] text-[#F8F5EE] text-xs font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] transition-all border border-[#0B332D] cursor-pointer shadow-xs"
+              className="px-5 py-2.5 bg-[#0B332D] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] transition-all shadow-xs flex items-center gap-2 cursor-pointer"
             >
-              Book Free Trial
+              <span>Book Free Trial</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#B79A62]" />
             </button>
+
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <div className="flex items-center gap-2 lg:hidden">
-            <button
-              onClick={() => onOpenTrial()}
-              className="sm:hidden px-3 py-1.5 bg-[#0B332D] text-[#F8F5EE] text-[11px] font-semibold uppercase tracking-wider rounded-sm"
-            >
-              Free Trial
-            </button>
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-[#0B332D] rounded-sm hover:bg-[#F8F5EE] transition-colors"
-              aria-label="Toggle navigation menu"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <List className="w-6 h-6" />}
-            </button>
-          </div>
+          {/* Mobile Menu Toggle Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle navigation menu"
+            className="lg:hidden p-2 rounded-sm text-[#0B332D] hover:bg-[#F8F5EE] transition-colors"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <List className="w-6 h-6" />}
+          </button>
 
         </div>
       </div>
 
       {/* 3. Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#FCFBF8] border-b border-[#E8E0D1] shadow-lg animate-in fade-in duration-200">
-          <div className="max-w-7xl mx-auto px-4 py-6 space-y-4">
-            
-            <div className="grid grid-cols-1 gap-1">
-              {navLinks.map((link) => {
-                const active = isLinkActive(link.id);
-                return (
-                  <button
-                    key={link.id}
-                    onClick={() => handleLinkClick(link.id)}
-                    className={`text-left px-3 py-2.5 text-base font-sans transition-colors rounded-sm flex items-center justify-between ${
-                      active
-                        ? 'bg-[#F8F5EE] text-[#0B332D] font-bold border-l-2 border-[#B79A62]'
-                        : 'text-gray-700 hover:bg-[#F8F5EE]'
-                    }`}
-                  >
-                    <span>{link.label}</span>
-                    <ArrowRight className="w-4 h-4 text-gray-400" />
-                  </button>
-                );
-              })}
-            </div>
+        <div className="lg:hidden bg-[#FCFBF8] border-b border-[#E8E0D1] px-4 py-6 shadow-lg space-y-4">
+          <div className="space-y-1">
+            {navLinks.map((link) => {
+              const active = isLinkActive(link.path);
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-3 py-2.5 text-sm font-sans rounded-sm transition-colors ${
+                    active
+                      ? 'bg-[#F8F5EE] text-[#0B332D] font-bold border-l-2 border-[#B79A62]'
+                      : 'text-gray-700 hover:bg-[#F8F5EE]'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </div>
 
-            <div className="pt-4 border-t border-[#E8E0D1] space-y-3">
+          <div className="pt-4 border-t border-[#E8E0D1] space-y-3">
+            <button
+              onClick={() => {
+                onOpenTrial();
+                setMobileMenuOpen(false);
+              }}
+              className="w-full py-3 bg-[#0B332D] text-[#F8F5EE] text-xs font-semibold uppercase tracking-wider rounded-sm text-center flex items-center justify-center gap-2 shadow-xs"
+            >
+              <span>Book Your Free Trial</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#B79A62]" />
+            </button>
+
+            <div className="grid grid-cols-2 gap-2 text-center text-xs pt-1">
               <button
                 onClick={() => {
+                  handlePortalNavigation('classroom');
                   setMobileMenuOpen(false);
-                  onOpenTrial();
                 }}
-                className="w-full py-3 bg-[#0B332D] text-[#F8F5EE] text-center font-semibold text-sm uppercase tracking-wider rounded-sm"
+                className="py-2 px-3 border border-[#E8E0D1] rounded-sm text-[#0B332D] hover:bg-[#F8F5EE]"
               >
-                Book Your Free Trial
+                Classroom Studio
               </button>
 
-              <div className="flex items-center justify-between text-xs text-gray-600 pt-2">
-                <span>Helpline: +92 327 4496163</span>
+              {currentUser ? (
                 <button
                   onClick={() => {
+                    handlePortalNavigation(userProfile?.role === 'teacher' ? 'teacher' : userProfile?.role === 'admin' ? 'admin' : 'student');
                     setMobileMenuOpen(false);
-                    onSelectAppView('classroom');
                   }}
-                  className="text-[#0B332D] font-semibold underline"
+                  className="py-2 px-3 bg-[#B79A62] text-[#07221E] font-bold rounded-sm"
                 >
-                  Classroom Studio
+                  My Portal
                 </button>
-              </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    onOpenAuth && onOpenAuth('student', 'login');
+                    setMobileMenuOpen(false);
+                  }}
+                  className="py-2 px-3 border border-[#0B332D] text-[#0B332D] font-medium rounded-sm"
+                >
+                  Portal Login
+                </button>
+              )}
             </div>
-
           </div>
         </div>
       )}
