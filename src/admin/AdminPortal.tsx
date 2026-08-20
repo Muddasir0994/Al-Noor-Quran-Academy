@@ -12,6 +12,10 @@ import {
   MediaAsset,
   MessageTemplate,
   PageSeoConfig,
+  FeeInvoice,
+  StudentReportCard,
+  TutorPayroll,
+  ActivityLog,
   SystemNotification,
   DashboardStats,
   LeadStatus,
@@ -27,7 +31,11 @@ import {
   DEFAULT_SITE_SETTINGS,
   INITIAL_MEDIA_ASSETS,
   INITIAL_MESSAGE_TEMPLATES,
-  INITIAL_SEO_CONFIGS
+  INITIAL_SEO_CONFIGS,
+  INITIAL_INVOICES,
+  INITIAL_REPORT_CARDS,
+  INITIAL_PAYROLL,
+  INITIAL_LOGS
 } from '../data/academyData';
 import {
   Lock,
@@ -74,7 +82,14 @@ import {
   Image as ImageIcon,
   Check,
   ShareNetwork,
-  Tag
+  Tag,
+  Receipt,
+  Table,
+  ChalkboardTeacher,
+  Printer,
+  ListDashes,
+  CurrencyDollar,
+  ChartBar
 } from '@phosphor-icons/react';
 import { BlogEditor } from './BlogEditor';
 import { ImageCropModal } from '../components/ImageCropModal';
@@ -104,7 +119,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
 
   // Active view tab in admin CMS
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'leads' | 'enrollments' | 'students' | 'tutors' | 'courses' | 'packages' | 'blog' | 'testimonials' | 'faqs' | 'media' | 'templates' | 'seo' | 'settings'
+    'overview' | 'leads' | 'enrollments' | 'students' | 'tutors' | 'timetable' | 'finance' | 'reports' | 'payroll' | 'logs' | 'courses' | 'packages' | 'blog' | 'testimonials' | 'faqs' | 'media' | 'templates' | 'seo' | 'settings'
   >('overview');
 
   // Data states
@@ -116,6 +131,60 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const [adminCourses, setAdminCourses] = useState<Course[]>(courses || []);
   const [notifications, setNotifications] = useState<SystemNotification[]>([]);
   const [loadingData, setLoadingData] = useState(false);
+
+  // Finance & Invoices State
+  const [invoices, setInvoices] = useState<FeeInvoice[]>(() => {
+    const saved = localStorage.getItem('alnoor_admin_invoices');
+    return saved ? JSON.parse(saved) : INITIAL_INVOICES;
+  });
+  const [isAddingInvoice, setIsAddingInvoice] = useState(false);
+  const [invoiceForm, setInvoiceForm] = useState<Partial<FeeInvoice>>({
+    studentId: '',
+    studentName: '',
+    parentName: '',
+    phone: '',
+    courseName: 'Nazra Quran with Tajweed',
+    packageName: 'Standard (3 Days / Wk)',
+    amount: 35,
+    currency: 'USD',
+    billingMonth: 'August 2026',
+    dueDate: new Date().toISOString().split('T')[0],
+    status: 'Pending',
+    paymentMethod: 'Bank Transfer'
+  });
+  const [selectedInvoiceForPrint, setSelectedInvoiceForPrint] = useState<FeeInvoice | null>(null);
+
+  // Student Report Cards State
+  const [reportCards, setReportCards] = useState<StudentReportCard[]>(() => {
+    const saved = localStorage.getItem('alnoor_admin_reports');
+    return saved ? JSON.parse(saved) : INITIAL_REPORT_CARDS;
+  });
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+  const [reportForm, setReportForm] = useState<Partial<StudentReportCard>>({
+    studentId: '',
+    studentName: '',
+    courseName: 'Nazra Quran with Tajweed',
+    tutorName: 'Qari Bilal Ahmed',
+    evaluationMonth: 'August 2026',
+    currentSabaq: 'Surah Al-Baqarah (Ayah 142)',
+    readingGrade: 'A+',
+    tajweedGrade: 'A',
+    attendancePercentage: 95,
+    teacherRemarks: 'MashaAllah, outstanding improvement in pronunciation and Tajweed rules this month.'
+  });
+  const [selectedReportForPrint, setSelectedReportForPrint] = useState<StudentReportCard | null>(null);
+
+  // Tutor Payroll State
+  const [payrollList, setPayrollList] = useState<TutorPayroll[]>(() => {
+    const saved = localStorage.getItem('alnoor_admin_payroll');
+    return saved ? JSON.parse(saved) : INITIAL_PAYROLL;
+  });
+
+  // System Activity Logs State
+  const [activityLogs, setActivityLogs] = useState<ActivityLog[]>(() => {
+    const saved = localStorage.getItem('alnoor_admin_logs');
+    return saved ? JSON.parse(saved) : INITIAL_LOGS;
+  });
 
   // Packages CMS state
   const [packages, setPackages] = useState<PackagePlan[]>(() => {
@@ -924,6 +993,139 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     reader.readAsText(file);
   };
 
+  // --- Finance & Invoicing Handlers ---
+  const handleSaveInvoice = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newInv: FeeInvoice = {
+      id: `inv-${Date.now()}`,
+      invoiceNumber: `NQ-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`,
+      studentId: invoiceForm.studentId || (students[0]?.id ?? 'stu-1'),
+      studentName: invoiceForm.studentName || (students[0]?.studentName ?? 'Student'),
+      parentName: invoiceForm.parentName || (students[0]?.parentName ?? 'Parent'),
+      phone: invoiceForm.phone || (students[0]?.phone ?? '+923274496163'),
+      courseName: invoiceForm.courseName || 'Nazra Quran with Tajweed',
+      packageName: invoiceForm.packageName || 'Standard Plan',
+      amount: invoiceForm.amount || 35,
+      currency: invoiceForm.currency || 'USD',
+      billingMonth: invoiceForm.billingMonth || 'Current Month',
+      dueDate: invoiceForm.dueDate || new Date().toISOString().split('T')[0],
+      status: invoiceForm.status || 'Pending',
+      paymentMethod: invoiceForm.paymentMethod || 'Bank Transfer'
+    };
+    const updated = [newInv, ...invoices];
+    setInvoices(updated);
+    localStorage.setItem('alnoor_admin_invoices', JSON.stringify(updated));
+    logActivity(`Generated Fee Invoice #${newInv.invoiceNumber} for ${newInv.studentName}`, 'Finance');
+    setIsAddingInvoice(false);
+  };
+
+  const handleToggleInvoiceStatus = (id: string) => {
+    const updated = invoices.map(inv => {
+      if (inv.id === id) {
+        const nextStatus: FeeInvoice['status'] = inv.status === 'Paid' ? 'Pending' : 'Paid';
+        return {
+          ...inv,
+          status: nextStatus,
+          paidDate: nextStatus === 'Paid' ? new Date().toISOString().split('T')[0] : undefined
+        };
+      }
+      return inv;
+    });
+    setInvoices(updated);
+    localStorage.setItem('alnoor_admin_invoices', JSON.stringify(updated));
+  };
+
+  const handleSendInvoiceWhatsApp = (inv: FeeInvoice) => {
+    const cleanPhone = inv.phone.replace(/[^0-9]/g, '');
+    const text = encodeURIComponent(`Assalam-o-Alaikum ${inv.parentName || inv.studentName}! 📜
+
+This is Noor E Quran Institute regarding the fee invoice for ${inv.studentName} (${inv.courseName}).
+
+💰 Invoice #: ${inv.invoiceNumber}
+📅 Month: ${inv.billingMonth}
+💵 Amount Due: ${inv.currency} ${inv.amount}
+⏳ Due Date: ${inv.dueDate}
+
+Kindly submit tuition fee at your earliest convenience.
+JazakAllah Khair!`);
+    window.open(`https://wa.me/${cleanPhone}?text=${text}`, '_blank');
+  };
+
+  // --- Student Progress Report Handlers ---
+  const handleSaveReportCard = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newRep: StudentReportCard = {
+      id: `rep-${Date.now()}`,
+      studentId: reportForm.studentId || (students[0]?.id ?? 'stu-1'),
+      studentName: reportForm.studentName || (students[0]?.studentName ?? 'Student'),
+      courseName: reportForm.courseName || 'Nazra Quran with Tajweed',
+      tutorName: reportForm.tutorName || 'Qari Bilal Ahmed',
+      evaluationMonth: reportForm.evaluationMonth || 'August 2026',
+      currentSabaq: reportForm.currentSabaq || 'Surah Al-Baqarah',
+      readingGrade: reportForm.readingGrade || 'A+',
+      tajweedGrade: reportForm.tajweedGrade || 'A',
+      attendancePercentage: reportForm.attendancePercentage || 95,
+      teacherRemarks: reportForm.teacherRemarks || 'MashaAllah, dedicated student!',
+      generatedDate: new Date().toISOString().split('T')[0]
+    };
+    const updated = [newRep, ...reportCards];
+    setReportCards(updated);
+    localStorage.setItem('alnoor_admin_reports', JSON.stringify(updated));
+    logActivity(`Generated Progress Evaluation Card for ${newRep.studentName}`, 'Student');
+    setIsGeneratingReport(false);
+  };
+
+  const handleSendReportWhatsApp = (rep: StudentReportCard) => {
+    const stu = students.find(s => s.id === rep.studentId);
+    const phone = (stu?.phone || '+923274496163').replace(/[^0-9]/g, '');
+    const text = encodeURIComponent(`Assalam-o-Alaikum Respected Parents! 📜🌟
+
+Here is the Monthly Quran Performance Report for *${rep.studentName}*:
+
+📖 Course: ${rep.courseName}
+🎓 Certified Tutor: ${rep.tutorName}
+📅 Evaluation Month: ${rep.evaluationMonth}
+📍 Current Sabaq Milestone: ${rep.currentSabaq}
+🌟 Tajweed Accuracy: ${rep.tajweedGrade}
+🗣️ Reading Fluency: ${rep.readingGrade}
+📊 Attendance: ${rep.attendancePercentage}%
+
+💬 Tutor's Remarks: "${rep.teacherRemarks}"
+
+Thank you for trusting Noor E Quran Institute with your child's sacred education!`);
+    window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+  };
+
+  // --- Payroll & Compensation Handler ---
+  const handleTogglePayrollStatus = (id: string) => {
+    const updated = payrollList.map(p => {
+      if (p.id === id) {
+        const next: TutorPayroll['status'] = p.status === 'Paid' ? 'Pending' : 'Paid';
+        return {
+          ...p,
+          status: next,
+          paidDate: next === 'Paid' ? new Date().toISOString().split('T')[0] : undefined
+        };
+      }
+      return p;
+    });
+    setPayrollList(updated);
+    localStorage.setItem('alnoor_admin_payroll', JSON.stringify(updated));
+  };
+
+  // --- Helper to log system activity ---
+  const logActivity = (action: string, category: ActivityLog['category']) => {
+    const newLog: ActivityLog = {
+      id: `log-${Date.now()}`,
+      timestamp: new Date().toLocaleString(),
+      action,
+      category,
+      user: 'Admin'
+    };
+    setActivityLogs(prev => [newLog, ...prev.slice(0, 49)]);
+    localStorage.setItem('alnoor_admin_logs', JSON.stringify([newLog, ...activityLogs.slice(0, 49)]));
+  };
+
   const handleOpenAssignModal = (student: Student) => {
     setAssigningStudent(student);
     setAssignmentForm({
@@ -1115,7 +1317,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                       { id: 'leads', label: 'Trial Inquiries', icon: Users, badge: leads.filter(l => l.status === 'New Lead').length },
                       { id: 'enrollments', label: 'Enrollments', icon: UserCheck, badge: enrollments.filter(e => e.status === 'New Application').length },
                       { id: 'students', label: 'Students & Timetable', icon: GraduationCap },
-                      { id: 'tutors', label: 'Faculty & Scholars', icon: Certificate }
+                      { id: 'tutors', label: 'Faculty & Scholars', icon: Certificate },
+                      { id: 'timetable', label: 'Weekly Schedule Matrix', icon: Calendar },
+                      { id: 'finance', label: 'Billing & Invoices', icon: Receipt, badge: invoices.filter(i => i.status === 'Pending').length },
+                      { id: 'reports', label: 'Monthly Report Cards', icon: FileText },
+                      { id: 'payroll', label: 'Faculty Compensation', icon: CurrencyDollar },
+                      { id: 'logs', label: 'Audit Activity Logs', icon: ListDashes }
                     ].map(item => {
                       const Icon = item.icon;
                       const active = activeTab === item.id;
@@ -1589,7 +1796,385 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                 </div>
               )}
 
-              {/* TAB 6: COURSES MANAGEMENT (FIXED & FULLY FUNCTIONAL) */}
+              {/* TAB: WEEKLY SCHEDULE MATRIX & TIMETABLE GRID */}
+              {activeTab === 'timetable' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">Weekly Schedule Matrix</h3>
+                      <p className="text-xs text-gray-500 font-sans">Comprehensive multi-day schedule overview connecting students with assigned faculty scholars.</p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1.5 rounded-sm border border-emerald-300 flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                        <span>{students.filter(s => s.status === 'Active').length} Active Class Tracks</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-7 gap-3">
+                    {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => {
+                      const dayStudents = students.filter(s => s.preferredDays && s.preferredDays.includes(day));
+                      return (
+                        <div key={day} className="bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm p-3 space-y-2.5 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-center justify-between border-b border-[#E8E0D1] pb-1.5 mb-2">
+                              <h4 className="font-bold text-[#0B332D] text-xs uppercase tracking-wider">{day.slice(0, 3)}</h4>
+                              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-xs bg-[#0B332D] text-[#F8F5EE]">
+                                {dayStudents.length}
+                              </span>
+                            </div>
+
+                            <div className="space-y-2">
+                              {dayStudents.length > 0 ? (
+                                dayStudents.map((stu) => (
+                                  <div
+                                    key={stu.id}
+                                    className="p-2 bg-[#FCFBF8] border border-[#E8E0D1] rounded-xs text-[11px] space-y-1 shadow-2xs hover:border-[#B79A62] transition-colors"
+                                  >
+                                    <div className="font-bold text-[#0B332D] truncate">{stu.studentName}</div>
+                                    <div className="text-[10px] text-[#B79A62] flex items-center gap-1">
+                                      <Certificate className="w-3 h-3 shrink-0" />
+                                      <span className="truncate">{stu.tutorName || 'Pending Tutor'}</span>
+                                    </div>
+                                    <div className="text-[9px] text-gray-500 flex items-center gap-1">
+                                      <Clock className="w-2.5 h-2.5 shrink-0" />
+                                      <span>{stu.preferredTime || 'Evening'}</span>
+                                    </div>
+                                  </div>
+                                ))
+                              ) : (
+                                <p className="text-[10px] text-gray-400 italic py-2 text-center">No classes</p>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="pt-2 border-t border-[#E8E0D1]/60 text-center">
+                            <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{day}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB: FINANCE, FEE TRACKING & INVOICING */}
+              {activeTab === 'finance' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">Billing &amp; Tuition Invoices</h3>
+                      <p className="text-xs text-gray-500 font-sans">Generate monthly tuition invoices, track incoming wire/card transfers, and WhatsApp payment notices.</p>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setInvoiceForm({
+                          studentId: students[0]?.id ?? 'stu-1',
+                          studentName: students[0]?.studentName ?? 'Student',
+                          parentName: students[0]?.parentName ?? 'Parent',
+                          phone: students[0]?.phone ?? '+923274496163',
+                          courseName: 'Nazra Quran with Tajweed',
+                          packageName: 'Standard (3 Days / Wk)',
+                          amount: 35,
+                          currency: 'USD',
+                          billingMonth: 'August 2026',
+                          dueDate: new Date().toISOString().split('T')[0],
+                          status: 'Pending',
+                          paymentMethod: 'Bank Transfer'
+                        });
+                        setIsAddingInvoice(true);
+                      }}
+                      className="px-4 py-2 bg-[#0B332D] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-[#B79A62]" weight="bold" />
+                      <span>Issue Fee Invoice</span>
+                    </button>
+                  </div>
+
+                  {/* Summary Metric Cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="p-4 bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Collected Revenue</span>
+                        <h4 className="font-editorial text-2xl text-emerald-800 font-bold mt-0.5">
+                          ${invoices.filter(i => i.status === 'Paid' && i.currency === 'USD').reduce((acc, c) => acc + c.amount, 0)} USD / Rs {invoices.filter(i => i.status === 'Paid' && i.currency === 'PKR').reduce((acc, c) => acc + c.amount, 0).toLocaleString()}
+                        </h4>
+                      </div>
+                      <div className="w-10 h-10 rounded-sm bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                        <Receipt className="w-5 h-5" />
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Pending Invoices</span>
+                        <h4 className="font-editorial text-2xl text-amber-700 font-bold mt-0.5">
+                          {invoices.filter(i => i.status === 'Pending').length} Invoices
+                        </h4>
+                      </div>
+                      <div className="w-10 h-10 rounded-sm bg-amber-100 text-amber-800 flex items-center justify-center">
+                        <Clock className="w-5 h-5" />
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Total Invoices Issued</span>
+                        <h4 className="font-editorial text-2xl text-[#0B332D] font-bold mt-0.5">
+                          {invoices.length} Total
+                        </h4>
+                      </div>
+                      <div className="w-10 h-10 rounded-sm bg-[#0B332D] text-[#B79A62] flex items-center justify-center">
+                        <Receipt className="w-5 h-5" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Invoices Table */}
+                  <div className="bg-[#FCFBF8] rounded-sm border border-[#E8E0D1] shadow-xs overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-xs font-sans">
+                        <thead className="bg-[#F8F5EE] text-[#0B332D] font-bold uppercase tracking-wider border-b border-[#E8E0D1] text-[10px]">
+                          <tr>
+                            <th className="p-3.5">Invoice #</th>
+                            <th className="p-3.5">Student / Parent</th>
+                            <th className="p-3.5">Course &amp; Plan</th>
+                            <th className="p-3.5">Fee Amount</th>
+                            <th className="p-3.5">Due Date</th>
+                            <th className="p-3.5">Status</th>
+                            <th className="p-3.5 text-right">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#E8E0D1]/60">
+                          {invoices.map(inv => (
+                            <tr key={inv.id} className="hover:bg-[#F8F5EE]/50 transition-colors">
+                              <td className="p-3.5 font-mono font-bold text-[#0B332D]">{inv.invoiceNumber}</td>
+                              <td className="p-3.5">
+                                <div className="font-bold text-[#0B332D]">{inv.studentName}</div>
+                                <div className="text-[10px] text-gray-500">{inv.parentName} • {inv.phone}</div>
+                              </td>
+                              <td className="p-3.5 text-gray-700">{inv.courseName} ({inv.packageName})</td>
+                              <td className="p-3.5 font-bold text-[#0B332D]">
+                                {inv.currency} {inv.amount?.toLocaleString()}
+                              </td>
+                              <td className="p-3.5 text-gray-600 font-mono text-[11px]">{inv.dueDate}</td>
+                              <td className="p-3.5">
+                                <span className={`px-2 py-0.5 text-[10px] font-bold rounded-xs cursor-pointer ${
+                                  inv.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                                }`} onClick={() => handleToggleInvoiceStatus(inv.id)}>
+                                  {inv.status}
+                                </span>
+                              </td>
+                              <td className="p-3.5 text-right">
+                                <div className="inline-flex items-center gap-1.5">
+                                  <button
+                                    onClick={() => handleSendInvoiceWhatsApp(inv)}
+                                    className="p-1.5 text-emerald-700 hover:text-emerald-900 cursor-pointer"
+                                    title="Send WhatsApp Notice"
+                                  >
+                                    <WhatsappLogo className="w-4 h-4" weight="fill" />
+                                  </button>
+                                  <button
+                                    onClick={() => setSelectedInvoiceForPrint(inv)}
+                                    className="p-1.5 text-[#0B332D] hover:text-[#B79A62] cursor-pointer"
+                                    title="View / Print Receipt"
+                                  >
+                                    <Receipt className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB: STUDENT PROGRESS REPORTS & CERTIFICATES */}
+              {activeTab === 'reports' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">Monthly Student Evaluation Reports</h3>
+                      <p className="text-xs text-gray-500 font-sans">Formal pedagogical assessment cards, Tajweed evaluation, and academic certificates for parents.</p>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setReportForm({
+                          studentId: students[0]?.id ?? 'stu-1',
+                          studentName: students[0]?.studentName ?? 'Student',
+                          courseName: 'Nazra Quran with Tajweed',
+                          tutorName: 'Qari Bilal Ahmed',
+                          evaluationMonth: 'August 2026',
+                          currentSabaq: 'Surah Al-Baqarah (Ayah 142)',
+                          readingGrade: 'A+',
+                          tajweedGrade: 'A',
+                          attendancePercentage: 95,
+                          teacherRemarks: 'MashaAllah, dedicated student with exemplary Tajweed improvement!'
+                        });
+                        setIsGeneratingReport(true);
+                      }}
+                      className="px-4 py-2 bg-[#0B332D] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-[#B79A62]" weight="bold" />
+                      <span>Issue Progress Card</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {reportCards.map((rep) => (
+                      <div
+                        key={rep.id}
+                        className="bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm p-5 space-y-3 shadow-xs flex flex-col justify-between"
+                      >
+                        <div className="space-y-3">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-[#B79A62] block">
+                                {rep.evaluationMonth} Evaluation
+                              </span>
+                              <h4 className="font-editorial text-xl text-[#0B332D] font-bold">{rep.studentName}</h4>
+                              <p className="text-[11px] text-gray-600 font-sans">{rep.courseName} • Tutor: {rep.tutorName}</p>
+                            </div>
+                            <span className="px-2 py-0.5 text-xs font-bold rounded-xs bg-[#0B332D] text-[#F8F5EE]">
+                              {rep.attendancePercentage}% Attendance
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2 bg-[#FCFBF8] p-3 rounded-xs border border-[#E8E0D1]/60 text-xs">
+                            <div>
+                              <span className="text-[9px] text-gray-500 font-bold uppercase block">Tajweed Accuracy</span>
+                              <span className="font-bold text-emerald-700 text-sm">{rep.tajweedGrade}</span>
+                            </div>
+                            <div>
+                              <span className="text-[9px] text-gray-500 font-bold uppercase block">Reading Fluency</span>
+                              <span className="font-bold text-emerald-700 text-sm">{rep.readingGrade}</span>
+                            </div>
+                            <div className="col-span-2 pt-1 border-t border-[#E8E0D1]/40">
+                              <span className="text-[9px] text-gray-500 font-bold uppercase block">Current Sabaq</span>
+                              <span className="font-semibold text-[#0B332D] text-xs">{rep.currentSabaq}</span>
+                            </div>
+                          </div>
+
+                          <p className="text-xs text-gray-700 italic bg-[#FCFBF8] p-3 rounded-xs border border-[#E8E0D1]/60">
+                            "{rep.teacherRemarks}"
+                          </p>
+                        </div>
+
+                        <div className="pt-3 border-t border-[#E8E0D1] flex items-center justify-between">
+                          <button
+                            onClick={() => handleSendReportWhatsApp(rep)}
+                            className="px-3 py-1.5 bg-[#25D366] text-white text-xs font-bold rounded-sm inline-flex items-center gap-1 cursor-pointer shadow-2xs"
+                          >
+                            <WhatsappLogo className="w-3.5 h-3.5" weight="fill" />
+                            <span>WhatsApp Report</span>
+                          </button>
+
+                          <button
+                            onClick={() => setSelectedReportForPrint(rep)}
+                            className="px-3 py-1.5 bg-[#0B332D] text-[#F8F5EE] text-xs font-bold rounded-sm inline-flex items-center gap-1 cursor-pointer"
+                          >
+                            <Printer className="w-3.5 h-3.5 text-[#B79A62]" />
+                            <span>View Certificate</span>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB: TUTOR PAYROLL & COMPENSATION */}
+              {activeTab === 'payroll' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">Faculty Payroll &amp; Compensation</h3>
+                      <p className="text-xs text-gray-500 font-sans">Monthly calculated honorarium and compensation for certified faculty scholars.</p>
+                    </div>
+
+                    <span className="text-xs font-bold text-[#0B332D] bg-[#FCFBF8] px-3 py-1.5 rounded-sm border border-[#E8E0D1]">
+                      Total Payout: Rs {payrollList.reduce((acc, p) => acc + p.totalPayoutPKR, 0).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="bg-[#FCFBF8] rounded-sm border border-[#E8E0D1] shadow-xs overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-xs font-sans">
+                        <thead className="bg-[#F8F5EE] text-[#0B332D] font-bold uppercase tracking-wider border-b border-[#E8E0D1] text-[10px]">
+                          <tr>
+                            <th className="p-3.5">Faculty Scholar</th>
+                            <th className="p-3.5">Billing Month</th>
+                            <th className="p-3.5">Conducted Classes</th>
+                            <th className="p-3.5">Rate / Class</th>
+                            <th className="p-3.5">Total Compensation</th>
+                            <th className="p-3.5">Status</th>
+                            <th className="p-3.5 text-right">Toggle Action</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#E8E0D1]/60">
+                          {payrollList.map(pay => (
+                            <tr key={pay.id} className="hover:bg-[#F8F5EE]/50 transition-colors">
+                              <td className="p-3.5 font-bold text-[#0B332D]">{pay.tutorName}</td>
+                              <td className="p-3.5 text-gray-600">{pay.billingMonth}</td>
+                              <td className="p-3.5 font-bold text-[#0B332D]">{pay.classesConducted} Classes</td>
+                              <td className="p-3.5 text-gray-600">Rs {pay.ratePerClassPKR}</td>
+                              <td className="p-3.5 font-bold text-emerald-800 text-sm">Rs {pay.totalPayoutPKR.toLocaleString()}</td>
+                              <td className="p-3.5">
+                                <span className={`px-2 py-0.5 text-[10px] font-bold rounded-xs ${
+                                  pay.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                                }`}>
+                                  {pay.status}
+                                </span>
+                              </td>
+                              <td className="p-3.5 text-right">
+                                <button
+                                  onClick={() => handleTogglePayrollStatus(pay.id)}
+                                  className="px-3 py-1 bg-[#0B332D] text-[#F8F5EE] text-[10px] font-bold rounded-xs hover:bg-[#07221E] cursor-pointer"
+                                >
+                                  Mark as {pay.status === 'Paid' ? 'Pending' : 'Paid'}
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB: AUDIT ACTIVITY LOGS */}
+              {activeTab === 'logs' && (
+                <div className="space-y-4">
+                  <div className="bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">System Activity Audit Log</h3>
+                    <p className="text-xs text-gray-500 font-sans">Live traceable audit trail of administrative events, admissions, tutor allocations, and fee management.</p>
+                  </div>
+
+                  <div className="bg-[#FCFBF8] rounded-sm border border-[#E8E0D1] p-4 divide-y divide-[#E8E0D1]/60 text-xs font-sans">
+                    {activityLogs.map((log) => (
+                      <div key={log.id} className="py-2.5 flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <span className="px-2 py-0.5 text-[9px] font-bold rounded-xs bg-[#0B332D] text-[#F8F5EE]">
+                            {log.category}
+                          </span>
+                          <span className="font-medium text-gray-800">{log.action}</span>
+                        </div>
+                        <span className="text-[10px] text-gray-400 font-mono shrink-0">{log.timestamp}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 6: COURSES MANAGEMENT */}
               {activeTab === 'courses' && (
                 <div className="space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
@@ -3674,6 +4259,352 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Issue Fee Invoice Modal */}
+        {isAddingInvoice && (
+          <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-lg bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="px-6 py-4 bg-[#0B332D] text-[#F8F5EE] flex items-center justify-between border-b border-[#B79A62]/30">
+                <h3 className="font-editorial text-xl font-semibold">
+                  Issue Tuition Fee Invoice
+                </h3>
+                <button onClick={() => setIsAddingInvoice(false)} className="text-gray-300 hover:text-white cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveInvoice} className="p-6 space-y-4 overflow-y-auto text-xs font-sans">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Select Enrolled Student *</label>
+                  <select
+                    value={invoiceForm.studentId || ''}
+                    onChange={(e) => {
+                      const stu = students.find(s => s.id === e.target.value);
+                      if (stu) {
+                        setInvoiceForm({
+                          ...invoiceForm,
+                          studentId: stu.id,
+                          studentName: stu.studentName,
+                          parentName: stu.parentName,
+                          phone: stu.phone,
+                          courseName: stu.courseName,
+                          packageName: stu.packageName || 'Standard Plan'
+                        });
+                      }
+                    }}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  >
+                    {students.map(s => (
+                      <option key={s.id} value={s.id}>{s.studentName} ({s.courseName})</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Fee Amount *</label>
+                    <input
+                      type="number"
+                      required
+                      value={invoiceForm.amount || 35}
+                      onChange={e => setInvoiceForm({ ...invoiceForm, amount: Number(e.target.value) })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Currency</label>
+                    <select
+                      value={invoiceForm.currency || 'USD'}
+                      onChange={e => setInvoiceForm({ ...invoiceForm, currency: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    >
+                      <option value="USD">USD ($)</option>
+                      <option value="PKR">PKR (Rs)</option>
+                      <option value="GBP">GBP (£)</option>
+                      <option value="EUR">EUR (€)</option>
+                      <option value="AED">AED (د.إ)</option>
+                      <option value="CAD">CAD ($)</option>
+                      <option value="AUD">AUD ($)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Billing Month</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. August 2026"
+                      value={invoiceForm.billingMonth || ''}
+                      onChange={e => setInvoiceForm({ ...invoiceForm, billingMonth: e.target.value })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Due Date</label>
+                    <input
+                      type="date"
+                      value={invoiceForm.dueDate || ''}
+                      onChange={e => setInvoiceForm({ ...invoiceForm, dueDate: e.target.value })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-[#E8E0D1] flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsAddingInvoice(false)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-900 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] cursor-pointer"
+                  >
+                    Generate Invoice
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Generate Student Progress Card Modal */}
+        {isGeneratingReport && (
+          <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-lg bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="px-6 py-4 bg-[#0B332D] text-[#F8F5EE] flex items-center justify-between border-b border-[#B79A62]/30">
+                <h3 className="font-editorial text-xl font-semibold">
+                  Generate Monthly Evaluation Card
+                </h3>
+                <button onClick={() => setIsGeneratingReport(false)} className="text-gray-300 hover:text-white cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveReportCard} className="p-6 space-y-4 overflow-y-auto text-xs font-sans">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Select Student *</label>
+                  <select
+                    value={reportForm.studentId || ''}
+                    onChange={(e) => {
+                      const stu = students.find(s => s.id === e.target.value);
+                      if (stu) {
+                        setReportForm({
+                          ...reportForm,
+                          studentId: stu.id,
+                          studentName: stu.studentName,
+                          courseName: stu.courseName,
+                          tutorName: stu.tutorName || 'Qari Bilal Ahmed',
+                          currentSabaq: stu.currentSurahOrLesson || 'Surah Al-Baqarah'
+                        });
+                      }
+                    }}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  >
+                    {students.map(s => (
+                      <option key={s.id} value={s.id}>{s.studentName} ({s.courseName})</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Tajweed Grade</label>
+                    <select
+                      value={reportForm.tajweedGrade || 'A+'}
+                      onChange={e => setReportForm({ ...reportForm, tajweedGrade: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    >
+                      <option value="A+">A+ (Exceptional)</option>
+                      <option value="A">A (Excellent)</option>
+                      <option value="B+">B+ (Very Good)</option>
+                      <option value="B">B (Good)</option>
+                      <option value="Needs Practice">Needs Practice</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Reading Fluency</label>
+                    <select
+                      value={reportForm.readingGrade || 'A+'}
+                      onChange={e => setReportForm({ ...reportForm, readingGrade: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    >
+                      <option value="A+">A+ (Fluent)</option>
+                      <option value="A">A (Good Pace)</option>
+                      <option value="B+">B+ (Moderate)</option>
+                      <option value="B">B (Slow)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Attendance %</label>
+                    <input
+                      type="number"
+                      value={reportForm.attendancePercentage || 95}
+                      onChange={e => setReportForm({ ...reportForm, attendancePercentage: Number(e.target.value) })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Current Sabaq Milestone</label>
+                  <input
+                    type="text"
+                    value={reportForm.currentSabaq || ''}
+                    onChange={e => setReportForm({ ...reportForm, currentSabaq: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Scholar Evaluation Remarks</label>
+                  <textarea
+                    rows={3}
+                    value={reportForm.teacherRemarks || ''}
+                    onChange={e => setReportForm({ ...reportForm, teacherRemarks: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  />
+                </div>
+
+                <div className="pt-4 border-t border-[#E8E0D1] flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsGeneratingReport(false)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-900 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] cursor-pointer"
+                  >
+                    Issue Report Card
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Printable Formal Fee Receipt Modal */}
+        {selectedInvoiceForPrint && (
+          <div className="fixed inset-0 z-60 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-lg bg-[#FFFFFF] border border-[#E8E0D1] rounded-sm shadow-2xl p-8 space-y-6 text-xs font-sans">
+              <div className="flex items-center justify-between border-b border-[#0B332D] pb-4">
+                <div>
+                  <h2 className="font-editorial text-2xl text-[#0B332D] font-bold">Noor E Quran Institute</h2>
+                  <p className="text-[10px] text-[#B79A62] font-semibold">Official Tuition Fee Receipt</p>
+                </div>
+                <div className="text-right">
+                  <span className="font-mono text-xs font-bold text-gray-800">{selectedInvoiceForPrint.invoiceNumber}</span>
+                  <p className="text-[10px] text-gray-500">Date: {selectedInvoiceForPrint.dueDate}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div>
+                  <span className="text-[10px] font-bold text-gray-400 uppercase block">Billed To:</span>
+                  <strong className="text-sm text-[#0B332D]">{selectedInvoiceForPrint.studentName}</strong>
+                  <p className="text-gray-600">{selectedInvoiceForPrint.parentName}</p>
+                  <p className="text-gray-500 font-mono">{selectedInvoiceForPrint.phone}</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase block">Status:</span>
+                  <span className={`inline-block px-2.5 py-1 text-xs font-bold rounded-xs ${
+                    selectedInvoiceForPrint.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                  }`}>
+                    {selectedInvoiceForPrint.status.toUpperCase()}
+                  </span>
+                  <p className="text-[10px] text-gray-500 mt-1">Billing Period: {selectedInvoiceForPrint.billingMonth}</p>
+                </div>
+              </div>
+
+              <div className="border border-gray-200 rounded-sm p-4 bg-gray-50 space-y-2">
+                <div className="flex justify-between font-semibold text-gray-800">
+                  <span>{selectedInvoiceForPrint.courseName} ({selectedInvoiceForPrint.packageName})</span>
+                  <span>{selectedInvoiceForPrint.currency} {selectedInvoiceForPrint.amount}</span>
+                </div>
+                <div className="pt-2 border-t border-gray-300 flex justify-between font-bold text-sm text-[#0B332D]">
+                  <span>Total Amount</span>
+                  <span>{selectedInvoiceForPrint.currency} {selectedInvoiceForPrint.amount}</span>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center pt-4 border-t border-gray-200">
+                <button
+                  onClick={() => window.print()}
+                  className="px-4 py-2 bg-[#0B332D] text-[#F8F5EE] font-bold rounded-sm inline-flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>Print Receipt</span>
+                </button>
+                <button
+                  onClick={() => setSelectedInvoiceForPrint(null)}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900 cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Printable Formal Progress Certificate Modal */}
+        {selectedReportForPrint && (
+          <div className="fixed inset-0 z-60 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-xl bg-[#FCFBF8] border-4 border-[#B79A62] rounded-sm shadow-2xl p-8 space-y-5 text-center font-sans">
+              <div className="space-y-1">
+                <p className="text-[#B79A62] font-bold text-xs tracking-widest uppercase">Noor E Quran Institute</p>
+                <h2 className="font-editorial text-3xl text-[#0B332D] font-bold">Certificate of Quranic Evaluation</h2>
+                <p className="text-xs text-gray-500">{selectedReportForPrint.evaluationMonth} Progress Report</p>
+              </div>
+
+              <div className="py-4 border-y border-[#B79A62]/30 space-y-2">
+                <p className="text-xs text-gray-600 italic">This is formally presented to</p>
+                <h3 className="font-editorial text-2xl text-[#0B332D] font-bold tracking-wide">{selectedReportForPrint.studentName}</h3>
+                <p className="text-xs text-gray-700 font-semibold">for dedicated studies in {selectedReportForPrint.courseName}</p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1] text-xs">
+                <div>
+                  <span className="text-[10px] text-gray-400 font-bold uppercase block">Tajweed</span>
+                  <strong className="text-emerald-800 text-base">{selectedReportForPrint.tajweedGrade}</strong>
+                </div>
+                <div>
+                  <span className="text-[10px] text-gray-400 font-bold uppercase block">Fluency</span>
+                  <strong className="text-emerald-800 text-base">{selectedReportForPrint.readingGrade}</strong>
+                </div>
+                <div>
+                  <span className="text-[10px] text-gray-400 font-bold uppercase block">Attendance</span>
+                  <strong className="text-emerald-800 text-base">{selectedReportForPrint.attendancePercentage}%</strong>
+                </div>
+              </div>
+
+              <p className="text-xs text-gray-700 italic px-4">
+                "{selectedReportForPrint.teacherRemarks}"
+              </p>
+
+              <div className="flex justify-between items-center pt-4 border-t border-[#E8E0D1]">
+                <button
+                  onClick={() => window.print()}
+                  className="px-5 py-2 bg-[#0B332D] text-[#F8F5EE] font-bold rounded-sm inline-flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Printer className="w-4 h-4 text-[#B79A62]" />
+                  <span>Print Certificate</span>
+                </button>
+                <button
+                  onClick={() => setSelectedReportForPrint(null)}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900 cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         )}

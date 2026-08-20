@@ -385,3 +385,57 @@ export interface PageSeoConfig {
   canonicalUrl: string;
   ogImage?: string;
 }
+
+export interface FeeInvoice {
+  id: string;
+  invoiceNumber: string;
+  studentId: string;
+  studentName: string;
+  parentName: string;
+  phone: string;
+  courseName: string;
+  packageName: string;
+  amount: number;
+  currency: 'PKR' | 'USD' | 'GBP' | 'EUR' | 'AED' | 'CAD' | 'AUD';
+  billingMonth: string;
+  dueDate: string;
+  paidDate?: string;
+  status: 'Paid' | 'Pending' | 'Overdue' | 'Waived';
+  paymentMethod?: 'Bank Transfer' | 'JazzCash' | 'Easypaisa' | 'Stripe / Card' | 'PayPal';
+}
+
+export interface StudentReportCard {
+  id: string;
+  studentId: string;
+  studentName: string;
+  courseName: string;
+  tutorName: string;
+  evaluationMonth: string;
+  currentSabaq: string;
+  readingGrade: 'A+' | 'A' | 'B+' | 'B' | 'Needs Practice';
+  tajweedGrade: 'A+' | 'A' | 'B+' | 'B' | 'Needs Practice';
+  attendancePercentage: number;
+  hifzSurahCount?: number;
+  teacherRemarks: string;
+  generatedDate: string;
+}
+
+export interface TutorPayroll {
+  id: string;
+  tutorId: string;
+  tutorName: string;
+  billingMonth: string;
+  classesConducted: number;
+  ratePerClassPKR: number;
+  totalPayoutPKR: number;
+  status: 'Paid' | 'Pending';
+  paidDate?: string;
+}
+
+export interface ActivityLog {
+  id: string;
+  timestamp: string;
+  action: string;
+  category: 'Student' | 'Enrollment' | 'Faculty' | 'Course' | 'Finance' | 'Settings';
+  user: string;
+}

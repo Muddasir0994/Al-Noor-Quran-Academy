@@ -964,3 +964,119 @@ export const INITIAL_SEO_CONFIGS: PageSeoConfig[] = [
     canonicalUrl: 'https://noorequraninstitute.me/blog'
   }
 ];
+
+export const INITIAL_INVOICES: FeeInvoice[] = [
+  {
+    id: 'inv-101',
+    invoiceNumber: 'NQ-2026-081',
+    studentId: 'stu-1',
+    studentName: 'Zayd Al-Hashmi',
+    parentName: 'Muhammad Hashmi',
+    phone: '+44 7911 123456',
+    courseName: 'Nazra Quran with Tajweed',
+    packageName: 'Standard (3 Days / Wk)',
+    amount: 35,
+    currency: 'USD',
+    billingMonth: 'August 2026',
+    dueDate: '2026-08-10',
+    paidDate: '2026-08-05',
+    status: 'Paid',
+    paymentMethod: 'Stripe / Card'
+  },
+  {
+    id: 'inv-102',
+    invoiceNumber: 'NQ-2026-082',
+    studentId: 'stu-2',
+    studentName: 'Amina Tariq',
+    parentName: 'Tariq Mehmood',
+    phone: '+1 416 555 0192',
+    courseName: 'Noorani Qaida & Tajweed',
+    packageName: 'Intensive (5 Days / Wk)',
+    amount: 55,
+    currency: 'USD',
+    billingMonth: 'August 2026',
+    dueDate: '2026-08-15',
+    status: 'Pending',
+    paymentMethod: 'PayPal'
+  },
+  {
+    id: 'inv-103',
+    invoiceNumber: 'NQ-2026-083',
+    studentId: 'stu-3',
+    studentName: 'Ibrahim Khan',
+    parentName: 'Usman Khan',
+    phone: '+92 300 1234567',
+    courseName: 'Hifz-ul-Quran Memorization',
+    packageName: 'Hifz Track (5 Days / Wk)',
+    amount: 5500,
+    currency: 'PKR',
+    billingMonth: 'August 2026',
+    dueDate: '2026-08-08',
+    paidDate: '2026-08-07',
+    status: 'Paid',
+    paymentMethod: 'Bank Transfer'
+  }
+];
+
+export const INITIAL_REPORT_CARDS: StudentReportCard[] = [
+  {
+    id: 'rep-1',
+    studentId: 'stu-1',
+    studentName: 'Zayd Al-Hashmi',
+    courseName: 'Nazra Quran with Tajweed',
+    tutorName: 'Qari Bilal Ahmed',
+    evaluationMonth: 'August 2026',
+    currentSabaq: 'Surah Al-Baqarah (Ayah 142)',
+    readingGrade: 'A+',
+    tajweedGrade: 'A',
+    attendancePercentage: 96,
+    teacherRemarks: 'MashaAllah, Zayd displays exceptional enthusiasm. Makharij of letters Kha (خ) and Ghayn (غ) have improved significantly this month.',
+    generatedDate: '2026-08-18'
+  },
+  {
+    id: 'rep-2',
+    studentId: 'stu-2',
+    studentName: 'Amina Tariq',
+    courseName: 'Noorani Qaida & Tajweed',
+    tutorName: 'Ustadha Maryam Siddiqa',
+    evaluationMonth: 'August 2026',
+    currentSabaq: 'Lesson 8: Tanween Rules',
+    readingGrade: 'A',
+    tajweedGrade: 'A+',
+    attendancePercentage: 100,
+    teacherRemarks: 'Amina is very attentive and polite during lessons. She has mastered Noon Sakinah rules with perfect pronunciation.',
+    generatedDate: '2026-08-19'
+  }
+];
+
+export const INITIAL_PAYROLL: TutorPayroll[] = [
+  {
+    id: 'pay-1',
+    tutorId: 'tut-1',
+    tutorName: 'Ustadha Maryam Siddiqa',
+    billingMonth: 'August 2026',
+    classesConducted: 48,
+    ratePerClassPKR: 450,
+    totalPayoutPKR: 21600,
+    status: 'Paid',
+    paidDate: '2026-08-05'
+  },
+  {
+    id: 'pay-2',
+    tutorId: 'tut-2',
+    tutorName: 'Qari Bilal Ahmed',
+    billingMonth: 'August 2026',
+    classesConducted: 56,
+    ratePerClassPKR: 450,
+    totalPayoutPKR: 25200,
+    status: 'Pending'
+  }
+];
+
+export const INITIAL_LOGS: ActivityLog[] = [
+  { id: 'log-1', timestamp: '2026-08-20 18:45', action: 'Assigned Scholar Qari Bilal to Student Zayd Al-Hashmi', category: 'Student', user: 'Admin' },
+  { id: 'log-2', timestamp: '2026-08-20 17:30', action: 'Approved Enrollment Application for Amina Tariq', category: 'Enrollment', user: 'Admin' },
+  { id: 'log-3', timestamp: '2026-08-20 16:15', action: 'Generated Monthly Progress Report for Zayd Al-Hashmi', category: 'Student', user: 'Admin' },
+  { id: 'log-4', timestamp: '2026-08-20 14:00', action: 'Updated Site Settings: Announcement Ticker text changed', category: 'Settings', user: 'Admin' },
+  { id: 'log-5', timestamp: '2026-08-20 11:20', action: 'Generated Fee Invoice #NQ-2026-081 ($35 USD)', category: 'Finance', user: 'Admin' }
+];
