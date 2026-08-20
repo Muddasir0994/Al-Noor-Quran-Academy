@@ -276,7 +276,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     const saved = localStorage.getItem('alnoor_cms_templates');
     return saved ? JSON.parse(saved) : INITIAL_MESSAGE_TEMPLATES;
   });
-  const [editingTemplate, setEditingTemplate] = useState<MessageTemplate | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<MessageTemplate | null>(() => INITIAL_MESSAGE_TEMPLATES[0] || null);
   const [templateForm, setTemplateForm] = useState<Partial<MessageTemplate>>({
     title: '',
     channel: 'whatsapp',
@@ -291,7 +291,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     const saved = localStorage.getItem('alnoor_cms_seo');
     return saved ? JSON.parse(saved) : INITIAL_SEO_CONFIGS;
   });
-  const [editingSeo, setEditingSeo] = useState<PageSeoConfig | null>(null);
+  const [selectedSeoPage, setSelectedSeoPage] = useState<PageSeoConfig | null>(() => INITIAL_SEO_CONFIGS[0] || null);
   const [seoForm, setSeoForm] = useState<Partial<PageSeoConfig>>({
     pagePath: '/',
     pageName: '',
