@@ -79,7 +79,16 @@ class DataStore {
           progressReports: parsed.progressReports || [],
           assessments: parsed.assessments || [],
           testimonials: parsed.testimonials?.length ? parsed.testimonials : INITIAL_TESTIMONIALS,
-          articles: parsed.articles?.length ? parsed.articles : INITIAL_ARTICLES,
+          articles: (() => {
+            const dbArticles = parsed.articles || [];
+            const merged = [...INITIAL_ARTICLES];
+            for (const a of dbArticles) {
+              if (!merged.some(m => m.id === a.id || m.slug === a.slug)) {
+                merged.push(a);
+              }
+            }
+            return merged;
+          })(),
           resources: parsed.resources?.length ? parsed.resources : INITIAL_RESOURCES,
           contacts: parsed.contacts || [],
           notifications: parsed.notifications || [],
