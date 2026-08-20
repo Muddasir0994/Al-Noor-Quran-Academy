@@ -47,9 +47,10 @@ interface BlogEditorProps {
 
 // Error Boundary for resilient rendering
 class BlogEditorErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
+  override state = { hasError: false, error: null as Error | null };
+
   constructor(props: { children: React.ReactNode }) {
     super(props);
-    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error: Error) {

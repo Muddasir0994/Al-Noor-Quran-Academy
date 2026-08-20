@@ -25,6 +25,7 @@ import {
   signOut,
   updateProfile,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   User as FirebaseUser
 } from 'firebase/auth';
 import firebaseConfig from '../../firebase-applet-config.json';
@@ -64,6 +65,7 @@ export {
   signOut,
   updateProfile,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   collection,
   doc,
   getDocs,

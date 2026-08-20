@@ -240,6 +240,7 @@ export interface EnrollmentApplication {
   preferredTimeRange?: string;
   learningPace?: LearningPace;
   monthlyFee?: number;
+  paymentStatus?: 'Paid' | 'Pending' | 'Waived';
   additionalNotes?: string;
   assignedTutorId?: string;
   assignedTutorName?: string;
