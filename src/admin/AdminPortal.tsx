@@ -487,7 +487,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
 
   const openWhatsAppForLead = (lead: Lead) => {
     const cleanPhone = lead.phone.replace(/[^0-9+]/g, '').replace('+', '');
-    const msg = encodeURIComponent(`Assalam-o-Alaikum ${lead.parentName || lead.studentName}! This is Noor Al-Quran Institute regarding your free trial inquiry for ${lead.courseName}.`);
+    const msg = encodeURIComponent(`Assalam-o-Alaikum ${lead.parentName || lead.studentName}! This is Noor E Quran Institute regarding your free trial inquiry for ${lead.courseName}.`);
     window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
   };
 

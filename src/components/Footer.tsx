@@ -190,7 +190,7 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Bottom Minimal Copyright Bar */}
         <div className="pt-8 border-t border-[#B79A62]/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#E8E0D1]/50 font-sans">
-          <p>© {new Date().getFullYear()} Noor Al-Quran Institute. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Noor E Quran Institute. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <button onClick={() => onOpenLegal && onOpenLegal('privacy')} className="hover:underline cursor-pointer">Privacy</button>
             <span>•</span>

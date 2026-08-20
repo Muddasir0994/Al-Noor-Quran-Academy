@@ -182,22 +182,22 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/courses': {
-    title: 'Certified 1-on-1 Online Quran Courses | Noor Al-Quran Institute',
+    title: 'Certified 1-on-1 Online Quran Courses | Noor E Quran Institute',
     description: 'Explore comprehensive online Quran courses: Noorani Qaida for beginners, Nazra Quran reading, Tajweed rules, and Hifz memorization with live 1-on-1 instruction.',
     canonical: `${ACADEMY_BASE_URL}/courses`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Courses', item: `${ACADEMY_BASE_URL}/courses` }
     ]
   },
   '/teachers': {
-    title: 'Certified Male & Female Quran Teachers | Noor Al-Quran Institute',
+    title: 'Certified Male & Female Quran Teachers | Noor E Quran Institute',
     description: 'Verified Ijazah holders and Islamic university graduates dedicated to patient, interactive 1-on-1 Quran education.',
     canonical: `${ACADEMY_BASE_URL}/teachers`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Teachers', item: `${ACADEMY_BASE_URL}/teachers` }
@@ -594,7 +594,7 @@ export function resolveRouteMetadata(rawPath: string): { meta: PageMeta | null; 
     const formattedTitle = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     const canonical = `${ACADEMY_BASE_URL}/blog/${slug}`;
     const meta: PageMeta = {
-      title: `${formattedTitle} | Noor Al-Quran Institute`,
+      title: `${formattedTitle} | Noor E Quran Institute`,
       description: `Read educational article and Quran learning guide on ${formattedTitle}.`,
       canonical,
       ogType: 'article',

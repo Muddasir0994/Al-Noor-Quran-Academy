@@ -144,12 +144,13 @@ function AppContent() {
 
   // Determine current SEO config
   const currentPath = location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
-  const seoData = SEO_PAGE_MAP[currentPath] || {
-    title: 'Noor Al-Quran Institute | Certified Online Quran & Tajweed Academy',
-    description: 'Premier online Quran academy offering 1-on-1 personalized classes with certified male & female teachers. 3-day free trial.',
+  const defaultSeo = {
+    title: 'Noor E Quran Institute | Certified Online Quran & Tajweed Academy',
+    description: 'Learn Quran online with certified male and female tutors. 1-on-1 classes with flexible timings.',
     canonicalUrl: `https://noorequraninstitute.me${currentPath === '/' ? '' : currentPath}`,
     structuredDataType: 'EducationalOrganization' as const
   };
+  const seoData = SEO_PAGE_MAP[currentPath] || defaultSeo;
 
   const isPortalView = location.pathname === '/classroom' || location.pathname.startsWith('/classroom/') ||
     location.pathname === '/student' || location.pathname.startsWith('/student/') ||

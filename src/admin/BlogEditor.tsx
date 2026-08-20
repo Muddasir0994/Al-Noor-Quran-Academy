@@ -314,7 +314,7 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
       featuredImage: featuredImage.trim(),
       content: content.trim(),
       tags: tagsArray,
-      author: author.trim() || 'Noor Al-Quran Institute',
+      author: author.trim() || 'Noor E Quran Institute',
       readTime: readTime.trim() || '5 min read',
       published,
       createdAt: new Date().toISOString().split('T')[0],
