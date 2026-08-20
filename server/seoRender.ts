@@ -15,11 +15,11 @@ export interface PageMeta {
 
 export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
   '/': {
-    title: 'Noor-e-Quran Institute | 1-on-1 Quran Classes',
-    description: 'Learn Quran online with qualified male & female teachers. 1-on-1 Tajweed classes for kids and adults worldwide with flexible timings and a free trial.',
+    title: 'Noor E Quran Institute | 1-on-1 Online Quran Classes with Certified Tutors',
+    description: 'Learn Quran online with qualified male & female teachers at Noor E Quran Institute. 1-on-1 Tajweed classes for kids and adults worldwide with flexible timings and a free trial.',
     canonical: `${ACADEMY_BASE_URL}/`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [{ name: 'Home', item: `${ACADEMY_BASE_URL}/` }]
   },
   '/online-quran-classes': {

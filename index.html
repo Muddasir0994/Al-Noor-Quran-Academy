@@ -35,30 +35,32 @@
     <link rel="alternate" hreflang="en-pk" href="https://noorequraninstitute.me/online-quran-classes-pakistan" />
     <link rel="alternate" hreflang="ur-pk" href="https://noorequraninstitute.me/online-quran-classes-pakistan" />
 
-    <!-- Icons & Manifest -->
-    <link rel="icon" type="image/webp" href="/logo.webp" />
-    <link rel="shortcut icon" type="image/webp" href="/logo.webp" />
-    <link rel="apple-touch-icon" href="/logo.webp" />
+    <!-- Favicons Matching Google Guidelines -->
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="icon" type="image/webp" sizes="48x48" href="/logo.webp" />
+    <link rel="icon" type="image/webp" sizes="96x96" href="/logo.webp" />
+    <link rel="icon" type="image/webp" sizes="192x192" href="/logo.webp" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/logo.webp" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Noor-e-Quran Institute" />
+    <meta property="og:site_name" content="Noor E Quran Institute" />
     <meta property="og:url" content="https://noorequraninstitute.me/" />
-    <meta property="og:title" content="Noor-e-Quran Institute | 1-on-1 Online Quran Classes with Certified Tutors" />
-    <meta property="og:description" content="Learn Quran online with certified male &amp; female tutors at Noor-e-Quran Institute. 1-on-1 Tajweed, Qaida &amp; Hifz classes for kids &amp; adults in UK, USA, CA &amp; AU." />
+    <meta property="og:title" content="Noor E Quran Institute | 1-on-1 Online Quran Classes with Certified Tutors" />
+    <meta property="og:description" content="Learn Quran online with certified male &amp; female tutors at Noor E Quran Institute. 1-on-1 Tajweed, Qaida &amp; Hifz classes for kids &amp; adults in UK, USA, CA &amp; AU." />
     <meta property="og:image" content="https://noorequraninstitute.me/logo.webp" />
-    <meta property="og:image:alt" content="Noor-e-Quran Institute Online Classes" />
+    <meta property="og:image:alt" content="Noor E Quran Institute Online Classes" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter / X Cards -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@noorequran" />
     <meta name="twitter:creator" content="@noorequran" />
-    <meta name="twitter:title" content="Noor-e-Quran Institute | 1-on-1 Online Quran Classes with Certified Tutors" />
-    <meta name="twitter:description" content="Learn Quran online with certified male &amp; female tutors at Noor-e-Quran Institute. 1-on-1 Tajweed, Qaida &amp; Hifz classes for kids &amp; adults in UK, USA, CA &amp; AU." />
+    <meta name="twitter:title" content="Noor E Quran Institute | 1-on-1 Online Quran Classes with Certified Tutors" />
+    <meta name="twitter:description" content="Learn Quran online with certified male &amp; female tutors at Noor E Quran Institute. 1-on-1 Tajweed, Qaida &amp; Hifz classes for kids &amp; adults in UK, USA, CA &amp; AU." />
     <meta name="twitter:image" content="https://noorequraninstitute.me/logo.webp" />
-    <meta name="twitter:image:alt" content="Noor-e-Quran Institute Online Classes" />
+    <meta name="twitter:image:alt" content="Noor E Quran Institute Online Classes" />
 
     <!-- Performance & Font Preconnects -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -72,14 +74,45 @@
       "@context": "https://schema.org",
       "@graph": [
         {
+          "@type": "WebSite",
+          "@id": "https://noorequraninstitute.me/#website",
+          "url": "https://noorequraninstitute.me/",
+          "name": "Noor E Quran Institute",
+          "alternateName": [
+            "Noor e Quran",
+            "NooreQuran",
+            "Noor E Quran Academy",
+            "Noor-e-Quran Institute"
+          ],
+          "description": "1-on-1 Online Quran Classes with Certified Tutors for Kids & Adults Worldwide",
+          "publisher": {
+            "@id": "https://noorequraninstitute.me/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://noorequraninstitute.me/blog?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          },
+          "inLanguage": ["en", "ur", "ar"]
+        },
+        {
           "@type": "EducationalOrganization",
           "@id": "https://noorequraninstitute.me/#organization",
-          "name": "Noor-e-Quran Institute",
-          "url": "https://noorequraninstitute.me",
+          "name": "Noor E Quran Institute",
+          "alternateName": [
+            "Noor e Quran",
+            "NooreQuran",
+            "Noor E Quran Academy",
+            "Noor-e-Quran Institute"
+          ],
+          "url": "https://noorequraninstitute.me/",
           "logo": {
             "@type": "ImageObject",
             "url": "https://noorequraninstitute.me/logo.webp",
-            "caption": "Noor-e-Quran Institute Official Logo"
+            "caption": "Noor E Quran Institute Official Logo"
           },
           "description": "Premier global Islamic institute providing personalized 1-on-1 online Quran classes with certified male and female scholars for students across UK, USA, Canada, and Australia.",
           "email": "contact.noorequraninstitute@gmail.com",
@@ -110,16 +143,6 @@
           "knowsLanguage": ["en", "ur", "ar"]
         },
         {
-          "@type": "WebSite",
-          "@id": "https://noorequraninstitute.me/#website",
-          "url": "https://noorequraninstitute.me",
-          "name": "Noor-e-Quran Institute",
-          "description": "1-on-1 Online Quran Classes with Certified Tutors",
-          "publisher": {
-            "@id": "https://noorequraninstitute.me/#organization"
-          }
-        },
-        {
           "@type": "Course",
           "@id": "https://noorequraninstitute.me/courses/noorani-qaida#course",
           "name": "Noorani Qaida for Beginners",
@@ -127,7 +150,7 @@
           "provider": {
             "@id": "https://noorequraninstitute.me/#organization"
           },
-          "url": "https://noorequraninstitute.me/noorani-qaida",
+          "url": "https://noorequraninstitute.me/courses/noorani-qaida",
           "educationalLevel": "Beginner",
           "inLanguage": "en",
           "offers": {

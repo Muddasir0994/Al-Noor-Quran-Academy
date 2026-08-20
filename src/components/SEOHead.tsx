@@ -13,21 +13,26 @@ export interface SEOHeadProps {
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
-  title = 'Noor Al-Quran Institute | Certified Online Quran & Tajweed Academy',
-  description = 'Learn Quran online with Tajweed from certified male & female teachers. Personalized 1-on-1 classes for kids & adults worldwide with 3-day free trial.',
+  title = 'Noor E Quran Institute | 1-on-1 Online Quran Classes with Certified Tutors',
+  description = 'Learn Quran online with certified male & female tutors at Noor E Quran Institute. 1-on-1 Tajweed, Qaida & Hifz classes for kids & adults worldwide.',
   canonicalUrl = 'https://noorequraninstitute.me/',
   ogType = 'website',
-  ogImage = `${ACADEMY_BASE_URL}/logo.png`,
+  ogImage = `${ACADEMY_BASE_URL}/logo.webp`,
   structuredDataType = 'EducationalOrganization',
   schemaData
 }) => {
   const defaultOrgSchema = {
     '@context': 'https://schema.org',
     '@type': 'EducationalOrganization',
-    name: 'Noor Al-Quran Institute',
-    alternateName: 'Noor-e-Quran Institute',
+    name: 'Noor E Quran Institute',
+    alternateName: [
+      'Noor e Quran',
+      'NooreQuran',
+      'Noor E Quran Academy',
+      'Noor-e-Quran Institute'
+    ],
     url: ACADEMY_BASE_URL,
-    logo: `${ACADEMY_BASE_URL}/logo.png`,
+    logo: `${ACADEMY_BASE_URL}/logo.webp`,
     description: 'Premier international online Quran academy providing 1-on-1 live classes with certified male and female scholars.',
     sameAs: [
       'https://www.youtube.com/@NooreQuranInstitute',
@@ -60,7 +65,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={ogImage} />
-      <meta property="og:site_name" content="Noor Al-Quran Institute" />
+      <meta property="og:site_name" content="Noor E Quran Institute" />
       <meta property="og:locale" content="en_US" />
 
       {/* Twitter Card */}
