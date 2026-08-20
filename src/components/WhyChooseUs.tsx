@@ -59,7 +59,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenTrial }) => {
           {/* Left Column: Powerful Editorial Statement */}
           <div className="lg:col-span-5 space-y-6">
             <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest">
-              WHY NOOR AL-QURAN
+              WHY NOOR E QURAN
             </p>
 
             <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl text-[#F8F5EE] leading-[1.12] font-semibold tracking-tight">

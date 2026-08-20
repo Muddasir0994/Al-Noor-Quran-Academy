@@ -164,7 +164,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div>
               <div className="flex items-baseline gap-1.5">
                 <span className="font-editorial text-xl sm:text-2xl font-bold tracking-tight text-[#0B332D]">
-                  Noor Al-Quran
+                  Noor E Quran
                 </span>
                 <span className="text-[10px] tracking-widest uppercase text-[#B79A62] font-semibold">
                   Institute

@@ -204,209 +204,209 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
     ]
   },
   '/faculty': {
-    title: 'Certified Male & Female Quran Teachers | Noor Al-Quran Institute',
+    title: 'Certified Male & Female Quran Teachers | Noor E Quran Institute',
     description: 'Verified Ijazah holders and Islamic university graduates dedicated to patient, interactive 1-on-1 Quran education.',
     canonical: `${ACADEMY_BASE_URL}/teachers`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Teachers', item: `${ACADEMY_BASE_URL}/teachers` }
     ]
   },
   '/tutors': {
-    title: 'Certified Male & Female Quran Teachers | Noor Al-Quran Institute',
+    title: 'Certified Male & Female Quran Teachers | Noor E Quran Institute',
     description: 'Verified Ijazah holders and Islamic university graduates dedicated to patient, interactive 1-on-1 Quran education.',
     canonical: `${ACADEMY_BASE_URL}/teachers`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Teachers', item: `${ACADEMY_BASE_URL}/teachers` }
     ]
   },
   '/packages': {
-    title: 'Affordable 1-on-1 Quran Tuition Plans | Noor Al-Quran Institute',
+    title: 'Affordable 1-on-1 Quran Tuition Plans | Noor E Quran Institute',
     description: 'Transparent monthly plans with family discounts and a 3-day free trial. Choose classes 2 to 5 days per week.',
     canonical: `${ACADEMY_BASE_URL}/packages`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Tuition & Plans', item: `${ACADEMY_BASE_URL}/packages` }
     ]
   },
   '/pricing': {
-    title: 'Affordable 1-on-1 Quran Tuition Plans | Noor Al-Quran Institute',
+    title: 'Affordable 1-on-1 Quran Tuition Plans | Noor E Quran Institute',
     description: 'Transparent monthly plans with family discounts and a 3-day free trial. Choose classes 2 to 5 days per week.',
     canonical: `${ACADEMY_BASE_URL}/packages`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Tuition & Plans', item: `${ACADEMY_BASE_URL}/packages` }
     ]
   },
   '/how-it-works': {
-    title: 'How Online Quran Learning Works | Noor Al-Quran Institute',
+    title: 'How Online Quran Learning Works | Noor E Quran Institute',
     description: 'A simple, transparent 4-step path from initial trial to fluent Quran recitation.',
     canonical: `${ACADEMY_BASE_URL}/how-it-works`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'How It Works', item: `${ACADEMY_BASE_URL}/how-it-works` }
     ]
   },
   '/methodology': {
-    title: 'How Online Quran Learning Works | Noor Al-Quran Institute',
+    title: 'How Online Quran Learning Works | Noor E Quran Institute',
     description: 'A simple, transparent 4-step path from initial trial to fluent Quran recitation.',
     canonical: `${ACADEMY_BASE_URL}/how-it-works`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'How It Works', item: `${ACADEMY_BASE_URL}/how-it-works` }
     ]
   },
   '/about': {
-    title: 'About Noor Al-Quran Institute | Certified International Quran Academy',
+    title: 'About Noor E Quran Institute | Certified International Quran Academy',
     description: 'Dedicated to providing authentic, certified, and deeply respectful Quranic education to families across the globe.',
     canonical: `${ACADEMY_BASE_URL}/about`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'About Us', item: `${ACADEMY_BASE_URL}/about` }
     ]
   },
   '/about-us': {
-    title: 'About Noor Al-Quran Institute | Certified International Quran Academy',
+    title: 'About Noor E Quran Institute | Certified International Quran Academy',
     description: 'Dedicated to providing authentic, certified, and deeply respectful Quranic education to families across the globe.',
     canonical: `${ACADEMY_BASE_URL}/about`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'About Us', item: `${ACADEMY_BASE_URL}/about` }
     ]
   },
   '/blog': {
-    title: 'Islamic Knowledge & Insights Blog | Noor Al-Quran Institute',
+    title: 'Islamic Knowledge & Insights Blog | Noor E Quran Institute',
     description: 'Read expert articles on Tajweed rules, Quran memorization methods, kids Islamic education, and online Quran learning guides.',
     canonical: `${ACADEMY_BASE_URL}/blog`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Blog', item: `${ACADEMY_BASE_URL}/blog` }
     ]
   },
   '/blogs': {
-    title: 'Islamic Knowledge & Insights Blog | Noor Al-Quran Institute',
+    title: 'Islamic Knowledge & Insights Blog | Noor E Quran Institute',
     description: 'Read expert articles on Tajweed rules, Quran memorization methods, kids Islamic education, and online Quran learning guides.',
     canonical: `${ACADEMY_BASE_URL}/blog`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Blog', item: `${ACADEMY_BASE_URL}/blog` }
     ]
   },
   '/articles': {
-    title: 'Islamic Knowledge & Insights Blog | Noor Al-Quran Institute',
+    title: 'Islamic Knowledge & Insights Blog | Noor E Quran Institute',
     description: 'Read expert articles on Tajweed rules, Quran memorization methods, kids Islamic education, and online Quran learning guides.',
     canonical: `${ACADEMY_BASE_URL}/blog`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Blog', item: `${ACADEMY_BASE_URL}/blog` }
     ]
   },
   '/contact': {
-    title: 'Contact Academic Support | Noor Al-Quran Institute',
+    title: 'Contact Academic Support | Noor E Quran Institute',
     description: 'Reach out via WhatsApp, email, or direct inquiry form for curriculum consultation and trial scheduling.',
     canonical: `${ACADEMY_BASE_URL}/contact`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Contact Us', item: `${ACADEMY_BASE_URL}/contact` }
     ]
   },
   '/contact-us': {
-    title: 'Contact Academic Support | Noor Al-Quran Institute',
+    title: 'Contact Academic Support | Noor E Quran Institute',
     description: 'Reach out via WhatsApp, email, or direct inquiry form for curriculum consultation and trial scheduling.',
     canonical: `${ACADEMY_BASE_URL}/contact`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Contact Us', item: `${ACADEMY_BASE_URL}/contact` }
     ]
   },
   '/faq': {
-    title: 'Frequently Asked Questions | Noor Al-Quran Institute',
+    title: 'Frequently Asked Questions | Noor E Quran Institute',
     description: 'Clear answers regarding trial lessons, female scholars, tuition schedules, technical requirements, and curriculum structure.',
     canonical: `${ACADEMY_BASE_URL}/faq`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'FAQ', item: `${ACADEMY_BASE_URL}/faq` }
     ]
   },
   '/classroom': {
-    title: 'Live Classroom Studio | Noor Al-Quran Institute',
+    title: 'Live Classroom Studio | Noor E Quran Institute',
     description: 'Interactive online Quran classroom studio with live video, Mushaf reader, and Tajweed markers.',
     canonical: `${ACADEMY_BASE_URL}/classroom`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Classroom', item: `${ACADEMY_BASE_URL}/classroom` }
     ]
   },
   '/student': {
-    title: 'Student Portal | Noor Al-Quran Institute',
-    description: 'Student learning dashboard for Noor Al-Quran Institute.',
+    title: 'Student Portal | Noor E Quran Institute',
+    description: 'Student learning dashboard for Noor E Quran Institute.',
     canonical: `${ACADEMY_BASE_URL}/student`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Student Portal', item: `${ACADEMY_BASE_URL}/student` }
     ]
   },
   '/student-portal': {
-    title: 'Student Portal | Noor Al-Quran Institute',
-    description: 'Student learning dashboard for Noor Al-Quran Institute.',
+    title: 'Student Portal | Noor E Quran Institute',
+    description: 'Student learning dashboard for Noor E Quran Institute.',
     canonical: `${ACADEMY_BASE_URL}/student`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Student Portal', item: `${ACADEMY_BASE_URL}/student` }
     ]
   },
   '/teacher': {
-    title: 'Teacher Portal | Noor Al-Quran Institute',
-    description: 'Faculty management dashboard for Noor Al-Quran Institute.',
+    title: 'Teacher Portal | Noor E Quran Institute',
+    description: 'Faculty management dashboard for Noor E Quran Institute.',
     canonical: `${ACADEMY_BASE_URL}/teacher`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Teacher Portal', item: `${ACADEMY_BASE_URL}/teacher` }
     ]
   },
   '/teacher-portal': {
-    title: 'Teacher Portal | Noor Al-Quran Institute',
-    description: 'Faculty management dashboard for Noor Al-Quran Institute.',
+    title: 'Teacher Portal | Noor E Quran Institute',
+    description: 'Faculty management dashboard for Noor E Quran Institute.',
     canonical: `${ACADEMY_BASE_URL}/teacher`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Teacher Portal', item: `${ACADEMY_BASE_URL}/teacher` }
@@ -414,40 +414,40 @@ export const KNOWN_STATIC_ROUTES: Record<string, PageMeta> = {
   },
   // Application and Portal Pages
   '/portal': {
-    title: 'Student & Tutor Portal | Noor-e-Quran Institute',
+    title: 'Student & Tutor Portal | Noor E Quran Institute',
     description: 'Access your online Quran classroom, view class schedules, attendance, assignments, and monthly teacher progress assessments.',
     canonical: `${ACADEMY_BASE_URL}/portal`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Portal', item: `${ACADEMY_BASE_URL}/portal` }
     ]
   },
   '/login': {
-    title: 'Sign In | Noor-e-Quran Institute Portal',
-    description: 'Log into your student or teacher account at Noor-e-Quran Institute.',
+    title: 'Sign In | Noor E Quran Institute Portal',
+    description: 'Log into your student or teacher account at Noor E Quran Institute.',
     canonical: `${ACADEMY_BASE_URL}/login`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Login', item: `${ACADEMY_BASE_URL}/login` }
     ]
   },
   '/register': {
-    title: 'Student Registration & Enrollment | Noor-e-Quran Institute',
+    title: 'Student Registration & Enrollment | Noor E Quran Institute',
     description: 'Register for 1-on-1 online Quran classes with certified male or female tutors. Fast verification and flexible scheduling.',
     canonical: `${ACADEMY_BASE_URL}/register`,
     ogType: 'website',
-    ogImage: `${ACADEMY_BASE_URL}/logo.png`,
+    ogImage: `${ACADEMY_BASE_URL}/logo.webp`,
     breadcrumbs: [
       { name: 'Home', item: `${ACADEMY_BASE_URL}/` },
       { name: 'Register', item: `${ACADEMY_BASE_URL}/register` }
     ]
   },
   '/admin': {
-    title: 'Academy Admin Dashboard | Noor-e-Quran Institute',
+    title: 'Academy Admin Dashboard | Noor E Quran Institute',
     description: 'Secure administration portal for Noor-e-Quran Institute management.',
     canonical: `${ACADEMY_BASE_URL}/admin`,
     ogType: 'website',

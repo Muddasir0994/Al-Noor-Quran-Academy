@@ -18,7 +18,7 @@ export const BlogListPage: React.FC<BlogListPageProps> = ({ onNavigate, onOpenTr
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    document.title = 'Islamic Blog & Articles | Noor Al-Quran Institute';
+    document.title = 'Islamic Blog & Articles | Noor E Quran Institute';
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute('content', 'Read expert articles on Tajweed rules, Quran memorization tips, kids Islamic education, and online Quran learning guides.');
 

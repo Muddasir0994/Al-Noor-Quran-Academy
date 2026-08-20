@@ -102,7 +102,7 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
   const [featuredImage, setFeaturedImage] = useState('');
   const [content, setContent] = useState('');
   const [tagsInput, setTagsInput] = useState('');
-  const [author, setAuthor] = useState('Noor Al-Quran Institute');
+  const [author, setAuthor] = useState('Noor E Quran Institute');
   const [readTime, setReadTime] = useState('5 min read');
   const [published, setPublished] = useState(true);
 
@@ -143,7 +143,7 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     setFeaturedImage('');
     setContent('');
     setTagsInput('');
-    setAuthor('Noor Al-Quran Institute');
+    setAuthor('Noor E Quran Institute');
     setReadTime('5 min read');
     setPublished(true);
     setEditorMode('visual');
@@ -160,7 +160,7 @@ const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     setFeaturedImage(post.featuredImage || '');
     setContent(post.content || '');
     setTagsInput(post.tags ? post.tags.join(', ') : '');
-    setAuthor(post.author || 'Noor Al-Quran Institute');
+    setAuthor(post.author || 'Noor E Quran Institute');
     setReadTime(post.readTime || '5 min read');
     setPublished(post.published ?? true);
     setEditorMode('visual');

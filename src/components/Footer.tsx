@@ -53,7 +53,7 @@ export const Footer: React.FC<FooterProps> = ({
                 </svg>
               </div>
               <span className="font-editorial text-xl font-bold text-[#F8F5EE] tracking-tight">
-                Noor Al-Quran Institute
+                Noor E Quran Institute
               </span>
             </Link>
 

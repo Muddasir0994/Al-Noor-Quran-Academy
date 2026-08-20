@@ -400,7 +400,7 @@ export const INITIAL_TESTIMONIALS: Testimonial[] = [
     countryFlag: '🇦🇺',
     courseName: 'Quran Memorization / Hifz',
     rating: 5,
-    comment: 'The 1-on-1 coaching system at Noor Al-Quran Institute is exceptional. My teacher checks daily recitation and provides practical exercises for Noon Sakinah and Madd.',
+    comment: 'The 1-on-1 coaching system at Noor E Quran Institute is exceptional. My teacher checks daily recitation and provides practical exercises for Noon Sakinah and Madd.',
     date: 'January 2026',
     status: 'published'
   },
@@ -412,7 +412,7 @@ export const INITIAL_TESTIMONIALS: Testimonial[] = [
     countryFlag: '🇨🇦',
     courseName: 'Quran for Kids & Slow Learners Support',
     rating: 5,
-    comment: 'Daniyal used to get anxious during group Islamic classes. Noor Al-Quran\'s gentle, slow-learner approach gave him real confidence. He loves his lessons now!',
+    comment: 'Daniyal used to get anxious during group Islamic classes. Noor E Quran\'s gentle, slow-learner approach gave him real confidence. He loves his lessons now!',
     date: 'December 2025',
     status: 'published'
   }
@@ -432,7 +432,7 @@ export const INITIAL_ARTICLES: Article[] = [
 
 Teaching the Holy Quran to young children is one of the most rewarding spiritual responsibilities for Muslim parents. However, busy family routines, short attention spans, and language barriers often make daily practice feel overwhelming.
 
-At **Noor Al-Quran Institute**, our certified scholars have taught thousands of young students globally. Here are 5 practical, tried-and-tested tips to cultivate a joyful, lifelong relationship with Allah's Book.
+At **Noor E Quran Institute**, our certified scholars have taught thousands of young students globally. Here are 5 practical, tried-and-tested tips to cultivate a joyful, lifelong relationship with Allah's Book.
 
 ---
 

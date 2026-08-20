@@ -145,14 +145,14 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onNavigate, on
     image: post.featuredImage || 'https://noorequraninstitute.me/logo.png',
     author: {
       '@type': 'Person',
-      name: post.author || 'Noor Al-Quran Institute Scholar'
+      name: post.author || 'Noor E Quran Institute Scholar'
     },
     publisher: {
       '@type': 'EducationalOrganization',
-      name: 'Noor Al-Quran Institute',
+      name: 'Noor E Quran Institute',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://noorequraninstitute.me/logo.png'
+        url: 'https://noorequraninstitute.me/logo.webp'
       }
     },
     datePublished: post.createdAt,
@@ -167,8 +167,8 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onNavigate, on
     <article className="py-20 lg:py-28 bg-[#FCFBF8] min-h-screen">
       {/* Dynamic SEO Meta Tags via Helmet */}
       <Helmet>
-        <title>{`${post.title} | Noor Al-Quran Institute`}</title>
-        <meta name="title" content={`${post.title} | Noor Al-Quran Institute`} />
+        <title>{`${post.title} | Noor E Quran Institute`}</title>
+        <meta name="title" content={`${post.title} | Noor E Quran Institute`} />
         <meta name="description" content={post.metaDescription} />
         <link rel="canonical" href={canonicalUrl} />
 
@@ -178,6 +178,7 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ slug, onNavigate, on
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.metaDescription} />
         {post.featuredImage && <meta property="og:image" content={post.featuredImage} />}
+        <meta property="og:site_name" content="Noor E Quran Institute" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />

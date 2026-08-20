@@ -20,7 +20,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenTrial, onOpenEnroll 
             OUR HERITAGE &amp; MISSION
           </p>
           <h1 className="font-editorial text-3xl sm:text-4xl lg:text-5xl text-[#F8F5EE] font-semibold">
-            About Noor Al-Quran Institute
+            About Noor E Quran Institute
           </h1>
           <p className="text-sm sm:text-base text-[#E8E0D1]/80 max-w-2xl mx-auto font-sans">
             Dedicated to providing authentic, certified, and deeply respectful Quranic education to families across the globe.

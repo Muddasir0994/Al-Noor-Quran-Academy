@@ -508,7 +508,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                 ACADEMY ADMINISTRATION
               </p>
               <h1 className="font-editorial text-xl text-[#F8F5EE] font-semibold">
-                Noor Al-Quran Command Studio
+                Noor E Quran Command Studio
               </h1>
             </div>
           </div>

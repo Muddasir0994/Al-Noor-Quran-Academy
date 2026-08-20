@@ -220,7 +220,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         courseName
       });
 
-      setSuccessMsg('Account registered and verified successfully! Welcome to Noor Al-Quran Institute.');
+      setSuccessMsg('Account registered and verified successfully! Welcome to Noor E Quran Institute.');
       if (onSuccess) onSuccess('student');
       setTimeout(() => onClose(), 1200);
     } catch (err: any) {
@@ -282,7 +282,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         <div className="px-6 py-5 bg-[#0B332D] text-[#F8F5EE] border-b border-[#B79A62]/30 flex items-center justify-between">
           <div className="space-y-0.5">
             <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#B79A62]">
-              NOOR AL-QURAN INSTITUTE
+              NOOR E QURAN INSTITUTE
             </p>
             <h2 className="font-editorial text-2xl text-[#F8F5EE] font-semibold tracking-tight">
               {authMode === 'forgot'
