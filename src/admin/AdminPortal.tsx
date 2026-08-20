@@ -9,6 +9,9 @@ import {
   Testimonial,
   FAQItem,
   SiteSettings,
+  MediaAsset,
+  MessageTemplate,
+  PageSeoConfig,
   SystemNotification,
   DashboardStats,
   LeadStatus,
@@ -21,7 +24,10 @@ import {
   ALL_PACKAGES,
   INITIAL_TESTIMONIALS,
   INITIAL_FAQS,
-  DEFAULT_SITE_SETTINGS
+  DEFAULT_SITE_SETTINGS,
+  INITIAL_MEDIA_ASSETS,
+  INITIAL_MESSAGE_TEMPLATES,
+  INITIAL_SEO_CONFIGS
 } from '../data/academyData';
 import {
   Lock,
@@ -61,7 +67,14 @@ import {
   Gear,
   Megaphone,
   Sliders,
-  Sparkle
+  Sparkle,
+  Copy,
+  DownloadSimple,
+  ChatText,
+  Image as ImageIcon,
+  Check,
+  ShareNetwork,
+  Tag
 } from '@phosphor-icons/react';
 import { BlogEditor } from './BlogEditor';
 import { ImageCropModal } from '../components/ImageCropModal';
@@ -91,7 +104,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
 
   // Active view tab in admin CMS
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'leads' | 'enrollments' | 'students' | 'tutors' | 'courses' | 'packages' | 'blog' | 'testimonials' | 'faqs' | 'settings'
+    'overview' | 'leads' | 'enrollments' | 'students' | 'tutors' | 'courses' | 'packages' | 'blog' | 'testimonials' | 'faqs' | 'media' | 'templates' | 'seo' | 'settings'
   >('overview');
 
   // Data states
@@ -168,6 +181,57 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     return saved ? JSON.parse(saved) : DEFAULT_SITE_SETTINGS;
   });
   const [settingsSavedToast, setSettingsSavedToast] = useState(false);
+
+  // Media Library CMS state
+  const [mediaAssets, setMediaAssets] = useState<MediaAsset[]>(() => {
+    const saved = localStorage.getItem('alnoor_cms_media');
+    return saved ? JSON.parse(saved) : INITIAL_MEDIA_ASSETS;
+  });
+  const [mediaCategoryFilter, setMediaCategoryFilter] = useState<string>('all');
+  const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
+  const [isAddingMedia, setIsAddingMedia] = useState(false);
+  const [mediaForm, setMediaForm] = useState<{
+    name: string;
+    category: MediaAsset['category'];
+    url: string;
+    fileSize: string;
+  }>({
+    name: '',
+    category: 'banner',
+    url: '',
+    fileSize: '120 KB'
+  });
+
+  // Notification Templates CMS state
+  const [templates, setTemplates] = useState<MessageTemplate[]>(() => {
+    const saved = localStorage.getItem('alnoor_cms_templates');
+    return saved ? JSON.parse(saved) : INITIAL_MESSAGE_TEMPLATES;
+  });
+  const [editingTemplate, setEditingTemplate] = useState<MessageTemplate | null>(null);
+  const [templateForm, setTemplateForm] = useState<Partial<MessageTemplate>>({
+    title: '',
+    channel: 'whatsapp',
+    subject: '',
+    body: '',
+    availableVariables: []
+  });
+  const [templateSaveToast, setTemplateSaveToast] = useState(false);
+
+  // SEO & Schema CMS state
+  const [seoConfigs, setSeoConfigs] = useState<PageSeoConfig[]>(() => {
+    const saved = localStorage.getItem('alnoor_cms_seo');
+    return saved ? JSON.parse(saved) : INITIAL_SEO_CONFIGS;
+  });
+  const [editingSeo, setEditingSeo] = useState<PageSeoConfig | null>(null);
+  const [seoForm, setSeoForm] = useState<Partial<PageSeoConfig>>({
+    pagePath: '/',
+    pageName: '',
+    metaTitle: '',
+    metaDescription: '',
+    keywords: [],
+    canonicalUrl: ''
+  });
+  const [seoSaveToast, setSeoSaveToast] = useState(false);
 
   // Filter & search states
   const [searchTerm, setSearchTerm] = useState('');
@@ -709,6 +773,157 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     setTimeout(() => setSettingsSavedToast(false), 3000);
   };
 
+  // --- Media Library CMS Handlers ---
+  const handleCopyUrl = (url: string) => {
+    navigator.clipboard.writeText(window.location.origin + url);
+    setCopiedUrl(url);
+    setTimeout(() => setCopiedUrl(null), 2500);
+  };
+
+  const handleSaveMedia = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!mediaForm.url || !mediaForm.name) return;
+    const newAsset: MediaAsset = {
+      id: `med-${Date.now()}`,
+      name: mediaForm.name,
+      category: mediaForm.category,
+      url: mediaForm.url,
+      fileSize: mediaForm.fileSize || '150 KB',
+      uploadedAt: new Date().toISOString().split('T')[0]
+    };
+    const updated = [newAsset, ...mediaAssets];
+    setMediaAssets(updated);
+    localStorage.setItem('alnoor_cms_media', JSON.stringify(updated));
+    setIsAddingMedia(false);
+    setMediaForm({ name: '', category: 'banner', url: '', fileSize: '120 KB' });
+  };
+
+  const handleDeleteMedia = (id: string, name: string) => {
+    if (!window.confirm(`Delete media asset "${name}"?`)) return;
+    const updated = mediaAssets.filter(m => m.id !== id);
+    setMediaAssets(updated);
+    localStorage.setItem('alnoor_cms_media', JSON.stringify(updated));
+  };
+
+  // --- Notification Templates CMS Handlers ---
+  const handleSaveTemplate = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedTemplate) return;
+    const updated = templates.map(t => t.id === selectedTemplate.id ? { ...selectedTemplate, ...templateForm } as MessageTemplate : t);
+    setTemplates(updated);
+    localStorage.setItem('alnoor_cms_templates', JSON.stringify(updated));
+    setTemplateSaveToast(true);
+    setTimeout(() => setTemplateSaveToast(false), 3000);
+  };
+
+  // --- SEO & Schema CMS Handlers ---
+  const handleSaveSeo = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedSeoPage) return;
+    const updated = seoConfigs.map(s => s.pagePath === selectedSeoPage.pagePath ? { ...selectedSeoPage, ...seoForm } as PageSeoConfig : s);
+    setSeoConfigs(updated);
+    localStorage.setItem('alnoor_cms_seo', JSON.stringify(updated));
+    setSeoSaveToast(true);
+    setTimeout(() => setSeoSaveToast(false), 3000);
+  };
+
+  // --- Data Backup & CSV Export Handlers ---
+  const handleExportDatabaseJson = () => {
+    const fullDb = {
+      exportedAt: new Date().toISOString(),
+      version: '2.0-cms',
+      academy: 'Noor E Quran Institute',
+      courses: adminCourses,
+      packages,
+      leads,
+      enrollments,
+      students,
+      tutors,
+      testimonials,
+      faqs,
+      siteSettings,
+      templates,
+      seoConfigs
+    };
+    const blob = new Blob([JSON.stringify(fullDb, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `noor-e-quran-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportStudentsCsv = () => {
+    const headers = ['Student ID', 'Student Name', 'Parent Name', 'Phone', 'Email', 'Country', 'Course', 'Assigned Tutor', 'Timetable Days', 'Time Slot', 'Current Sabaq', 'Status'];
+    const rows = students.map(s => [
+      s.id,
+      `"${s.studentName}"`,
+      `"${s.parentName || ''}"`,
+      `"${s.phone}"`,
+      `"${s.email}"`,
+      `"${s.country}"`,
+      `"${s.courseName}"`,
+      `"${s.tutorName || 'Unassigned'}"`,
+      `"${(s.preferredDays || []).join(', ')}"`,
+      `"${s.preferredTime || ''}"`,
+      `"${s.currentSurahOrLesson || ''}"`,
+      `"${s.status}"`
+    ]);
+    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `students-directory-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportLeadsCsv = () => {
+    const headers = ['Lead ID', 'Student Name', 'Parent Name', 'Phone', 'Email', 'Country', 'Course', 'Time Slot', 'Tutor Pref', 'Status', 'Date'];
+    const rows = leads.map(l => [
+      l.id,
+      `"${l.studentName}"`,
+      `"${l.parentName || ''}"`,
+      `"${l.phone}"`,
+      `"${l.email}"`,
+      `"${l.country}"`,
+      `"${l.courseName}"`,
+      `"${l.timeSlot}"`,
+      `"${l.tutorGender}"`,
+      `"${l.status}"`,
+      `"${new Date(l.createdAt).toLocaleDateString()}"`
+    ]);
+    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `trial-leads-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportDatabaseJson = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const parsed = JSON.parse(event.target?.result as string);
+        if (parsed.packages) { setPackages(parsed.packages); localStorage.setItem('alnoor_cms_packages', JSON.stringify(parsed.packages)); }
+        if (parsed.testimonials) { setTestimonials(parsed.testimonials); localStorage.setItem('alnoor_cms_testimonials', JSON.stringify(parsed.testimonials)); }
+        if (parsed.faqs) { setFaqs(parsed.faqs); localStorage.setItem('alnoor_cms_faqs', JSON.stringify(parsed.faqs)); }
+        if (parsed.siteSettings) { setSiteSettings(parsed.siteSettings); localStorage.setItem('alnoor_cms_settings', JSON.stringify(parsed.siteSettings)); }
+        alert('Database restored successfully from backup!');
+      } catch (err) {
+        alert('Invalid JSON backup file format.');
+      }
+    };
+    reader.readAsText(file);
+  };
+
   const handleOpenAssignModal = (student: Student) => {
     setAssigningStudent(student);
     setAssignmentForm({
@@ -932,7 +1147,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                 {/* Content CMS Section */}
                 <div>
                   <p className="px-2.5 mb-1 text-[10px] font-sans font-bold uppercase tracking-wider text-[#B79A62]">
-                    Content CMS
+                    Content &amp; Syllabi
                   </p>
                   <div className="space-y-1">
                     {[
@@ -940,8 +1155,41 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                       { id: 'packages', label: 'Pricing & Packages', icon: CreditCard },
                       { id: 'blog', label: 'Articles & Guides', icon: PenNib },
                       { id: 'testimonials', label: 'Parent Reviews', icon: Star },
-                      { id: 'faqs', label: 'FAQ Management', icon: Question },
-                      { id: 'settings', label: 'Site & Banners CMS', icon: Gear }
+                      { id: 'faqs', label: 'FAQ Management', icon: Question }
+                    ].map(item => {
+                      const Icon = item.icon;
+                      const active = activeTab === item.id;
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => setActiveTab(item.id as any)}
+                          className={`w-full flex items-center justify-between px-3 py-2 text-xs font-sans rounded-sm transition-all cursor-pointer ${
+                            active
+                              ? 'bg-[#0B332D] text-[#F8F5EE] font-bold shadow-xs'
+                              : 'text-gray-700 hover:bg-[#E8E0D1]/50'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <Icon className={`w-4 h-4 ${active ? 'text-[#B79A62]' : 'text-gray-500'}`} />
+                            <span>{item.label}</span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Marketing & System CMS Section */}
+                <div>
+                  <p className="px-2.5 mb-1 text-[10px] font-sans font-bold uppercase tracking-wider text-emerald-700">
+                    Marketing &amp; System
+                  </p>
+                  <div className="space-y-1">
+                    {[
+                      { id: 'media', label: 'Media & Assets', icon: ImageIcon },
+                      { id: 'templates', label: 'Message Templates', icon: ChatText },
+                      { id: 'seo', label: 'SEO & Meta Tags', icon: Globe },
+                      { id: 'settings', label: 'Settings & Backups', icon: Gear }
                     ].map(item => {
                       const Icon = item.icon;
                       const active = activeTab === item.id;
@@ -968,8 +1216,8 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
               </div>
 
               <div className="pt-3 border-t border-[#E8E0D1] text-[10px] font-sans text-gray-500 space-y-0.5">
-                <p>CMS Studio: <strong className="text-emerald-700">Full Access</strong></p>
-                <p>Tutors: <strong>{tutors.length}</strong> • Courses: <strong>{adminCourses.length}</strong></p>
+                <p>CMS Studio: <strong className="text-emerald-700">Enterprise Mode</strong></p>
+                <p>Assets: <strong>{mediaAssets.length}</strong> • SEO: <strong>{seoConfigs.length} pages</strong></p>
                 <p>Packages: <strong>{packages.length}</strong> • FAQs: <strong>{faqs.length}</strong></p>
               </div>
             </aside>
@@ -1873,6 +2121,440 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                       </button>
                     </div>
                   </form>
+
+                  {/* Academy Data Backup, Restore & CSV Export Hub */}
+                  <div className="bg-[#FCFBF8] p-6 border border-[#E8E0D1] rounded-sm space-y-4 text-xs font-sans">
+                    <div className="flex items-center justify-between pb-3 border-b border-[#E8E0D1]">
+                      <div>
+                        <h4 className="font-editorial text-lg text-[#0B332D] font-bold flex items-center gap-1.5">
+                          <DownloadSimple className="w-4 h-4 text-[#B79A62]" />
+                          <span>Data Backup, Export &amp; Disaster Recovery</span>
+                        </h4>
+                        <p className="text-gray-500 text-[11px]">Download instant offline snapshots of your academy database or export student and lead rosters to CSV for Excel.</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <button
+                        type="button"
+                        onClick={handleExportDatabaseJson}
+                        className="p-4 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm text-left hover:border-[#0B332D] transition-colors cursor-pointer flex flex-col justify-between"
+                      >
+                        <div className="space-y-1">
+                          <div className="w-7 h-7 rounded-sm bg-[#0B332D] text-[#B79A62] flex items-center justify-center mb-2">
+                            <FloppyDisk className="w-4 h-4" />
+                          </div>
+                          <span className="font-bold text-[#0B332D] text-sm block">Full Database Backup</span>
+                          <p className="text-[11px] text-gray-500">Export complete JSON snapshot of all courses, packages, testimonials, students &amp; leads.</p>
+                        </div>
+                        <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider mt-3 inline-flex items-center gap-1">
+                          <DownloadSimple className="w-3 h-3" /> Download JSON
+                        </span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleExportStudentsCsv}
+                        className="p-4 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm text-left hover:border-[#0B332D] transition-colors cursor-pointer flex flex-col justify-between"
+                      >
+                        <div className="space-y-1">
+                          <div className="w-7 h-7 rounded-sm bg-[#0B332D] text-[#B79A62] flex items-center justify-center mb-2">
+                            <GraduationCap className="w-4 h-4" />
+                          </div>
+                          <span className="font-bold text-[#0B332D] text-sm block">Export Students (CSV)</span>
+                          <p className="text-[11px] text-gray-500">Download formatted spreadsheet of active students, sabaq milestones &amp; timetable.</p>
+                        </div>
+                        <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider mt-3 inline-flex items-center gap-1">
+                          <DownloadSimple className="w-3 h-3" /> Export CSV
+                        </span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleExportLeadsCsv}
+                        className="p-4 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm text-left hover:border-[#0B332D] transition-colors cursor-pointer flex flex-col justify-between"
+                      >
+                        <div className="space-y-1">
+                          <div className="w-7 h-7 rounded-sm bg-[#0B332D] text-[#B79A62] flex items-center justify-center mb-2">
+                            <Users className="w-4 h-4" />
+                          </div>
+                          <span className="font-bold text-[#0B332D] text-sm block">Export Trial Leads (CSV)</span>
+                          <p className="text-[11px] text-gray-500">Export trial inquiries and prospective parent contacts for CRM and follow-ups.</p>
+                        </div>
+                        <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider mt-3 inline-flex items-center gap-1">
+                          <DownloadSimple className="w-3 h-3" /> Export CSV
+                        </span>
+                      </button>
+                    </div>
+
+                    <div className="pt-3 border-t border-[#E8E0D1] flex items-center justify-between">
+                      <div className="text-[11px] text-gray-500">
+                        <span>Need to restore data from a previous JSON backup?</span>
+                      </div>
+                      <label className="px-4 py-2 bg-[#F8F5EE] border border-[#E8E0D1] hover:border-[#0B332D] text-[#0B332D] font-bold text-xs rounded-sm cursor-pointer inline-flex items-center gap-1.5">
+                        <UploadSimple className="w-3.5 h-3.5" />
+                        <span>Restore Database (JSON)</span>
+                        <input
+                          type="file"
+                          accept=".json"
+                          className="hidden"
+                          onChange={handleImportDatabaseJson}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 12: MEDIA & ASSETS LIBRARY CMS */}
+              {activeTab === 'media' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">Media &amp; Visual Assets Library</h3>
+                      <p className="text-xs text-gray-500 font-sans">Central repository for course banners, scholar portraits, infographics, and branding assets.</p>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setMediaForm({ name: '', category: 'banner', url: '', fileSize: '120 KB' });
+                        setIsAddingMedia(true);
+                      }}
+                      className="px-4 py-2 bg-[#0B332D] text-[#F8F5EE] text-xs font-sans font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-[#B79A62]" weight="bold" />
+                      <span>Add Media Asset</span>
+                    </button>
+                  </div>
+
+                  {/* Filter tabs */}
+                  <div className="flex items-center gap-2 border-b border-[#E8E0D1] pb-2 text-xs font-sans">
+                    {['all', 'banner', 'course', 'tutor', 'icon'].map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => setMediaCategoryFilter(cat)}
+                        className={`px-3 py-1 rounded-xs font-semibold capitalize cursor-pointer transition-colors ${
+                          mediaCategoryFilter === cat
+                            ? 'bg-[#0B332D] text-[#F8F5EE]'
+                            : 'bg-[#F8F5EE] text-gray-700 hover:bg-[#E8E0D1]'
+                        }`}
+                      >
+                        {cat === 'all' ? 'All Assets' : cat + 's'}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Media Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    {mediaAssets
+                      .filter(m => mediaCategoryFilter === 'all' || m.category === mediaCategoryFilter)
+                      .map((media) => (
+                        <div
+                          key={media.id}
+                          className="bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm overflow-hidden flex flex-col justify-between shadow-xs group"
+                        >
+                          <div className="aspect-square bg-neutral-900/5 relative overflow-hidden flex items-center justify-center">
+                            <img
+                              src={media.url}
+                              alt={media.name}
+                              className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                            <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider bg-black/60 text-white rounded-xs backdrop-blur-xs">
+                              {media.category}
+                            </span>
+                          </div>
+
+                          <div className="p-2.5 space-y-1.5">
+                            <h5 className="font-bold text-[#0B332D] text-[11px] truncate" title={media.name}>
+                              {media.name}
+                            </h5>
+                            <p className="text-[9px] text-gray-500">{media.fileSize || 'WebP'}</p>
+
+                            <div className="pt-1.5 border-t border-[#E8E0D1] flex items-center justify-between gap-1">
+                              <button
+                                onClick={() => handleCopyUrl(media.url)}
+                                className="flex-1 py-1 px-1.5 bg-[#FCFBF8] border border-[#E8E0D1] hover:border-[#0B332D] text-[10px] font-semibold text-[#0B332D] rounded-xs inline-flex items-center justify-center gap-1 cursor-pointer"
+                              >
+                                {copiedUrl === media.url ? (
+                                  <>
+                                    <Check className="w-3 h-3 text-emerald-600" weight="bold" />
+                                    <span className="text-emerald-700 font-bold">Copied!</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Copy className="w-3 h-3 text-[#B79A62]" />
+                                    <span>Copy URL</span>
+                                  </>
+                                )}
+                              </button>
+
+                              <button
+                                onClick={() => handleDeleteMedia(media.id, media.name)}
+                                className="p-1 text-red-500 hover:text-red-700 cursor-pointer"
+                                title="Delete Asset"
+                              >
+                                <Trash className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 13: WHATSAPP & EMAIL MESSAGE TEMPLATES CMS */}
+              {activeTab === 'templates' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">Notification &amp; Message Templates Studio</h3>
+                      <p className="text-xs text-gray-500 font-sans">Automated message copywriting for WhatsApp updates, timetable notices, class reminders, and progress reports.</p>
+                    </div>
+
+                    {templateSaveToast && (
+                      <div className="px-3 py-1.5 bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold rounded-sm flex items-center gap-1.5">
+                        <CheckCircle className="w-4 h-4" weight="fill" />
+                        <span>Template Saved!</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Left: Template Selector */}
+                    <div className="md:col-span-1 space-y-2">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Available Templates</p>
+                      {templates.map((tpl) => (
+                        <div
+                          key={tpl.id}
+                          onClick={() => {
+                            setSelectedTemplate(tpl);
+                            setTemplateForm({ ...tpl });
+                          }}
+                          className={`p-3.5 rounded-sm border transition-all cursor-pointer ${
+                            (selectedTemplate?.id || templates[0]?.id) === tpl.id
+                              ? 'bg-[#0B332D] text-[#F8F5EE] border-[#0B332D] shadow-xs'
+                              : 'bg-[#F8F5EE] text-gray-800 border-[#E8E0D1] hover:bg-[#E8E0D1]/50'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-xs bg-[#B79A62] text-[#07221E]">
+                              {tpl.channel}
+                            </span>
+                          </div>
+                          <h5 className="font-bold text-xs">{tpl.title}</h5>
+                          <p className="text-[10px] line-clamp-2 mt-1 opacity-80">{tpl.body}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Right: Template Editor */}
+                    <div className="md:col-span-2 bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm p-6 space-y-4 text-xs font-sans">
+                      {selectedTemplate || templates[0] ? (
+                        <form
+                          onSubmit={(e) => {
+                            if (!selectedTemplate && templates[0]) {
+                              setSelectedTemplate(templates[0]);
+                            }
+                            handleSaveTemplate(e);
+                          }}
+                          className="space-y-4"
+                        >
+                          <div>
+                            <label className="block font-bold text-gray-700 mb-1">Template Title</label>
+                            <input
+                              type="text"
+                              value={templateForm.title || selectedTemplate?.title || templates[0]?.title || ''}
+                              onChange={e => setTemplateForm({ ...templateForm, title: e.target.value })}
+                              className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                            />
+                          </div>
+
+                          {(selectedTemplate?.channel === 'email' || selectedTemplate?.channel === 'both') && (
+                            <div>
+                              <label className="block font-bold text-gray-700 mb-1">Email Subject Line</label>
+                              <input
+                                type="text"
+                                value={templateForm.subject || selectedTemplate?.subject || ''}
+                                onChange={e => setTemplateForm({ ...templateForm, subject: e.target.value })}
+                                className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                              />
+                            </div>
+                          )}
+
+                          {/* Dynamic Variables Chips */}
+                          <div>
+                            <label className="block font-bold text-gray-700 mb-1.5">Insert Dynamic Placeholders (Click to insert):</label>
+                            <div className="flex flex-wrap gap-1.5">
+                              {(selectedTemplate?.availableVariables || templates[0]?.availableVariables || []).map((v) => (
+                                <button
+                                  key={v}
+                                  type="button"
+                                  onClick={() => {
+                                    const currentBody = templateForm.body ?? selectedTemplate?.body ?? templates[0]?.body ?? '';
+                                    setTemplateForm({ ...templateForm, body: currentBody + ' ' + v });
+                                  }}
+                                  className="px-2 py-1 bg-[#F8F5EE] border border-[#E8E0D1] hover:border-[#0B332D] text-[#0B332D] font-mono text-[10px] rounded-xs cursor-pointer"
+                                >
+                                  {v}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block font-bold text-gray-700 mb-1">Message Body</label>
+                            <textarea
+                              rows={8}
+                              value={templateForm.body !== undefined ? templateForm.body : (selectedTemplate?.body || templates[0]?.body || '')}
+                              onChange={e => setTemplateForm({ ...templateForm, body: e.target.value })}
+                              className="w-full font-mono text-xs px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D] leading-relaxed"
+                            />
+                          </div>
+
+                          <div className="flex justify-end">
+                            <button
+                              type="submit"
+                              className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] flex items-center gap-1.5 cursor-pointer shadow-xs"
+                            >
+                              <FloppyDisk className="w-4 h-4 text-[#B79A62]" />
+                              <span>Save Template Changes</span>
+                            </button>
+                          </div>
+                        </form>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 14: SEO & META TAGS CMS */}
+              {activeTab === 'seo' && (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#F8F5EE] p-4 rounded-sm border border-[#E8E0D1]">
+                    <div>
+                      <h3 className="font-editorial text-2xl text-[#0B332D] font-bold">SEO &amp; Search Engine Optimization CMS</h3>
+                      <p className="text-xs text-gray-500 font-sans">Manage meta titles, Google SERP search snippets, descriptions, and keywords for every academy landing page.</p>
+                    </div>
+
+                    {seoSaveToast && (
+                      <div className="px-3 py-1.5 bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold rounded-sm flex items-center gap-1.5">
+                        <CheckCircle className="w-4 h-4" weight="fill" />
+                        <span>SEO Meta Tags Saved!</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Left: Page Selector */}
+                    <div className="md:col-span-1 space-y-2">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Website Landing Pages</p>
+                      {seoConfigs.map((page) => (
+                        <div
+                          key={page.pagePath}
+                          onClick={() => {
+                            setSelectedSeoPage(page);
+                            setSeoForm({ ...page });
+                          }}
+                          className={`p-3.5 rounded-sm border transition-all cursor-pointer ${
+                            (selectedSeoPage?.pagePath || seoConfigs[0]?.pagePath) === page.pagePath
+                              ? 'bg-[#0B332D] text-[#F8F5EE] border-[#0B332D] shadow-xs'
+                              : 'bg-[#F8F5EE] text-gray-800 border-[#E8E0D1] hover:bg-[#E8E0D1]/50'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-0.5">
+                            <span className="font-bold text-xs">{page.pageName}</span>
+                            <span className="font-mono text-[9px] opacity-75">{page.pagePath}</span>
+                          </div>
+                          <p className="text-[10px] line-clamp-1 opacity-75">{page.metaTitle}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Right: SEO Editor & SERP Simulator */}
+                    <div className="md:col-span-2 space-y-5">
+                      {/* Google Search Snippet Live Preview */}
+                      <div className="bg-[#FFFFFF] border border-[#E8E0D1] rounded-sm p-4 space-y-1 shadow-xs">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block mb-1">
+                          Google Search Result Preview (SERP Simulator)
+                        </span>
+                        <div className="flex items-center gap-1.5 text-xs text-[#202124]">
+                          <span className="w-4 h-4 rounded-full bg-[#0B332D] text-white text-[8px] flex items-center justify-center font-bold">N</span>
+                          <span className="text-gray-700 text-[11px]">https://noorequraninstitute.me{selectedSeoPage?.pagePath !== '/' ? selectedSeoPage?.pagePath : ''}</span>
+                        </div>
+                        <h4 className="text-[#1a0dab] hover:underline text-base font-medium cursor-pointer line-clamp-1">
+                          {seoForm.metaTitle || selectedSeoPage?.metaTitle || seoConfigs[0]?.metaTitle}
+                        </h4>
+                        <p className="text-[#4d5156] text-xs leading-relaxed line-clamp-2">
+                          {seoForm.metaDescription || selectedSeoPage?.metaDescription || seoConfigs[0]?.metaDescription}
+                        </p>
+                      </div>
+
+                      {/* SEO Form */}
+                      <form
+                        onSubmit={(e) => {
+                          if (!selectedSeoPage && seoConfigs[0]) {
+                            setSelectedSeoPage(seoConfigs[0]);
+                          }
+                          handleSaveSeo(e);
+                        }}
+                        className="bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm p-6 space-y-4 text-xs font-sans"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="font-bold text-gray-700">Meta Title Tag (50 - 65 Chars Recommended)</label>
+                            <span className="text-[10px] text-gray-400 font-mono">
+                              {(seoForm.metaTitle ?? selectedSeoPage?.metaTitle ?? seoConfigs[0]?.metaTitle ?? '').length} chars
+                            </span>
+                          </div>
+                          <input
+                            type="text"
+                            value={seoForm.metaTitle !== undefined ? seoForm.metaTitle : (selectedSeoPage?.metaTitle || seoConfigs[0]?.metaTitle || '')}
+                            onChange={e => setSeoForm({ ...seoForm, metaTitle: e.target.value })}
+                            className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                          />
+                        </div>
+
+                        <div>
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="font-bold text-gray-700">Meta Description (120 - 160 Chars Recommended)</label>
+                            <span className="text-[10px] text-gray-400 font-mono">
+                              {(seoForm.metaDescription ?? selectedSeoPage?.metaDescription ?? seoConfigs[0]?.metaDescription ?? '').length} chars
+                            </span>
+                          </div>
+                          <textarea
+                            rows={3}
+                            value={seoForm.metaDescription !== undefined ? seoForm.metaDescription : (selectedSeoPage?.metaDescription || seoConfigs[0]?.metaDescription || '')}
+                            onChange={e => setSeoForm({ ...seoForm, metaDescription: e.target.value })}
+                            className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block font-bold text-gray-700 mb-1">Canonical URL</label>
+                          <input
+                            type="text"
+                            value={seoForm.canonicalUrl !== undefined ? seoForm.canonicalUrl : (selectedSeoPage?.canonicalUrl || seoConfigs[0]?.canonicalUrl || '')}
+                            onChange={e => setSeoForm({ ...seoForm, canonicalUrl: e.target.value })}
+                            className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                          />
+                        </div>
+
+                        <div className="flex justify-end pt-2">
+                          <button
+                            type="submit"
+                            className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] flex items-center gap-1.5 cursor-pointer shadow-xs"
+                          >
+                            <FloppyDisk className="w-4 h-4 text-[#B79A62]" />
+                            <span>Save Page SEO</span>
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -2879,6 +3561,116 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                     className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] cursor-pointer"
                   >
                     Save FAQ
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Add Media Asset Modal */}
+        {isAddingMedia && (
+          <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-md bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="px-6 py-4 bg-[#0B332D] text-[#F8F5EE] flex items-center justify-between border-b border-[#B79A62]/30">
+                <h3 className="font-editorial text-xl font-semibold">
+                  Add Media Asset
+                </h3>
+                <button onClick={() => setIsAddingMedia(false)} className="text-gray-300 hover:text-white cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveMedia} className="p-6 space-y-4 overflow-y-auto text-xs font-sans">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Asset Name / Title *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Ramadan Special Promo Graphic"
+                    value={mediaForm.name}
+                    onChange={e => setMediaForm({ ...mediaForm, name: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Asset Category</label>
+                  <select
+                    value={mediaForm.category}
+                    onChange={e => setMediaForm({ ...mediaForm, category: e.target.value as any })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  >
+                    <option value="banner">Banner / Hero Graphics</option>
+                    <option value="course">Course Curriculum Graphic</option>
+                    <option value="tutor">Scholar / Faculty Portrait</option>
+                    <option value="blog">Blog / Article Thumbnail</option>
+                    <option value="icon">Brand Icon / Badge</option>
+                    <option value="document">PDF / Worksheet</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Image URL / Path *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. /images/promo-banner.webp or https://..."
+                    value={mediaForm.url}
+                    onChange={e => setMediaForm({ ...mediaForm, url: e.target.value })}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  />
+                </div>
+
+                {/* Upload Local Image option */}
+                <div className="p-3 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm flex items-center justify-between">
+                  <span className="text-gray-600 font-medium">Or choose a local image file:</span>
+                  <label className="px-3 py-1.5 bg-[#0B332D] text-[#F8F5EE] text-[11px] font-bold rounded-xs cursor-pointer inline-flex items-center gap-1">
+                    <UploadSimple className="w-3 h-3 text-[#B79A62]" />
+                    <span>Browse File</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = (re) => {
+                            if (typeof re.target?.result === 'string') {
+                              setMediaForm(prev => ({
+                                ...prev,
+                                url: re.target?.result as string,
+                                fileSize: `${Math.round(file.size / 1024)} KB`
+                              }));
+                            }
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                    />
+                  </label>
+                </div>
+
+                {mediaForm.url && (
+                  <div className="aspect-video bg-neutral-900/5 rounded-sm border border-[#E8E0D1] overflow-hidden flex items-center justify-center">
+                    <img src={mediaForm.url} alt="Preview" className="max-h-32 object-contain" />
+                  </div>
+                )}
+
+                <div className="pt-4 border-t border-[#E8E0D1] flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsAddingMedia(false)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-900 cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] cursor-pointer"
+                  >
+                    Save Asset
                   </button>
                 </div>
               </form>

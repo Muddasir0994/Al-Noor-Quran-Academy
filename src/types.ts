@@ -357,3 +357,31 @@ export interface SiteSettings {
   address: string;
   freeTrialDays: number;
 }
+
+export interface MediaAsset {
+  id: string;
+  name: string;
+  category: 'banner' | 'tutor' | 'course' | 'blog' | 'document' | 'icon';
+  url: string;
+  fileSize?: string;
+  uploadedAt: string;
+}
+
+export interface MessageTemplate {
+  id: string;
+  title: string;
+  channel: 'whatsapp' | 'email' | 'both';
+  subject?: string;
+  body: string;
+  availableVariables: string[];
+}
+
+export interface PageSeoConfig {
+  pagePath: string;
+  pageName: string;
+  metaTitle: string;
+  metaDescription: string;
+  keywords: string[];
+  canonicalUrl: string;
+  ogImage?: string;
+}

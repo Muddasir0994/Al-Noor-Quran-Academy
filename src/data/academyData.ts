@@ -842,3 +842,125 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   address: 'Global Online Operations (UK • USA • Canada • Australia • Gulf • Pakistan)',
   freeTrialDays: 3
 };
+
+export const INITIAL_MEDIA_ASSETS: MediaAsset[] = [
+  { id: 'med-1', name: 'Hero Quran Learning Banner', category: 'banner', url: '/images/hero-quran-learning.webp', fileSize: '142 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-2', name: 'Kids Program Illustration Banner', category: 'banner', url: '/images/kids-program-banner.webp', fileSize: '118 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-3', name: 'Female Quran Program Banner', category: 'banner', url: '/images/female-program-banner.webp', fileSize: '124 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-4', name: 'Adults Quran Program Banner', category: 'banner', url: '/images/adults-program-banner.webp', fileSize: '136 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-5', name: 'Academy Logo & Seal (WebP)', category: 'icon', url: '/logo.webp', fileSize: '28 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-6', name: 'Noorani Qaida Course Graphic', category: 'course', url: '/images/course-noorani-qaida.webp', fileSize: '98 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-7', name: 'Nazra Quran Course Graphic', category: 'course', url: '/images/course-nazra-tajweed.webp', fileSize: '105 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-8', name: 'Hifz Memorization Graphic', category: 'course', url: '/images/course-hifz-memorization.webp', fileSize: '112 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-9', name: 'Ustadha Maryam Siddiqa Portrait', category: 'tutor', url: '/images/tutor-maryam.webp', fileSize: '65 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-10', name: 'Qari Bilal Ahmed Portrait', category: 'tutor', url: '/images/tutor-bilal.webp', fileSize: '72 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-11', name: 'Ustadha Ayesha Noor Portrait', category: 'tutor', url: '/images/tutor-ayesha.webp', fileSize: '68 KB', uploadedAt: '2026-08-18' },
+  { id: 'med-12', name: 'Shaykh Tariq Al-Azhari Portrait', category: 'tutor', url: '/images/tutor-tariq.webp', fileSize: '74 KB', uploadedAt: '2026-08-18' }
+];
+
+export const INITIAL_MESSAGE_TEMPLATES: MessageTemplate[] = [
+  {
+    id: 'tpl-1',
+    title: 'Trial Inquiry Welcome (WhatsApp)',
+    channel: 'whatsapp',
+    availableVariables: ['{student_name}', '{parent_name}', '{course_name}', '{academy_name}', '{whatsapp}'],
+    body: `Assalam-o-Alaikum {parent_name}! 🌙
+
+Welcome to {academy_name}. We have received your request for a 3-Day Free Trial for {student_name} ({course_name}).
+
+Our senior academic coordinator will connect with you shortly to confirm your preferred days and time slot.
+
+If you have any questions, feel free to reply directly to this message.
+JazakAllah Khair!`
+  },
+  {
+    id: 'tpl-2',
+    title: 'Tutor & Timetable Assigned (WhatsApp / Email)',
+    channel: 'both',
+    subject: 'Your 1-on-1 Quran Class Schedule & Scholar Assignment - Noor E Quran Institute',
+    availableVariables: ['{student_name}', '{tutor_name}', '{course_name}', '{time_slot}', '{preferred_days}', '{meeting_link}'],
+    body: `Assalam-o-Alaikum! 🌸
+
+Great news! We have assigned your designated tutor for {student_name}:
+
+🎓 Scholar: {tutor_name}
+📖 Course: {course_name}
+📅 Timetable: {preferred_days} @ {time_slot}
+🔗 Live Classroom Link: {meeting_link}
+
+Please join 2 minutes before class time with a stable internet connection. May Allah bless your Quranic journey!`
+  },
+  {
+    id: 'tpl-3',
+    title: 'Class Reminder (15 Mins Before)',
+    channel: 'whatsapp',
+    availableVariables: ['{student_name}', '{tutor_name}', '{meeting_link}'],
+    body: `Assalam-o-Alaikum! ⏰
+
+Reminder: {student_name}'s live 1-on-1 Quran lesson with {tutor_name} starts in 15 minutes!
+
+👉 Click here to enter your Live Classroom: {meeting_link}
+
+Have your Quran/Qaida ready!`
+  },
+  {
+    id: 'tpl-4',
+    title: 'Monthly Progress Report Card (WhatsApp / Email)',
+    channel: 'both',
+    subject: 'Monthly Quran Evaluation & Performance Report - Noor E Quran Institute',
+    availableVariables: ['{student_name}', '{tutor_name}', '{current_sabaq}', '{reading_grade}', '{tajweed_grade}', '{teacher_remarks}'],
+    body: `Assalam-o-Alaikum Respected Parents! 📜
+
+Here is the monthly academic progress summary for {student_name}:
+
+📖 Current Sabaq Milestone: {current_sabaq}
+🌟 Tajweed Accuracy: {tajweed_grade}
+🗣️ Reading Fluency: {reading_grade}
+💬 Tutor's Remarks: "{teacher_remarks}"
+
+Thank you for trusting Noor E Quran Institute with your child's Islamic education.`
+  }
+];
+
+export const INITIAL_SEO_CONFIGS: PageSeoConfig[] = [
+  {
+    pagePath: '/',
+    pageName: 'Homepage',
+    metaTitle: 'Noor E Quran Institute | 1-on-1 Online Quran Classes with Certified Tutors',
+    metaDescription: 'Learn Quran online with certified male & female tutors at Noor E Quran Institute. 1-on-1 Tajweed, Qaida & Hifz classes for kids & adults worldwide.',
+    keywords: ['online quran classes', 'learn quran online', 'female quran tutor', 'noor e quran institute', 'tajweed classes'],
+    canonicalUrl: 'https://noorequraninstitute.me/'
+  },
+  {
+    pagePath: '/courses',
+    pageName: 'Courses & Curricula',
+    metaTitle: 'Online Quran Courses & Syllabi | Noor E Quran Institute',
+    metaDescription: 'Explore our accredited online Quran courses: Noorani Qaida, Nazra with Tajweed, Hifz Memorization, Islamic Studies, and Arabic for Kids & Adults.',
+    keywords: ['quran courses', 'noorani qaida course', 'hifz program online', 'tajweed course online'],
+    canonicalUrl: 'https://noorequraninstitute.me/courses'
+  },
+  {
+    pagePath: '/packages',
+    pageName: 'Pricing & Packages',
+    metaTitle: 'Affordable Online Quran Fee Packages | Noor E Quran Institute',
+    metaDescription: 'Transparent monthly Quran tuition packages in PKR, USD, GBP, EUR, AED, CAD, AUD. 2-day, 3-day, 5-day, and weekend plans with 3-day free trial.',
+    keywords: ['quran class fees', 'online quran packages', 'quran academy pricing', 'cheap quran tutor'],
+    canonicalUrl: 'https://noorequraninstitute.me/packages'
+  },
+  {
+    pagePath: '/teachers',
+    pageName: 'Faculty & Tutors',
+    metaTitle: 'Certified Male & Female Quran Teachers | Noor E Quran Institute',
+    metaDescription: 'Meet our authorized scholars, Al-Azhar graduates, and certified Huffaz. Dedicated female tutors for sisters and kids with 100% patient teaching.',
+    keywords: ['female quran teachers', 'certified quran tutor', 'online quran faculty', 'hafiz tutor'],
+    canonicalUrl: 'https://noorequraninstitute.me/teachers'
+  },
+  {
+    pagePath: '/blog',
+    pageName: 'Blog & Islamic Guides',
+    metaTitle: 'Islamic Knowledge Hub & Quran Articles | Noor E Quran Institute',
+    metaDescription: 'Read expert pedagogical guides on teaching Quran to kids at home, mastering Tajweed rules, rapid Hifz techniques, and daily Islamic Duas.',
+    keywords: ['quran blog', 'tajweed guide', 'how to teach quran to kids', 'quran memorization tips'],
+    canonicalUrl: 'https://noorequraninstitute.me/blog'
+  }
+];
