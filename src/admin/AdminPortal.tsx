@@ -58,9 +58,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   onRefreshCourses
 }) => {
   // Auth state
-  const [token, setToken] = useState<string>(() => localStorage.getItem('alnoor_admin_token') || '');
+  const [token, setToken] = useState<string>(() => {
+    return localStorage.getItem('alnoor_admin_token') || sessionStorage.getItem('alnoor_admin_token') || '';
+  });
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(true);
   const [loginError, setLoginError] = useState('');
   const [loggingIn, setLoggingIn] = useState(false);
 
@@ -139,6 +142,31 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     }
   }, [token, isOpen]);
 
+  // Industry Standard: Auto-logout after 30 minutes of inactivity
+  useEffect(() => {
+    if (!token) return;
+
+    let timeoutId: NodeJS.Timeout;
+    const INACTIVITY_LIMIT_MS = 30 * 60 * 1000; // 30 minutes
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        handleLogout();
+        setLoginError('Your session has expired due to 30 minutes of inactivity. Please sign in again.');
+      }, INACTIVITY_LIMIT_MS);
+    };
+
+    const activityEvents = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+    activityEvents.forEach(evt => window.addEventListener(evt, resetTimer, { passive: true }));
+    resetTimer();
+
+    return () => {
+      clearTimeout(timeoutId);
+      activityEvents.forEach(evt => window.removeEventListener(evt, resetTimer));
+    };
+  }, [token]);
+
   const fetchAdminData = async () => {
     setLoadingData(true);
     try {
@@ -197,7 +225,13 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
       }
 
       setToken(data.token);
-      localStorage.setItem('alnoor_admin_token', data.token);
+      if (rememberMe) {
+        localStorage.setItem('alnoor_admin_token', data.token);
+        sessionStorage.removeItem('alnoor_admin_token');
+      } else {
+        sessionStorage.setItem('alnoor_admin_token', data.token);
+        localStorage.removeItem('alnoor_admin_token');
+      }
     } catch (err: any) {
       setLoginError(err.message || 'Login failed. Please check credentials.');
     } finally {
@@ -216,6 +250,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     }
     setToken('');
     localStorage.removeItem('alnoor_admin_token');
+    sessionStorage.removeItem('alnoor_admin_token');
     setSelectedLead(null);
     setSelectedEnrollment(null);
     setSelectedStudent(null);
@@ -579,6 +614,18 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                     onChange={e => setLoginPassword(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:border-[#064E3B]"
                   />
+                </div>
+
+                <div className="flex items-center justify-between text-xs pt-1">
+                  <label className="flex items-center gap-2 cursor-pointer text-gray-600 font-medium">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={e => setRememberMe(e.target.checked)}
+                      className="rounded text-[#064E3B] focus:ring-[#064E3B]"
+                    />
+                    <span>Remember me on this device</span>
+                  </label>
                 </div>
 
                 <button

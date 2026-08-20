@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import React, { useState, useEffect, useRef } from 'react';
 import { BlogPost } from '../types';
 import { getAllBlogPosts, saveBlogPost, deleteBlogPost } from '../lib/firestoreService';
 import {
@@ -16,7 +14,20 @@ import {
   ArrowsClockwise,
   Clock,
   Sparkle,
-  UploadSimple
+  UploadSimple,
+  TextB,
+  TextItalic,
+  TextUnderline,
+  TextHTwo,
+  TextHThree,
+  ListBullets,
+  ListNumbers,
+  Quotes,
+  LinkSimple,
+  Code,
+  EyeSlash,
+  BookOpen,
+  ArrowCounterClockwise
 } from '@phosphor-icons/react';
 
 const CATEGORIES: BlogPost['category'][] = [
@@ -29,33 +40,54 @@ const CATEGORIES: BlogPost['category'][] = [
   'Islamic Studies'
 ];
 
-const QUILL_MODULES = {
-  toolbar: [
-    [{ header: [2, 3, false] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    ['link', 'image', 'clean']
-  ]
-};
-
-const QUILL_FORMATS = [
-  'header',
-  'bold', 'italic', 'underline', 'strike', 'blockquote',
-  'list', 'bullet',
-  'link', 'image'
-];
-
 interface BlogEditorProps {
   onViewPost?: (slug: string) => void;
 }
 
-export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
+// Error Boundary for resilient rendering
+class BlogEditorErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('BlogEditor runtime error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-red-900 space-y-4 max-w-xl mx-auto my-8 text-center">
+          <h3 className="font-heading font-bold text-lg text-red-700">Editor Encountered an Issue</h3>
+          <p className="text-xs text-red-600">
+            {this.state.error?.message || 'An unexpected rendering error occurred.'}
+          </p>
+          <button
+            onClick={() => this.setState({ hasError: false, error: null })}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+          >
+            Reload Editor
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+const BlogEditorContent: React.FC<BlogEditorProps> = ({ onViewPost }) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [editorMode, setEditorMode] = useState<'visual' | 'code' | 'preview'>('visual');
 
   // Form State
   const [currentId, setCurrentId] = useState<string>('');
@@ -66,9 +98,12 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
   const [featuredImage, setFeaturedImage] = useState('');
   const [content, setContent] = useState('');
   const [tagsInput, setTagsInput] = useState('');
-  const [author, setAuthor] = useState('Al-Noor Quran Academy');
+  const [author, setAuthor] = useState('Noor-e-Quran Institute');
   const [readTime, setReadTime] = useState('5 min read');
   const [published, setPublished] = useState(true);
+
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const contentEditableRef = useRef<HTMLDivElement | null>(null);
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -86,6 +121,15 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     fetchPosts();
   }, []);
 
+  // Synchronize contentEditable div with content state
+  useEffect(() => {
+    if (contentEditableRef.current && editorMode === 'visual') {
+      if (contentEditableRef.current.innerHTML !== content) {
+        contentEditableRef.current.innerHTML = content || '<p><br></p>';
+      }
+    }
+  }, [content, editorMode, isEditing]);
+
   const handleCreateNew = () => {
     setCurrentId('post-' + Date.now());
     setTitle('');
@@ -95,9 +139,10 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     setFeaturedImage('');
     setContent('');
     setTagsInput('');
-    setAuthor('Al-Noor Quran Academy');
+    setAuthor('Noor-e-Quran Institute');
     setReadTime('5 min read');
     setPublished(true);
+    setEditorMode('visual');
     setIsEditing(true);
     setStatusMessage(null);
   };
@@ -111,9 +156,10 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     setFeaturedImage(post.featuredImage || '');
     setContent(post.content || '');
     setTagsInput(post.tags ? post.tags.join(', ') : '');
-    setAuthor(post.author || 'Al-Noor Quran Academy');
+    setAuthor(post.author || 'Noor-e-Quran Institute');
     setReadTime(post.readTime || '5 min read');
     setPublished(post.published ?? true);
+    setEditorMode('visual');
     setIsEditing(true);
     setStatusMessage(null);
   };
@@ -174,6 +220,88 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
     reader.readAsDataURL(file);
   };
 
+  // Execute rich formatting commands
+  const executeCommand = (command: string, value: string = '') => {
+    if (editorMode === 'visual' && contentEditableRef.current) {
+      contentEditableRef.current.focus();
+      document.execCommand(command, false, value);
+      setContent(contentEditableRef.current.innerHTML);
+    } else if (editorMode === 'code' && textareaRef.current) {
+      const textarea = textareaRef.current;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selected = textarea.value.substring(start, end);
+      let insertion = '';
+
+      switch (command) {
+        case 'bold':
+          insertion = `<strong>${selected || 'bold text'}</strong>`;
+          break;
+        case 'italic':
+          insertion = `<em>${selected || 'italic text'}</em>`;
+          break;
+        case 'underline':
+          insertion = `<u>${selected || 'underlined text'}</u>`;
+          break;
+        case 'formatBlock':
+          if (value === 'h2') insertion = `<h2>${selected || 'Heading 2'}</h2>\n`;
+          else if (value === 'h3') insertion = `<h3>${selected || 'Heading 3'}</h3>\n`;
+          else if (value === 'blockquote') insertion = `<blockquote>${selected || 'Quotation / Hadith'}</blockquote>\n`;
+          break;
+        case 'insertUnorderedList':
+          insertion = `<ul>\n  <li>${selected || 'List item 1'}</li>\n  <li>List item 2</li>\n</ul>\n`;
+          break;
+        case 'insertOrderedList':
+          insertion = `<ol>\n  <li>${selected || 'First step'}</li>\n  <li>Second step</li>\n</ol>\n`;
+          break;
+        case 'createLink':
+          insertion = `<a href="${value || 'https://noorequraninstitute.me'}">${selected || 'link text'}</a>`;
+          break;
+        case 'insertImage':
+          insertion = `<img src="${value || 'https://res.cloudinary.com/demo/image/upload/sample.jpg'}" alt="Article Illustration" class="rounded-xl shadow-md my-4" />\n`;
+          break;
+        default:
+          insertion = selected;
+      }
+
+      const newContent = textarea.value.substring(0, start) + insertion + textarea.value.substring(end);
+      setContent(newContent);
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start + insertion.length, start + insertion.length);
+      }, 0);
+    }
+  };
+
+  const insertLinkPrompt = () => {
+    const url = prompt('Enter destination URL:', 'https://noorequraninstitute.me');
+    if (url) executeCommand('createLink', url);
+  };
+
+  const insertImagePrompt = () => {
+    const url = prompt('Enter Image URL (e.g. Cloudinary HTTPS link):', featuredImage || 'https://');
+    if (url) executeCommand('insertImage', url);
+  };
+
+  const insertQuranBox = () => {
+    const ayah = prompt('Enter Arabic Ayah / Text:', 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ');
+    const translation = prompt('Enter English / Urdu Translation:', 'In the name of Allah, the Entirely Merciful, the Especially Merciful.');
+    if (ayah) {
+      const boxHtml = `
+<div class="my-6 p-5 rounded-2xl bg-emerald-900/90 text-white border border-[#D4A72C]/50 shadow-md">
+  <p class="font-arabic text-xl sm:text-2xl text-[#F3C64D] font-bold text-center mb-3 dir-rtl">${ayah}</p>
+  <p class="text-xs sm:text-sm text-emerald-100 text-center italic">"${translation || ''}"</p>
+</div>\n`;
+      if (editorMode === 'visual' && contentEditableRef.current) {
+        contentEditableRef.current.focus();
+        document.execCommand('insertHTML', false, boxHtml);
+        setContent(contentEditableRef.current.innerHTML);
+      } else {
+        setContent(prev => prev + '\n' + boxHtml);
+      }
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
@@ -206,7 +334,7 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
       featuredImage: featuredImage.trim(),
       content,
       tags,
-      author: author.trim() || 'Al-Noor Quran Academy',
+      author: author.trim() || 'Noor-e-Quran Institute',
       readTime: readTime || computedReadTime,
       published,
       createdAt: new Date().toISOString(),
@@ -425,21 +553,179 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
               />
             </div>
 
-            {/* Rich Text Editor */}
-            <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1.5">
-                Article Body Content (Rich Text) *
-              </label>
-              <div className="bg-white rounded-xl overflow-hidden border border-gray-300">
-                <ReactQuill
-                  theme="snow"
-                  value={content}
-                  onChange={setContent}
-                  modules={QUILL_MODULES}
-                  formats={QUILL_FORMATS}
-                  placeholder="Write your comprehensive Islamic article here. Add headings, lists, quotes, and images..."
-                  style={{ minHeight: '320px' }}
-                />
+            {/* Rich Text Editor (React 19 Resilient) */}
+            <div className="space-y-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <label className="block text-xs font-bold text-gray-700">
+                  Article Body Content *
+                </label>
+                <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
+                  <button
+                    type="button"
+                    onClick={() => setEditorMode('visual')}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                      editorMode === 'visual' ? 'bg-white text-[#064E3B] shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Visual Editor
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditorMode('code')}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                      editorMode === 'code' ? 'bg-white text-[#064E3B] shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    HTML / Markdown
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditorMode('preview')}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
+                      editorMode === 'preview' ? 'bg-[#064E3B] text-[#F3C64D] shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>Live Preview</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Toolbar */}
+              {editorMode !== 'preview' && (
+                <div className="flex flex-wrap items-center gap-1.5 p-2 bg-gray-50 border border-gray-300 rounded-t-xl border-b-0 text-gray-700 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => executeCommand('bold')}
+                    title="Bold (Ctrl+B)"
+                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <TextB className="w-4 h-4" weight="bold" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => executeCommand('italic')}
+                    title="Italic (Ctrl+I)"
+                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <TextItalic className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => executeCommand('underline')}
+                    title="Underline (Ctrl+U)"
+                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <TextUnderline className="w-4 h-4" />
+                  </button>
+                  <span className="text-gray-300">|</span>
+                  <button
+                    type="button"
+                    onClick={() => executeCommand('formatBlock', 'h2')}
+                    title="Heading 2"
+                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <TextHTwo className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => executeCommand('formatBlock', 'h3')}
+                    title="Heading 3"
+                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <TextHThree className="w-4 h-4" />
+                  </button>
+                  <span className="text-gray-300">|</span>
+                  <button
+                    type="button"
+                    onClick={() => executeCommand('insertUnorderedList')}
+                    title="Bulleted List"
+                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <ListBullets className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => executeCommand('insertOrderedList')}
+                    title="Numbered List"
+                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <ListNumbers className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => executeCommand('formatBlock', 'blockquote')}
+                    title="Blockquote"
+                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <Quotes className="w-4 h-4" />
+                  </button>
+                  <span className="text-gray-300">|</span>
+                  <button
+                    type="button"
+                    onClick={insertLinkPrompt}
+                    title="Insert Link"
+                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <LinkSimple className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={insertImagePrompt}
+                    title="Insert Image"
+                    className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={insertQuranBox}
+                    title="Insert Quran Ayah / Arabic Box"
+                    className="px-2 py-1 bg-emerald-100 hover:bg-emerald-200 text-[#064E3B] rounded-lg font-bold flex items-center gap-1 transition-colors cursor-pointer ml-auto"
+                  >
+                    <BookOpen className="w-3.5 h-3.5" />
+                    <span>+ Arabic Ayah Box</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Editor Surface */}
+              <div className="bg-white rounded-b-xl border border-gray-300 overflow-hidden min-h-[320px] relative">
+                {editorMode === 'visual' && (
+                  <div
+                    ref={contentEditableRef}
+                    contentEditable
+                    onInput={(e) => setContent(e.currentTarget.innerHTML)}
+                    className="p-4 outline-none min-h-[320px] max-h-[600px] overflow-y-auto prose prose-emerald prose-sm sm:prose-base max-w-none prose-headings:text-[#064E3B] prose-headings:font-heading prose-headings:font-bold"
+                    style={{ whiteSpace: 'pre-wrap' }}
+                  />
+                )}
+
+                {editorMode === 'code' && (
+                  <textarea
+                    ref={textareaRef}
+                    value={content}
+                    onChange={e => setContent(e.target.value)}
+                    placeholder="Write article in HTML or markdown format..."
+                    rows={16}
+                    className="w-full p-4 font-mono text-xs text-gray-800 outline-none resize-y min-h-[320px] bg-gray-50/50"
+                  />
+                )}
+
+                {editorMode === 'preview' && (
+                  <div className="p-6 min-h-[320px] max-h-[600px] overflow-y-auto bg-[#FAFAF7]">
+                    <div
+                      className="prose prose-emerald prose-sm sm:prose-base max-w-none
+                        prose-headings:text-[#064E3B] prose-headings:font-heading prose-headings:font-extrabold
+                        prose-p:text-gray-700 prose-p:leading-relaxed
+                        prose-a:text-[#064E3B] prose-a:font-semibold prose-a:underline
+                        prose-img:rounded-xl prose-img:shadow-md
+                        prose-strong:text-[#064E3B]
+                        prose-blockquote:border-l-[#D4A72C] prose-blockquote:bg-emerald-50/50 prose-blockquote:rounded-r-xl prose-blockquote:py-1"
+                      dangerouslySetInnerHTML={{ __html: content || '<p className="text-gray-400 italic">No content written yet. Switch to Visual Editor to write...</p>' }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -468,127 +754,111 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <h3 className="text-lg font-heading font-bold text-[#064E3B] flex items-center gap-2">
-                <Sparkle className="w-5 h-5 text-[#A16207]" weight="duotone" />
-                <span>Blog & Articles CMS ({posts.length})</span>
-              </h3>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Create and manage SEO-optimized blog posts, upload images, and publish articles to your academy blog.
+              <h2 className="text-lg font-heading font-extrabold text-[#064E3B]">
+                Islamic Blog & Article CMS
+              </h2>
+              <p className="text-xs text-gray-500">
+                Publish high-ranking SEO articles, Tajweed guides, and parenting advice for Noor-e-Quran Institute.
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={fetchPosts}
-                disabled={loading}
-                className="p-2 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-semibold cursor-pointer"
-                title="Refresh posts"
-              >
-                <ArrowsClockwise className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-              </button>
-              <button
-                onClick={handleCreateNew}
-                className="px-4 py-2 rounded-xl text-xs font-bold bg-[#064E3B] text-[#F3C64D] hover:bg-[#043629] active:scale-95 transition-all shadow-sm flex items-center gap-1.5 cursor-pointer"
-              >
-                <Plus className="w-4 h-4" weight="bold" />
-                <span>Write New Article</span>
-              </button>
-            </div>
+            <button
+              onClick={handleCreateNew}
+              className="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#064E3B] text-[#F3C64D] hover:bg-[#043629] transition-all shadow-sm flex items-center gap-1.5 cursor-pointer hover:scale-105"
+            >
+              <Plus className="w-4 h-4" weight="bold" />
+              <span>Write New Article</span>
+            </button>
           </div>
 
-          {/* Posts List */}
+          {/* Posts Table */}
           {loading ? (
-            <div className="space-y-3">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="h-16 bg-gray-50 rounded-xl animate-pulse" />
-              ))}
+            <div className="py-12 text-center text-gray-400 text-xs">
+              <ArrowsClockwise className="w-6 h-6 animate-spin mx-auto mb-2 text-[#064E3B]" />
+              <span>Loading articles...</span>
             </div>
           ) : posts.length === 0 ? (
-            <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl">
-              <ImageIcon className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-              <p className="text-xs text-gray-500 font-medium">No blog posts published yet.</p>
+            <div className="py-12 text-center text-gray-400 space-y-3">
+              <p className="text-xs">No blog articles published yet.</p>
               <button
                 onClick={handleCreateNew}
-                className="mt-3 px-4 py-1.5 bg-[#064E3B] text-[#F3C64D] rounded-lg text-xs font-bold cursor-pointer"
+                className="px-4 py-2 rounded-xl text-xs font-bold gold-gradient-btn text-[#032B21] shadow-xs cursor-pointer"
               >
-                Write First Article
+                Write Your First Article
               </button>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-gray-600">
-                <thead className="bg-gray-50 text-gray-700 font-bold uppercase text-[10px] tracking-wider border-y border-gray-200">
-                  <tr>
-                    <th className="py-3 px-3">Article</th>
-                    <th className="py-3 px-3">Category</th>
-                    <th className="py-3 px-3">Status</th>
-                    <th className="py-3 px-3">Date</th>
-                    <th className="py-3 px-3 text-right">Actions</th>
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b border-gray-200 text-gray-400 font-bold uppercase tracking-wider text-[10px]">
+                    <th className="pb-3">Article</th>
+                    <th className="pb-3">Category</th>
+                    <th className="pb-3">Author</th>
+                    <th className="pb-3">Status</th>
+                    <th className="pb-3 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {posts.map(post => (
-                    <tr key={post.id} className="hover:bg-gray-50/70 transition-colors">
-                      <td className="py-3 px-3">
+                    <tr key={post.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="py-3.5 pr-4">
                         <div className="flex items-center gap-3">
                           {post.featuredImage ? (
-                            <img
-                              src={post.featuredImage}
-                              alt=""
-                              className="w-10 h-10 rounded-lg object-cover bg-gray-100 shrink-0"
-                            />
+                            <img src={post.featuredImage} alt={post.title} className="w-10 h-10 rounded-lg object-cover border border-gray-100 shrink-0" />
                           ) : (
-                            <div className="w-10 h-10 rounded-lg bg-emerald-100 text-[#064E3B] flex items-center justify-center font-bold text-xs shrink-0">
-                              Art
+                            <div className="w-10 h-10 rounded-lg bg-emerald-50 text-[#064E3B] flex items-center justify-center font-bold shrink-0">
+                              <BookOpen className="w-5 h-5" />
                             </div>
                           )}
                           <div>
-                            <p className="font-bold text-gray-900 line-clamp-1">{post.title}</p>
-                            <p className="text-[10px] text-gray-400 font-mono">/blog/{post.slug}</p>
+                            <span className="font-bold text-gray-900 line-clamp-1 block">{post.title}</span>
+                            <span className="text-[10px] text-gray-400 font-mono block">/blog/{post.slug}</span>
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 px-3">
-                        <span className="px-2 py-0.5 rounded bg-gray-100 text-gray-700 font-semibold text-[10px]">
+                      <td className="py-3.5 pr-4">
+                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#064E3B] text-[10px] font-bold border border-emerald-100">
                           {post.category}
                         </span>
                       </td>
-                      <td className="py-3 px-3">
-                        {post.published ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[10px] border border-emerald-200">
-                            <CheckCircle className="w-3 h-3" weight="fill" />
+                      <td className="py-3.5 pr-4 text-gray-600">
+                        {post.author}
+                      </td>
+                      <td className="py-3.5 pr-4">
+                        {post.published !== false ? (
+                          <span className="inline-flex items-center gap-1 text-emerald-700 text-[10px] font-bold">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                             Live
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold text-[10px] border border-amber-200">
+                          <span className="inline-flex items-center gap-1 text-gray-400 text-[10px]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
                             Draft
                           </span>
                         )}
                       </td>
-                      <td className="py-3 px-3 text-gray-400 text-[10px]">
-                        {new Date(post.createdAt).toLocaleDateString()}
-                      </td>
-                      <td className="py-3 px-3 text-right">
+                      <td className="py-3.5 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           {onViewPost && (
                             <button
                               onClick={() => onViewPost(post.slug)}
-                              className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-600 cursor-pointer"
                               title="View Article"
+                              className="p-1.5 text-gray-500 hover:text-[#064E3B] hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
                             >
                               <Eye className="w-4 h-4" />
                             </button>
                           )}
                           <button
                             onClick={() => handleEdit(post)}
-                            className="p-1.5 hover:bg-gray-100 rounded-lg text-[#064E3B] cursor-pointer"
-                            title="Edit"
+                            title="Edit Article"
+                            className="p-1.5 text-gray-500 hover:text-emerald-700 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
                           >
                             <PencilSimple className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(post.id, post.title)}
-                            className="p-1.5 hover:bg-red-50 rounded-lg text-red-500 cursor-pointer"
-                            title="Delete"
+                            title="Delete Article"
+                            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                           >
                             <Trash className="w-4 h-4" />
                           </button>
@@ -603,5 +873,13 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
         </div>
       )}
     </div>
+  );
+};
+
+export const BlogEditor: React.FC<BlogEditorProps> = (props) => {
+  return (
+    <BlogEditorErrorBoundary>
+      <BlogEditorContent {...props} />
+    </BlogEditorErrorBoundary>
   );
 };
