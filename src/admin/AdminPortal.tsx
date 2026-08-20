@@ -1190,26 +1190,33 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
   if (isOpen === false) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
-      <div className="w-full max-w-7xl h-[92vh] bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 bg-[#FCFBF8] flex flex-col overflow-hidden">
+      <div className="w-full h-full bg-[#FCFBF8] flex flex-col flex-1 overflow-hidden">
         
         {/* Top Editorial Navigation Bar */}
-        <header className="px-6 py-4 bg-[#0B332D] text-[#F8F5EE] border-b border-[#B79A62]/30 flex items-center justify-between">
+        <header className="px-6 py-3.5 bg-[#0B332D] text-[#F8F5EE] border-b border-[#B79A62]/30 flex items-center justify-between shadow-xs shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-sm bg-[#07221E] border border-[#B79A62]/40 flex items-center justify-center text-[#B79A62]">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
               <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#B79A62]">
-                ACADEMY ADMINISTRATION
+                ACADEMY ADMINISTRATION &amp; ERP
               </p>
-              <h1 className="font-editorial text-xl text-[#F8F5EE] font-semibold">
+              <h1 className="font-editorial text-lg sm:text-xl text-[#F8F5EE] font-semibold">
                 Noor E Quran Command Studio
               </h1>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={onClose}
+              className="px-3 py-1.5 bg-[#07221E] border border-[#B79A62]/40 text-[#E8E0D1] hover:text-white hover:border-[#B79A62] text-xs font-sans font-semibold rounded-sm transition-colors flex items-center gap-1.5 cursor-pointer"
+            >
+              <span>← Back to Academy</span>
+            </button>
+
             {token && (
               <button
                 onClick={handleLogout}
