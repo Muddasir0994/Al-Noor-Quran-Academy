@@ -2,31 +2,36 @@
 
 @layer base {
   :root {
-    --font-heading: 'Cinzel', serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
-    --font-arabic: 'Amiri', 'Scheherazade New', serif;
+    --font-heading: 'Cormorant Garamond', Georgia, serif;
+    --font-editorial: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-arabic: 'Amiri', 'Traditional Arabic', serif;
     --font-urdu: 'Noto Nastaliq Urdu', serif;
     
-    /* Academy Signature Color System */
-    --color-emerald-primary: #064E3B;
-    --color-emerald-deep: #032B21;
-    --color-emerald-light: #ECFDF5;
-    --color-gold-accent: #D4A72C;
-    --color-gold-glow: #FBF3D5;
-    --color-gold-dark: #A37B15;
-    --color-ivory-bg: #FAF9F5;
+    /* Premium Islamic Editorial Color System */
+    --color-ivory-primary: #F8F5EE;
+    --color-warm-white: #FCFBF8;
+    --color-emerald-deep: #0B332D;
+    --color-emerald-dark: #07221E;
+    --color-ink-deep: #12201D;
+    --color-brass-gold: #B79A62;
+    --color-brass-subtle: #D8C7A3;
+    --color-beige-soft: #E8E0D1;
+    --color-beige-border: #E5DFC9;
   }
 
   body {
     font-family: var(--font-body);
-    background-color: var(--color-ivory-bg);
-    color: #1F2937;
+    background-color: var(--color-ivory-primary);
+    color: var(--color-ink-deep);
     overflow-x: hidden;
+    letter-spacing: -0.01em;
   }
 
-  h1, h2, h3, .font-heading {
+  h1, h2, h3, h4, .font-editorial, .font-heading {
     font-family: var(--font-heading);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
+    font-weight: 600;
   }
 
   .font-arabic, [lang="ar"] {
@@ -40,17 +45,46 @@
   }
 }
 
-/* Subtle Islamic geometric pattern overlay */
+/* Subtle Geometric Linework & Editorial Accents */
+.bg-editorial-ivory {
+  background-color: #F8F5EE;
+}
+
+.bg-editorial-white {
+  background-color: #FCFBF8;
+}
+
+.bg-editorial-emerald {
+  background-color: #0B332D;
+}
+
+.text-editorial-emerald {
+  color: #0B332D;
+}
+
+.text-editorial-brass {
+  color: #B79A62;
+}
+
+.border-editorial-hairline {
+  border-color: rgba(183, 154, 98, 0.25);
+}
+
+.border-editorial-subtle {
+  border-color: #E8E0D1;
+}
+
+/* Subtle architectural Islamic geometry linework */
 .bg-islamic-pattern {
-  background-color: #064E3B;
-  background-image: radial-gradient(rgba(212, 167, 44, 0.16) 1.2px, transparent 0);
-  background-size: 24px 24px;
+  background-color: #0B332D;
+  background-image: radial-gradient(rgba(183, 154, 98, 0.18) 1px, transparent 0);
+  background-size: 28px 28px;
 }
 
 .bg-islamic-subtle {
-  background-color: #FAF9F5;
-  background-image: radial-gradient(rgba(6, 78, 59, 0.06) 1.2px, transparent 0);
-  background-size: 20px 20px;
+  background-color: #F8F5EE;
+  background-image: radial-gradient(rgba(11, 51, 45, 0.05) 1px, transparent 0);
+  background-size: 24px 24px;
 }
 
 .bg-islamic-gold-pattern {

@@ -214,6 +214,9 @@ function AppContent() {
       } else if (path === '/about-us' || path === '/about') {
         setActiveNavTab('about');
         setIsNotFound(false);
+      } else if (path === '/how-it-works' || path === '/methodology') {
+        setActiveNavTab('how-it-works');
+        setIsNotFound(false);
       } else if (path === '/faq') {
         setActiveNavTab('faq');
         setIsNotFound(false);
@@ -683,6 +686,15 @@ function AppContent() {
                 onNavigateBack={handleBlogBack}
                 onOpenTrial={() => handleOpenTrial()}
               />
+            )}
+
+            {/* 8C. HOW IT WORKS DEDICATED PAGE */}
+            {(activeNavTab === 'how-it-works' || activeNavTab === 'methodology') && (
+              <div>
+                <MethodologySection onOpenTrial={() => handleOpenTrial()} />
+                <WhyChooseUs onOpenTrial={() => handleOpenTrial()} />
+                <TrustSection />
+              </div>
             )}
 
             {/* 9. FAQ PAGE */}
