@@ -631,7 +631,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <input
                     type="email"
                     required
-                    placeholder={activeRole === 'admin' ? 'admin@alnoorquranacademy.com' : 'your.email@example.com'}
+                    placeholder={activeRole === 'admin' ? 'admin@noorequraninstitute.me' : 'your.email@example.com'}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full pl-9 pr-3 py-2.5 border border-[#E8E0D1] rounded-sm text-xs font-sans bg-[#F8F5EE] focus:outline-none focus:border-[#0B332D]"
@@ -681,8 +681,31 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <ArrowRight className="w-3.5 h-3.5 text-[#B79A62]" />
               </button>
 
+              {/* Quick Demo Fill Shortcut */}
+              <div className="pt-2 border-t border-[#E8E0D1]/60 flex items-center justify-between text-[11px] text-gray-500 font-sans">
+                <span>Quick Demo:</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (activeRole === 'student') {
+                      setEmail('student@noorequraninstitute.me');
+                      setPassword('student123');
+                    } else if (activeRole === 'teacher') {
+                      setEmail('maryam@noorequraninstitute.me');
+                      setPassword('teacher123');
+                    } else {
+                      setEmail('admin@noorequraninstitute.me');
+                      setPassword('7860');
+                    }
+                  }}
+                  className="text-[#0B332D] font-bold hover:underline cursor-pointer"
+                >
+                  Fill {activeRole === 'student' ? 'Student' : activeRole === 'teacher' ? 'Faculty' : 'Admin'} Credentials
+                </button>
+              </div>
+
               {activeRole === 'student' && (
-                <div className="text-center pt-2">
+                <div className="text-center pt-1">
                   <span className="text-xs text-gray-500 font-sans">New student? </span>
                   <button
                     type="button"

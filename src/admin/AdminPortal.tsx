@@ -850,6 +850,13 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                                 <td className="p-3.5 text-right">
                                   <div className="flex items-center justify-end gap-1.5">
                                     <button
+                                      onClick={() => setSelectedLead(lead)}
+                                      className="p-1.5 text-gray-700 hover:text-[#0B332D] cursor-pointer"
+                                      title="View Lead Details"
+                                    >
+                                      <Eye className="w-4 h-4" />
+                                    </button>
+                                    <button
                                       onClick={() => openWhatsAppForLead(lead)}
                                       className="px-2.5 py-1 bg-[#25D366] text-white rounded-sm text-xs font-bold flex items-center gap-1 cursor-pointer"
                                       title="WhatsApp"
@@ -1585,6 +1592,277 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Enrollment Details & Approval Modal */}
+        {selectedEnrollment && (
+          <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-xl bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="px-6 py-4 bg-[#0B332D] text-[#F8F5EE] flex items-center justify-between border-b border-[#B79A62]/30">
+                <div>
+                  <h3 className="font-editorial text-xl font-semibold">
+                    Enrollment Application
+                  </h3>
+                  <p className="text-[11px] text-[#B79A62]">
+                    Student: {selectedEnrollment.studentName} ({selectedEnrollment.courseName})
+                  </p>
+                </div>
+                <button onClick={() => setSelectedEnrollment(null)} className="text-gray-300 hover:text-white cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-5 overflow-y-auto text-xs font-sans">
+                <div className="grid grid-cols-2 gap-4 p-4 bg-[#F8F5EE] rounded-sm border border-[#E8E0D1]">
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Student Name</span>
+                    <span className="font-bold text-[#0B332D] text-sm">{selectedEnrollment.studentName}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Parent / Guardian</span>
+                    <span className="font-semibold text-gray-800">{selectedEnrollment.parentName || 'Not provided'}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Phone / WhatsApp</span>
+                    <span className="font-mono text-gray-800">{selectedEnrollment.phone}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Email Address</span>
+                    <span className="text-gray-800">{selectedEnrollment.parentEmail || selectedEnrollment.studentEmail || 'Not provided'}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Country</span>
+                    <span className="text-gray-800">{selectedEnrollment.country}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Selected Package</span>
+                    <span className="text-gray-800 font-semibold">{selectedEnrollment.packageName || 'Standard Plan'}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Tutor Preference</span>
+                    <span className="text-gray-800">{selectedEnrollment.tutorPreference}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Time Slot</span>
+                    <span className="text-gray-800">{selectedEnrollment.timeSlot}</span>
+                  </div>
+                </div>
+
+                {selectedEnrollment.additionalNotes && (
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Applicant's Additional Notes</label>
+                    <p className="p-3 bg-[#F8F5EE] border border-[#E8E0D1] rounded-sm text-gray-700 italic">
+                      "{selectedEnrollment.additionalNotes}"
+                    </p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Assign Certified Scholar</label>
+                    <select
+                      value={selectedEnrollment.assignedTutorId || ''}
+                      onChange={e => {
+                        const tut = tutors.find(t => t.id === e.target.value);
+                        updateEnrollment(selectedEnrollment.id, {
+                          assignedTutorId: e.target.value,
+                          assignedTutorName: tut ? tut.name : ''
+                        });
+                      }}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    >
+                      <option value="">-- Choose Scholar --</option>
+                      {tutors.map(t => (
+                        <option key={t.id} value={t.id}>{t.name} ({t.gender})</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">Application Status</label>
+                    <select
+                      value={selectedEnrollment.status}
+                      onChange={e => updateEnrollment(selectedEnrollment.id, { status: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    >
+                      <option value="New Application">New Application</option>
+                      <option value="Contacted">Contacted</option>
+                      <option value="Trial Recommended">Trial Recommended</option>
+                      <option value="Approved">Approved</option>
+                      <option value="Tutor Assigned">Tutor Assigned</option>
+                      <option value="Active">Active</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-[#E8E0D1] flex flex-wrap items-center justify-between gap-3">
+                  <a
+                    href={`https://wa.me/${selectedEnrollment.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Assalam-o-Alaikum ${selectedEnrollment.parentName || selectedEnrollment.studentName}! This is Noor E Quran Institute regarding your enrollment application for ${selectedEnrollment.courseName}.`)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-4 py-2 bg-[#25D366] text-white font-bold rounded-sm inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  >
+                    <WhatsappLogo className="w-4 h-4" weight="fill" />
+                    <span>WhatsApp Parent</span>
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newStu: Student = {
+                        id: `stu-${Date.now()}`,
+                        studentName: selectedEnrollment.studentName,
+                        parentName: selectedEnrollment.parentName || 'Parent',
+                        email: selectedEnrollment.parentEmail || selectedEnrollment.studentEmail || 'student@noorequraninstitute.me',
+                        phone: selectedEnrollment.phone,
+                        country: selectedEnrollment.country,
+                        courseId: selectedEnrollment.courseId,
+                        courseName: selectedEnrollment.courseName,
+                        packageId: selectedEnrollment.packageId,
+                        packageName: selectedEnrollment.packageName,
+                        tutorId: selectedEnrollment.assignedTutorId,
+                        tutorName: selectedEnrollment.assignedTutorName,
+                        preferredTime: selectedEnrollment.timeSlot,
+                        preferredDays: selectedEnrollment.preferredDays || ['Monday', 'Wednesday', 'Friday'],
+                        learningPace: selectedEnrollment.learningPace || 'Normal',
+                        status: 'Active',
+                        currentSurahOrLesson: 'Noorani Qaida / Tajweed Primer',
+                        notes: [],
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                      };
+                      setStudents(prev => [...prev, newStu]);
+                      updateEnrollment(selectedEnrollment.id, { status: 'Active' });
+                      setSelectedEnrollment(null);
+                      setActiveTab('students');
+                    }}
+                    className="px-4 py-2 bg-[#0B332D] text-[#F8F5EE] font-semibold uppercase tracking-wider rounded-sm hover:bg-[#07221E] cursor-pointer"
+                  >
+                    Approve &amp; Add to Students
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Lead Details Modal with Notes */}
+        {selectedLead && (
+          <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-lg bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="px-6 py-4 bg-[#0B332D] text-[#F8F5EE] flex items-center justify-between border-b border-[#B79A62]/30">
+                <div>
+                  <h3 className="font-editorial text-xl font-semibold">
+                    Trial Inquiry Details
+                  </h3>
+                  <p className="text-[11px] text-[#B79A62]">
+                    Student: {selectedLead.studentName} ({selectedLead.courseName})
+                  </p>
+                </div>
+                <button onClick={() => setSelectedLead(null)} className="text-gray-300 hover:text-white cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-4 overflow-y-auto text-xs font-sans">
+                <div className="grid grid-cols-2 gap-3 p-4 bg-[#F8F5EE] rounded-sm border border-[#E8E0D1]">
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Student</span>
+                    <span className="font-bold text-[#0B332D]">{selectedLead.studentName}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Parent</span>
+                    <span className="text-gray-800">{selectedLead.parentName || 'Not specified'}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Phone</span>
+                    <span className="font-mono text-gray-800">{selectedLead.phone}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Country</span>
+                    <span className="text-gray-800">{selectedLead.country}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Time Slot</span>
+                    <span className="text-gray-800">{selectedLead.timeSlot}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Tutor Pref</span>
+                    <span className="text-gray-800">{selectedLead.tutorGender}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Lead Status</label>
+                  <select
+                    value={selectedLead.status}
+                    onChange={e => updateLeadStatus(selectedLead.id, e.target.value as LeadStatus)}
+                    className="w-full px-3 py-2 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                  >
+                    <option value="New Lead">New Lead</option>
+                    <option value="Contacted">Contacted</option>
+                    <option value="Trial Scheduled">Trial Scheduled</option>
+                    <option value="Converted">Converted</option>
+                    <option value="Not Interested">Not Interested</option>
+                    <option value="Closed">Closed</option>
+                  </select>
+                </div>
+
+                {/* Notes History */}
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Administrative Notes</label>
+                  <div className="space-y-2 mb-2 max-h-32 overflow-y-auto">
+                    {selectedLead.notes && selectedLead.notes.length > 0 ? (
+                      selectedLead.notes.map((n, i) => (
+                        <div key={i} className="p-2 bg-[#F8F5EE] border border-[#E8E0D1] rounded-xs text-[11px]">
+                          <p className="text-gray-800">{n.text}</p>
+                          <p className="text-[9px] text-gray-400 mt-0.5">{n.author} • {new Date(n.createdAt).toLocaleDateString()}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-400 italic text-[11px]">No notes added yet.</p>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Add a new note..."
+                      value={newNoteText}
+                      onChange={e => setNewNoteText(e.target.value)}
+                      className="flex-1 px-3 py-1.5 border border-[#E8E0D1] bg-[#F8F5EE] rounded-sm focus:outline-none focus:border-[#0B332D]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => addLeadNote(selectedLead.id)}
+                      className="px-3 py-1.5 bg-[#0B332D] text-[#F8F5EE] font-semibold rounded-sm hover:bg-[#07221E] cursor-pointer"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-[#E8E0D1] flex justify-between">
+                  <button
+                    onClick={() => openWhatsAppForLead(selectedLead)}
+                    className="px-4 py-2 bg-[#25D366] text-white font-bold rounded-sm inline-flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  >
+                    <WhatsappLogo className="w-4 h-4" weight="fill" />
+                    <span>WhatsApp Inquiry</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedLead(null)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-900 cursor-pointer"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}
