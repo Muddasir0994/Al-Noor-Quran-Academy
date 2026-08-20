@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import { BlogPost } from '../types';
 import { getAllBlogPosts, saveBlogPost, deleteBlogPost } from '../lib/firestoreService';
 import { ImageCropModal } from '../components/ImageCropModal';
@@ -46,7 +46,7 @@ interface BlogEditorProps {
 }
 
 // Error Boundary for resilient rendering
-class BlogEditorErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
+class BlogEditorErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
   constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { hasError: false, error: null };

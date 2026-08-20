@@ -1,4 +1,20 @@
-import { Course, PackagePlan, Tutor, Testimonial, Article, IslamicResource } from '../types';
+import {
+  Course,
+  PackagePlan,
+  Tutor,
+  Testimonial,
+  Article,
+  IslamicResource,
+  FAQItem,
+  SiteSettings,
+  MediaAsset,
+  MessageTemplate,
+  PageSeoConfig,
+  FeeInvoice,
+  StudentReportCard,
+  TutorPayroll,
+  ActivityLog
+} from '../types';
 
 export const ALL_COURSES: Course[] = [
   {

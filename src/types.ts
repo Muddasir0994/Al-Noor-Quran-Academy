@@ -239,6 +239,7 @@ export interface EnrollmentApplication {
   preferredDays?: string[];
   preferredTimeRange?: string;
   learningPace?: LearningPace;
+  monthlyFee?: number;
   additionalNotes?: string;
   assignedTutorId?: string;
   assignedTutorName?: string;
@@ -322,6 +323,8 @@ export interface UserAccount {
   packageName?: string;
   tutorId?: string;
   tutorName?: string;
+  assignedTutorName?: string;
+  currentSurahOrLesson?: string;
   preferredTime?: TimeSlot;
   preferredDays?: string[];
   learningPace?: LearningPace;
