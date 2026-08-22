@@ -285,7 +285,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               src="/branding/logo.webp?v=2"
               onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
               alt="Noor E Quran Official Seal"
-              className="w-10 h-10 object-contain rounded-sm bg-[#07221E] border border-[#B79A62]/40 p-0.5 shadow-xs shrink-0"
+              className="w-10 h-10 object-contain rounded-sm bg-white border border-[#B79A62]/40 p-0.5 shadow-xs shrink-0"
               width="40"
               height="40"
             />

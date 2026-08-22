@@ -1226,7 +1226,7 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
               src="/branding/logo.webp?v=2"
               onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
               alt="Noor E Quran Official Seal"
-              className="w-9 h-9 object-contain rounded-sm bg-[#07221E] border border-[#B79A62]/40 p-0.5 shadow-xs"
+              className="w-9 h-9 object-contain rounded-sm bg-white border border-[#B79A62]/40 p-0.5 shadow-xs"
               width="36"
               height="36"
             />

@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({
                 src="/branding/logo.webp?v=2"
                 onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
                 alt="Noor E Quran Institute Official Seal"
-                className="w-9 h-9 object-contain rounded-sm border border-[#B79A62]/40 bg-[#0B332D] p-0.5 shadow-xs shrink-0"
+                className="w-9 h-9 object-contain rounded-sm border border-[#B79A62]/40 bg-white p-0.5 shadow-xs shrink-0"
                 width="36"
                 height="36"
               />
