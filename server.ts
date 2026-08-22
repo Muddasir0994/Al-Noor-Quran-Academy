@@ -1072,6 +1072,17 @@ async function startServer() {
       immutable: true
     }));
 
+    // Cache Branding & Icons assets
+    app.use('/branding', express.static(path.join(publicPath, 'branding'), {
+      maxAge: '30d',
+      immutable: true
+    }));
+
+    app.use('/icons', express.static(path.join(publicPath, 'icons'), {
+      maxAge: '30d',
+      immutable: true
+    }));
+
     // Cache root static files from dist and public (manifest, logo.png, logo.webp, robots, etc.)
     app.use(express.static(distPath, {
       maxAge: '7d',
