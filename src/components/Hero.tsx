@@ -46,11 +46,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onViewCourses }) => {
             
             {/* Small Quranic Verse in Classical Amiri Calligraphy */}
             <div className="inline-flex items-center gap-3">
-              <span className="w-6 h-[1px] bg-[#B79A62]" />
+              <span className="w-6 h-[1px] bg-[#8C6D37]" />
               <p className="font-arabic text-lg sm:text-xl text-[#0B332D] tracking-wide font-normal" dir="rtl">
                 اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ
               </p>
-              <span className="text-[11px] font-sans text-gray-500 uppercase tracking-widest pl-1">
+              <span className="text-[11px] font-sans text-gray-700 uppercase tracking-widest pl-1 font-semibold">
                 (Surah Al-Alaq)
               </span>
             </div>
@@ -112,14 +112,14 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onViewCourses }) => {
                   <p className="text-xs font-semibold text-[#0B332D] leading-tight">
                     Have questions?
                   </p>
-                  <p className="text-[11px] text-gray-500 mb-1.5 leading-tight">
+                  <p className="text-[11px] text-gray-600 mb-1.5 leading-tight font-medium">
                     We&apos;re here to help.
                   </p>
                   <a
                     href="https://wa.me/923274496163"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0B332D] hover:text-[#B79A62] transition-colors"
+                    className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0B332D] hover:text-[#8C6D37] transition-colors"
                   >
                     <span>Chat on WhatsApp</span>
                     <ArrowRight className="w-3 h-3" />
@@ -139,10 +139,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onViewCourses }) => {
               const Icon = item.icon;
               return (
                 <div key={idx} className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-sm bg-[#FCFBF8] border border-[#E8E0D1] flex items-center justify-center text-[#B79A62] shrink-0">
+                  <div className="w-8 h-8 rounded-sm bg-[#FCFBF8] border border-[#E8E0D1] flex items-center justify-center text-[#8C6D37] shrink-0">
                     <Icon className="w-4 h-4" weight="regular" />
                   </div>
-                  <span className="text-xs font-sans font-medium text-[#12201D]/90 tracking-tight">
+                  <span className="text-xs font-sans font-semibold text-[#0B332D] tracking-tight">
                     {item.label}
                   </span>
                 </div>
