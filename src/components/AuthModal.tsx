@@ -282,8 +282,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         <div className="px-6 py-5 bg-[#0B332D] text-[#F8F5EE] border-b border-[#B79A62]/30 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
-              src="/logo.webp"
-              onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/logo.png'; }}
+              src="/branding/logo.webp?v=2"
+              onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
               alt="Noor E Quran Official Seal"
               className="w-10 h-10 object-contain rounded-sm bg-[#07221E] border border-[#B79A62]/40 p-0.5 shadow-xs shrink-0"
               width="40"

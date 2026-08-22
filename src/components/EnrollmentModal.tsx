@@ -151,8 +151,8 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
           
           <div className="flex items-center gap-3 mb-2">
             <img
-              src="/logo.webp"
-              onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/logo.png'; }}
+              src="/branding/logo.webp?v=2"
+              onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
               alt="Noor E Quran Official Seal"
               className="w-10 h-10 object-contain rounded-xl bg-emerald-950 p-1 border border-[#D4A72C]/40 shadow-sm shrink-0"
               width="40"

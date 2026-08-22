@@ -1223,8 +1223,8 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
         <header className="px-6 py-3.5 bg-[#0B332D] text-[#F8F5EE] border-b border-[#B79A62]/30 flex items-center justify-between shadow-xs shrink-0">
           <div className="flex items-center gap-3">
             <img
-              src="/logo.webp"
-              onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/logo.png'; }}
+              src="/branding/logo.webp?v=2"
+              onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
               alt="Noor E Quran Official Seal"
               className="w-9 h-9 object-contain rounded-sm bg-[#07221E] border border-[#B79A62]/40 p-0.5 shadow-xs"
               width="36"

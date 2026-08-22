@@ -578,8 +578,8 @@ export const ClassroomStudio: React.FC<ClassroomStudioProps> = ({
       <div className="bg-[#0B332D] text-white px-4 sm:px-8 py-3.5 flex flex-wrap justify-between items-center border-b border-[#B79A62]/40 shadow-sm">
         <div className="flex items-center gap-3">
           <img
-            src="/logo.webp"
-            onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/logo.png'; }}
+            src="/branding/logo.webp?v=2"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
             alt="Noor E Quran Official Seal"
             className="w-9 h-9 object-contain rounded-xs bg-[#07221E] border border-[#B79A62]/40 p-0.5 shadow-sm"
             width="36"
