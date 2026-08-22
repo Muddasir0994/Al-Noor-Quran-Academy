@@ -140,9 +140,9 @@ export const TeacherPortal: React.FC<TeacherPortalProps> = ({
             src="/branding/logo.webp?v=2"
             onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
             alt="Noor E Quran Official Seal"
-            className="w-10 h-10 object-contain rounded-xl bg-white p-1 border border-[#D4A72C]/50 shadow-sm"
-            width="40"
-            height="40"
+            className="w-13 h-13 sm:w-14 sm:h-14 object-contain rounded-xl bg-white p-1 border-2 border-[#D4A72C]/60 shadow-md shrink-0"
+            width="56"
+            height="56"
           />
           <div>
             <div className="flex items-center gap-2">

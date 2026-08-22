@@ -157,9 +157,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               src="/branding/logo.webp?v=2"
               onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
               alt="Noor E Quran Institute Official Seal"
-              className="w-10 h-10 object-contain rounded-sm border border-[#B79A62]/40 bg-white p-0.5 shadow-xs group-hover:border-[#B79A62] transition-transform group-hover:scale-105 shrink-0"
-              width="40"
-              height="40"
+              className="w-13 h-13 sm:w-16 sm:h-16 object-contain rounded-lg border-2 border-[#B79A62]/50 bg-white p-1 shadow-md group-hover:border-[#B79A62] group-hover:shadow-lg transition-all group-hover:scale-105 shrink-0"
+              width="64"
+              height="64"
             />
 
             <div>

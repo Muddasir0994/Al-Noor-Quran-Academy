@@ -581,9 +581,9 @@ export const ClassroomStudio: React.FC<ClassroomStudioProps> = ({
             src="/branding/logo.webp?v=2"
             onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
             alt="Noor E Quran Official Seal"
-            className="w-9 h-9 object-contain rounded-xs bg-white border border-[#B79A62]/40 p-0.5 shadow-sm"
-            width="36"
-            height="36"
+            className="w-12 h-12 sm:w-13 sm:h-13 object-contain rounded-lg bg-white border-2 border-[#B79A62]/50 p-1 shadow-sm shrink-0"
+            width="52"
+            height="52"
           />
           <div>
             <div className="flex items-center gap-2">
