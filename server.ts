@@ -118,14 +118,14 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // Comprehensive Security Headers Middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
-  // 1. Content Security Policy (Hardened for Production: No unsafe-eval, strict scripts)
+  // 1. Content Security Policy (Hardened for Production with Clarity, Jitsi, Google Auth, and IndexNow support)
   const cspDirectives = [
     "default-src 'self'",
-    "script-src 'self' https://*.firebaseapp.com https://*.googleapis.com https://apis.google.com https://meet.jit.si https://*.jitsi.net https://8x8.vc https://*.8x8.vc",
+    "script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms https://*.firebaseapp.com https://*.googleapis.com https://apis.google.com https://meet.jit.si https://*.jitsi.net https://8x8.vc https://*.8x8.vc",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
-    "img-src 'self' data: blob: https: https://*.googleusercontent.com https://images.unsplash.com https://*.jitsi.net https://res.cloudinary.com",
-    "connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://meet.jit.si https://*.jitsi.net wss://meet.jit.si wss://*.jitsi.net https://8x8.vc https://*.8x8.vc wss://8x8.vc wss://*.8x8.vc https://api.ipify.org https://api.cloudinary.com",
+    "img-src 'self' data: blob: https: https://*.googleusercontent.com https://images.unsplash.com https://*.jitsi.net https://res.cloudinary.com https://c.bing.com https://*.clarity.ms",
+    "connect-src 'self' https://*.clarity.ms https://c.bing.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com https://meet.jit.si https://*.jitsi.net wss://meet.jit.si wss://*.jitsi.net https://8x8.vc https://*.8x8.vc wss://8x8.vc wss://*.8x8.vc https://api.ipify.org https://api.cloudinary.com https://api.indexnow.org",
     "frame-src 'self' https://*.firebaseapp.com https://accounts.google.com https://meet.jit.si https://*.jitsi.net https://8x8.vc https://*.8x8.vc",
     "media-src 'self' blob: data: https: https://meet.jit.si https://*.jitsi.net",
     "object-src 'none'",
@@ -1072,11 +1072,37 @@ async function startServer() {
       immutable: true
     }));
 
-    // Cache root static files (manifest, logo.png, logo.webp, robots, etc.)
+    // Cache root static files from dist and public (manifest, logo.png, logo.webp, robots, etc.)
     app.use(express.static(distPath, {
       maxAge: '7d',
       index: false
     }));
+
+    app.use(express.static(publicPath, {
+      maxAge: '7d',
+      index: false
+    }));
+
+    // Specific handlers for logo routes to prevent case-sensitivity 404s
+    app.get(['/Logo.webp', '/logo.webp'], (req, res) => {
+      const logoPath = path.join(publicPath, 'logo.webp');
+      if (fs.existsSync(logoPath)) {
+        res.setHeader('Content-Type', 'image/webp');
+        res.setHeader('Cache-Control', 'public, max-age=604800');
+        return res.sendFile(logoPath);
+      }
+      res.status(404).send('Logo not found');
+    });
+
+    app.get(['/Logo.png', '/logo.png'], (req, res) => {
+      const logoPath = path.join(publicPath, 'logo.png');
+      if (fs.existsSync(logoPath)) {
+        res.setHeader('Content-Type', 'image/png');
+        res.setHeader('Cache-Control', 'public, max-age=604800');
+        return res.sendFile(logoPath);
+      }
+      res.status(404).send('Logo not found');
+    });
 
     // Cache template HTML in memory to eliminate redundant disk I/O and reduce document response latency
     let cachedBaseHtml: string | null = null;

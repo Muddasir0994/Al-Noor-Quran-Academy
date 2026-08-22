@@ -47,7 +47,8 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="lg:col-span-4 space-y-4">
             <Link to="/" className="flex items-center gap-3">
               <img
-                src="/Logo.webp"
+                src="/logo.webp"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/logo.png'; }}
                 alt="Noor E Quran Institute Official Seal"
                 className="w-9 h-9 object-contain rounded-sm border border-[#B79A62]/40 bg-[#0B332D] p-0.5 shadow-xs shrink-0"
                 width="36"

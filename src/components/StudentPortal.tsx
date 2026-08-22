@@ -181,7 +181,8 @@ export const StudentPortal: React.FC<StudentPortalProps> = ({
       <div className="bg-[#064E3B] text-white px-4 sm:px-8 py-4 flex flex-wrap justify-between items-center border-b border-[#D4A72C]/40 shadow-sm">
         <div className="flex items-center gap-3">
           <img
-            src="/Logo.webp"
+            src="/logo.webp"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/logo.png'; }}
             alt="Noor E Quran Official Seal"
             className="w-10 h-10 object-contain rounded-xl bg-emerald-950 p-1 border border-[#D4A72C]/50 shadow-sm"
             width="40"
