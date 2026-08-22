@@ -7,27 +7,25 @@
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="Mo00kFmNDAh8ysAzvG_XdefZvMo0jtWYj-S1_XAt_CU" />
     <meta name="google-site-verification" content="m0d159Ik-wQg7l4KP1fxB_w06Ny0102_qzcYmN7tS7E" />
-    <!-- Microsoft Clarity Tracking Code (Deferred after load for performance) -->
+    <!-- Microsoft Clarity Tracking Code (User Interaction / Idle Deferred) -->
     <script type="text/javascript">
-      window.addEventListener('load', function() {
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(function() {
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "y5ynyp6qf7");
-          });
-        } else {
-          setTimeout(function() {
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "y5ynyp6qf7");
-          }, 1500);
+      (function() {
+        var clarityLoaded = false;
+        function loadClarity() {
+          if (clarityLoaded) return;
+          clarityLoaded = true;
+          (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "y5ynyp6qf7");
         }
-      });
+        window.addEventListener('scroll', loadClarity, { passive: true, once: true });
+        window.addEventListener('touchstart', loadClarity, { passive: true, once: true });
+        window.addEventListener('mousemove', loadClarity, { passive: true, once: true });
+        window.addEventListener('keydown', loadClarity, { passive: true, once: true });
+        setTimeout(loadClarity, 5000);
+      })();
     </script>
     <!-- Primary SEO Metadata -->
     <title>Noor E Quran Institute | 1-on-1 Online Quran Classes with Certified Tutors</title>
@@ -92,9 +90,11 @@
     <meta name="twitter:image" content="https://noorequraninstitute.me/branding/logo.png" />
     <meta name="twitter:image:alt" content="Noor E Quran Institute Online Classes" />
 
-    <!-- Performance: LCP Image Preload & Asynchronous Non-Blocking Fonts -->
+    <!-- Performance: LCP Image Preload & Critical Web Fonts to Eliminate CLS -->
     <link rel="preload" as="image" href="/images/banners/hero-banner.webp" fetchpriority="high" type="image/webp" />
     <link rel="preload" as="image" href="/branding/logo.webp?v=2" fetchpriority="high" type="image/webp" />
+    <link rel="preload" href="https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSvfedN4.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtImSqn7B6D.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@700&display=swap" />
