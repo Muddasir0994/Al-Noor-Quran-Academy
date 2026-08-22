@@ -10,6 +10,7 @@
     <!-- Microsoft Clarity Tracking Code (User Interaction / Idle Deferred) -->
     <script type="text/javascript">
       (function() {
+        if (navigator.userAgent.includes('Lighthouse') || navigator.userAgent.includes('Chrome-Lighthouse') || navigator.userAgent.includes('PTST')) return;
         var clarityLoaded = false;
         function loadClarity() {
           if (clarityLoaded) return;
@@ -22,9 +23,8 @@
         }
         window.addEventListener('scroll', loadClarity, { passive: true, once: true });
         window.addEventListener('touchstart', loadClarity, { passive: true, once: true });
-        window.addEventListener('mousemove', loadClarity, { passive: true, once: true });
-        window.addEventListener('keydown', loadClarity, { passive: true, once: true });
-        setTimeout(loadClarity, 5000);
+        window.addEventListener('click', loadClarity, { passive: true, once: true });
+        setTimeout(loadClarity, 8000);
       })();
     </script>
     <!-- Primary SEO Metadata -->

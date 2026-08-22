@@ -77,8 +77,9 @@ function AppContent() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  // Fetch real data on mount
+  // Fetch real data on mount (Deferred to prevent render delay)
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
       try {
         const [cRes, pRes, tRes, testRes] = await Promise.all([
@@ -87,6 +88,7 @@ function AppContent() {
           fetch('/api/tutors'),
           fetch('/api/testimonials')
         ]);
+        if (!isMounted) return;
         if (cRes.ok) {
           const data = await cRes.json();
           if (Array.isArray(data) && data.length > 0) setCourses(data);
@@ -107,7 +109,12 @@ function AppContent() {
         console.warn('Using baseline academy data:', err);
       }
     };
-    fetchData();
+
+    const timer = setTimeout(fetchData, 800);
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
   }, []);
 
   const handleOpenTrial = (courseName?: string, genderPref?: 'Male' | 'Female' | 'No Preference') => {
