@@ -211,7 +211,7 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ onViewPost }) => {
           insertion = `<a href="${value || 'https://noorequraninstitute.me'}">${selected || 'link text'}</a>`;
           break;
         case 'insertImage':
-          insertion = `<img src="${value || 'https://noorequraninstitute.me/images/hero-banner.webp'}" alt="Article Illustration" class="rounded-sm shadow-xs my-4" />\n`;
+          insertion = `<img src="${value || 'https://noorequraninstitute.me/images/banners/hero-banner.webp'}" alt="Article Illustration" class="rounded-sm shadow-xs my-4" />\n`;
           break;
         default:
           insertion = selected;

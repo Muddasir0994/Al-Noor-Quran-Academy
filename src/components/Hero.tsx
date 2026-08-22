@@ -91,7 +91,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onViewCourses }) => {
             {/* Photographic Container with Subtle Architectural Arch Framing */}
             <div className="relative rounded-t-[120px] rounded-b-sm overflow-hidden border border-[#E8E0D1] bg-[#FCFBF8] shadow-sm">
               <img
-                src="/images/hero-banner.webp"
+                src="/images/banners/hero-banner.webp"
                 alt="Student studying the Holy Quran in peaceful natural light"
                 className="w-full h-[420px] sm:h-[480px] object-cover filter brightness-[0.98] contrast-[1.02]"
                 loading="eager"
