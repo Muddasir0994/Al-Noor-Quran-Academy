@@ -45,18 +45,23 @@ export const Footer: React.FC<FooterProps> = ({
           
           {/* Brand Column (Col 1-4) */}
           <div className="lg:col-span-4 space-y-4">
-            <Link to="/" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-4">
               <img
                 src="/branding/logo.webp?v=2"
                 onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
                 alt="Noor E Quran Institute Official Seal"
-                className="w-14 h-14 sm:w-16 sm:h-16 object-contain rounded-lg border-2 border-[#B79A62]/60 bg-white p-1 shadow-md shrink-0"
-                width="64"
-                height="64"
+                className="w-18 h-18 sm:w-22 sm:h-22 object-contain rounded-xl border-2 border-[#B79A62]/70 bg-white p-1.5 shadow-xl shrink-0"
+                width="88"
+                height="88"
               />
-              <span className="font-editorial text-xl font-bold text-[#F8F5EE] tracking-tight">
-                Noor E Quran Institute
-              </span>
+              <div>
+                <span className="font-editorial text-2xl sm:text-3xl font-bold text-[#F8F5EE] tracking-tight block">
+                  Noor E Quran Institute
+                </span>
+                <span className="text-[11px] uppercase tracking-widest text-[#B79A62] font-semibold">
+                  Global Online Islamic Academy
+                </span>
+              </div>
             </Link>
 
             <p className="text-xs text-[#E8E0D1]/70 font-sans leading-relaxed max-w-xs">

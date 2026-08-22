@@ -151,27 +151,27 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Brand Logo: Official Academy Seal + Typography */}
           <Link
             to="/"
-            className="flex items-center gap-3 text-left group cursor-pointer"
+            className="flex items-center gap-3.5 text-left group cursor-pointer py-1"
           >
             <img
               src="/branding/logo.webp?v=2"
               onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/branding/logo.png?v=2'; }}
               alt="Noor E Quran Institute Official Seal"
-              className="w-13 h-13 sm:w-16 sm:h-16 object-contain rounded-lg border-2 border-[#B79A62]/50 bg-white p-1 shadow-md group-hover:border-[#B79A62] group-hover:shadow-lg transition-all group-hover:scale-105 shrink-0"
-              width="64"
-              height="64"
+              className="w-16 h-16 sm:w-20 sm:h-20 lg:w-22 lg:h-22 object-contain rounded-xl border-2 border-[#B79A62]/60 bg-white p-1.5 shadow-lg group-hover:border-[#B79A62] group-hover:shadow-xl transition-all group-hover:scale-105 shrink-0"
+              width="88"
+              height="88"
             />
 
             <div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="font-editorial text-xl sm:text-2xl font-bold tracking-tight text-[#0B332D]">
+              <div className="flex items-baseline gap-2">
+                <span className="font-editorial text-2xl sm:text-3xl font-bold tracking-tight text-[#0B332D]">
                   Noor E Quran
                 </span>
-                <span className="text-[10px] tracking-widest uppercase text-[#B79A62] font-semibold">
+                <span className="text-[11px] sm:text-xs tracking-widest uppercase text-[#B79A62] font-bold">
                   Institute
                 </span>
               </div>
-              <span className="block font-arabic text-[11px] text-gray-500 leading-none -mt-0.5" dir="rtl">
+              <span className="block font-arabic text-xs sm:text-sm text-gray-500 font-medium leading-tight mt-0.5" dir="rtl">
                 معهد نور القرآن الكريم
               </span>
             </div>
