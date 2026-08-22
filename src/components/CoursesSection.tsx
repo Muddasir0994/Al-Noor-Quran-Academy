@@ -72,7 +72,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
                     {course.name}
                   </h3>
                   {course.arabicName && (
-                    <p className="font-arabic text-xs text-gray-400" dir="rtl">
+                    <p className="font-arabic text-xs text-[#0B332D]/70" dir="rtl">
                       {course.arabicName}
                     </p>
                   )}

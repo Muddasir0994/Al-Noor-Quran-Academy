@@ -94,7 +94,7 @@ export const TutorsSection: React.FC<TutorsSectionProps> = ({
                     </span>
                   </div>
 
-                  <p className="text-xs text-gray-500 font-sans">
+                  <p className="text-xs text-gray-700 font-sans font-medium">
                     {Array.isArray(featuredTutor.languages) ? featuredTutor.languages.join(', ') : featuredTutor.languages} • {featuredTutor.qualification}
                   </p>
 
@@ -148,7 +148,7 @@ export const TutorsSection: React.FC<TutorsSectionProps> = ({
                         <p className="text-[10px] font-sans font-bold text-[#8C6D37] uppercase tracking-wider">
                           {tutor.specialization}
                         </p>
-                        <p className="text-xs text-gray-500 font-sans">
+                        <p className="text-xs text-gray-700 font-sans font-medium">
                           {tutor.experienceYears}+ Years • {Array.isArray(tutor.languages) ? tutor.languages.join(', ') : tutor.languages}
                         </p>
                       </div>

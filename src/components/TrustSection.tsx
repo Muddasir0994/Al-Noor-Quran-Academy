@@ -83,7 +83,7 @@ export const TrustSection: React.FC<TrustSectionProps> = ({ testimonials = [] })
                 <p className="text-sm font-sans font-bold text-[#0B332D]">
                   {currentTestimonial.name}
                 </p>
-                <p className="text-xs text-gray-500 font-sans">
+                <p className="text-xs text-gray-700 font-sans font-medium">
                   {currentTestimonial.studentOrParent} • {currentTestimonial.location}
                 </p>
               </div>
@@ -107,7 +107,7 @@ export const TrustSection: React.FC<TrustSectionProps> = ({ testimonials = [] })
                       </span>
                       <Icon className="w-5 h-5 text-[#B79A62]" weight="regular" />
                     </div>
-                    <p className="text-xs text-gray-600 font-sans mt-0.5">
+                    <p className="text-xs text-gray-700 font-sans mt-0.5">
                       {principle.label}
                     </p>
                   </div>
@@ -115,7 +115,7 @@ export const TrustSection: React.FC<TrustSectionProps> = ({ testimonials = [] })
               })}
             </div>
 
-            <p className="text-[11px] text-gray-400 font-sans pt-2 border-t border-[#E8E0D1] leading-relaxed">
+            <p className="text-[11px] text-gray-600 font-sans pt-2 border-t border-[#E8E0D1] leading-relaxed font-medium">
               Every lesson is conducted 1-on-1 with accredited educators under ongoing academic review.
             </p>
           </div>
