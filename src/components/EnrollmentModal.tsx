@@ -149,13 +149,24 @@ export const EnrollmentModal: React.FC<EnrollmentModalProps> = ({
             <X className="w-5 h-5" />
           </button>
           
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D4A72C]/20 text-[#D4A72C] text-[11px] font-bold uppercase tracking-wider mb-2">
-            <ShieldCheck className="w-3.5 h-3.5" weight="duotone" />
-            Academy Admission Application
+          <div className="flex items-center gap-3 mb-2">
+            <img
+              src="/Logo.webp"
+              alt="Noor E Quran Official Seal"
+              className="w-10 h-10 object-contain rounded-xl bg-emerald-950 p-1 border border-[#D4A72C]/40 shadow-sm shrink-0"
+              width="40"
+              height="40"
+            />
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#D4A72C]/20 text-[#D4A72C] text-[10px] font-bold uppercase tracking-wider">
+                <ShieldCheck className="w-3 h-3" weight="duotone" />
+                Academy Admission Application
+              </div>
+              <h2 className="text-xl sm:text-2xl font-heading font-extrabold tracking-tight">
+                Enroll in Noor E Quran Institute
+              </h2>
+            </div>
           </div>
-          <h2 className="text-2xl font-heading font-extrabold tracking-tight">
-            Enroll in Noor E Quran Institute
-          </h2>
           <p className="text-xs sm:text-sm text-emerald-100 mt-1">
             Complete your admission profile. Your designated tutor will be assigned with custom timing and learning pace.
           </p>

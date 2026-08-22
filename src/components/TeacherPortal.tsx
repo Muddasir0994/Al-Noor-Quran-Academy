@@ -136,9 +136,13 @@ export const TeacherPortal: React.FC<TeacherPortalProps> = ({
       {/* Top Header Bar */}
       <div className="bg-[#064E3B] text-white px-4 sm:px-8 py-4 flex flex-wrap justify-between items-center border-b border-[#D4A72C]/40 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#D4A72C] text-[#064E3B] rounded-2xl flex items-center justify-center font-bold shadow-sm">
-            <GraduationCap className="w-6 h-6 text-[#064E3B]" weight="duotone" />
-          </div>
+          <img
+            src="/Logo.webp"
+            alt="Noor E Quran Official Seal"
+            className="w-10 h-10 object-contain rounded-xl bg-emerald-950 p-1 border border-[#D4A72C]/50 shadow-sm"
+            width="40"
+            height="40"
+          />
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-base sm:text-lg font-heading font-bold text-white tracking-wide">

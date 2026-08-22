@@ -1222,9 +1222,13 @@ Thank you for trusting Noor E Quran Institute with your child's sacred education
         {/* Top Editorial Navigation Bar */}
         <header className="px-6 py-3.5 bg-[#0B332D] text-[#F8F5EE] border-b border-[#B79A62]/30 flex items-center justify-between shadow-xs shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-sm bg-[#07221E] border border-[#B79A62]/40 flex items-center justify-center text-[#B79A62]">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
+            <img
+              src="/Logo.webp"
+              alt="Noor E Quran Official Seal"
+              className="w-9 h-9 object-contain rounded-sm bg-[#07221E] border border-[#B79A62]/40 p-0.5 shadow-xs"
+              width="36"
+              height="36"
+            />
             <div>
               <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#B79A62]">
                 ACADEMY ADMINISTRATION &amp; ERP

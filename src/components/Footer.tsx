@@ -46,12 +46,13 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Brand Column (Col 1-4) */}
           <div className="lg:col-span-4 space-y-4">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-sm border border-[#B79A62]/40 bg-[#0B332D] flex items-center justify-center text-[#B79A62]">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 21V10C4 6 8 3 12 3C16 3 20 6 20 10V21" />
-                  <path d="M8 21V13C8 11 9.5 9.5 12 9.5C14.5 9.5 16 11 16 13V21" />
-                </svg>
-              </div>
+              <img
+                src="/Logo.webp"
+                alt="Noor E Quran Institute Official Seal"
+                className="w-9 h-9 object-contain rounded-sm border border-[#B79A62]/40 bg-[#0B332D] p-0.5 shadow-xs shrink-0"
+                width="36"
+                height="36"
+              />
               <span className="font-editorial text-xl font-bold text-[#F8F5EE] tracking-tight">
                 Noor E Quran Institute
               </span>

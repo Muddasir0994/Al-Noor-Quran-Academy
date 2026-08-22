@@ -8,7 +8,12 @@
   "theme_color": "#064E3B",
   "icons": [
     {
-      "src": "/logo.webp",
+      "src": "/Logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    },
+    {
+      "src": "/logo.png",
       "sizes": "512x512",
       "type": "image/png"
     }

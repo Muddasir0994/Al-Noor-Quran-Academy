@@ -577,9 +577,13 @@ export const ClassroomStudio: React.FC<ClassroomStudioProps> = ({
       {/* Studio Header Bar */}
       <div className="bg-[#0B332D] text-white px-4 sm:px-8 py-3.5 flex flex-wrap justify-between items-center border-b border-[#B79A62]/40 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-[#07221E] border border-[#B79A62]/40 text-[#B79A62] rounded-xs flex items-center justify-center font-bold text-lg shadow-sm">
-            ن
-          </div>
+          <img
+            src="/Logo.webp"
+            alt="Noor E Quran Official Seal"
+            className="w-9 h-9 object-contain rounded-xs bg-[#07221E] border border-[#B79A62]/40 p-0.5 shadow-sm"
+            width="36"
+            height="36"
+          />
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-base sm:text-lg font-editorial font-bold text-[#F8F5EE] tracking-wide">

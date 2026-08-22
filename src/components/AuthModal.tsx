@@ -280,21 +280,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         
         {/* Editorial Modal Header */}
         <div className="px-6 py-5 bg-[#0B332D] text-[#F8F5EE] border-b border-[#B79A62]/30 flex items-center justify-between">
-          <div className="space-y-0.5">
-            <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#B79A62]">
-              NOOR E QURAN INSTITUTE
-            </p>
-            <h2 className="font-editorial text-2xl text-[#F8F5EE] font-semibold tracking-tight">
-              {authMode === 'forgot'
-                ? 'Reset Password'
-                : activeRole === 'admin'
-                ? 'Academy Admin Portal'
-                : activeRole === 'teacher'
-                ? 'Faculty & Teacher Portal'
-                : authMode === 'signup'
-                ? 'Student Enrollment Portal'
-                : 'Student Learning Portal'}
-            </h2>
+          <div className="flex items-center gap-3">
+            <img
+              src="/Logo.webp"
+              alt="Noor E Quran Official Seal"
+              className="w-10 h-10 object-contain rounded-sm bg-[#07221E] border border-[#B79A62]/40 p-0.5 shadow-xs shrink-0"
+              width="40"
+              height="40"
+            />
+            <div className="space-y-0.5">
+              <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#B79A62]">
+                NOOR E QURAN INSTITUTE
+              </p>
+              <h2 className="font-editorial text-2xl text-[#F8F5EE] font-semibold tracking-tight">
+                {authMode === 'forgot'
+                  ? 'Reset Password'
+                  : activeRole === 'admin'
+                  ? 'Academy Admin Portal'
+                  : activeRole === 'teacher'
+                  ? 'Faculty & Teacher Portal'
+                  : authMode === 'signup'
+                  ? 'Student Enrollment Portal'
+                  : 'Student Learning Portal'}
+              </h2>
+            </div>
           </div>
           <button
             onClick={onClose}

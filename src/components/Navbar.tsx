@@ -148,18 +148,18 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className={`w-full bg-[#FCFBF8] border-b border-[#E8E0D1] transition-all duration-300 ${isScrolled ? 'shadow-xs py-3' : 'py-4'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
-          {/* Brand Logo: Architectural Minimal Arch + Typography */}
+          {/* Brand Logo: Official Academy Seal + Typography */}
           <Link
             to="/"
             className="flex items-center gap-3 text-left group cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-sm border border-[#B79A62]/40 bg-[#0B332D] flex items-center justify-center text-[#B79A62] shadow-xs group-hover:border-[#B79A62] transition-colors shrink-0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 21V10C4 6 8 3 12 3C16 3 20 6 20 10V21" />
-                <path d="M8 21V13C8 11 9.5 9.5 12 9.5C14.5 9.5 16 11 16 13V21" />
-                <line x1="12" y1="3" x2="12" y2="7" />
-              </svg>
-            </div>
+            <img
+              src="/Logo.webp"
+              alt="Noor E Quran Institute Official Seal"
+              className="w-10 h-10 object-contain rounded-sm border border-[#B79A62]/40 bg-[#0B332D] p-0.5 shadow-xs group-hover:border-[#B79A62] transition-transform group-hover:scale-105 shrink-0"
+              width="40"
+              height="40"
+            />
 
             <div>
               <div className="flex items-baseline gap-1.5">
