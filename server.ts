@@ -1072,6 +1072,23 @@ async function startServer() {
       immutable: true
     }));
 
+    // Smart categorized image resolver (maps legacy flat /images/:file to /images/banners, /images/courses, /images/faculty)
+    app.get('/images/:file', (req, res, next) => {
+      const filename = req.params.file;
+      const subdirs = ['banners', 'courses', 'faculty', 'uploads'];
+      for (const sub of subdirs) {
+        const candidate = path.join(publicPath, 'images', sub, filename);
+        if (fs.existsSync(candidate)) {
+          res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
+          if (filename.endsWith('.webp')) res.setHeader('Content-Type', 'image/webp');
+          else if (filename.endsWith('.png')) res.setHeader('Content-Type', 'image/png');
+          else if (filename.endsWith('.jpg') || filename.endsWith('.jpeg')) res.setHeader('Content-Type', 'image/jpeg');
+          return res.sendFile(candidate);
+        }
+      }
+      next();
+    });
+
     // Cache Branding & Icons assets
     app.use('/branding', express.static(path.join(publicPath, 'branding'), {
       maxAge: '30d',
