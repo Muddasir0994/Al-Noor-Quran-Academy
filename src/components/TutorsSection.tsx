@@ -32,7 +32,7 @@ export const TutorsSection: React.FC<TutorsSectionProps> = ({
         {/* Section Header: Editorial & Restrained */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 lg:mb-24 gap-6">
           <div className="max-w-2xl">
-            <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest mb-3.5">
+            <p className="text-[11px] font-sans font-bold text-[#8C6D37] uppercase tracking-widest mb-3.5">
               OUR TEACHERS
             </p>
             <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl text-[#0B332D] leading-[1.1] font-semibold tracking-tight">
@@ -89,7 +89,7 @@ export const TutorsSection: React.FC<TutorsSectionProps> = ({
                     <h3 className="font-editorial text-3xl text-[#0B332D] font-semibold">
                       {featuredTutor.name}
                     </h3>
-                    <span className="text-xs font-sans font-semibold text-[#B79A62] uppercase tracking-wider">
+                    <span className="text-xs font-sans font-semibold text-[#8C6D37] uppercase tracking-wider">
                       {featuredTutor.specialization}
                     </span>
                   </div>
@@ -145,7 +145,7 @@ export const TutorsSection: React.FC<TutorsSectionProps> = ({
                         <h4 className="font-editorial text-2xl text-[#0B332D] font-semibold">
                           {tutor.name}
                         </h4>
-                        <p className="text-[10px] font-sans font-bold text-[#B79A62] uppercase tracking-wider">
+                        <p className="text-[10px] font-sans font-bold text-[#8C6D37] uppercase tracking-wider">
                           {tutor.specialization}
                         </p>
                         <p className="text-xs text-gray-500 font-sans">

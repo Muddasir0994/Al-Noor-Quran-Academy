@@ -92,7 +92,7 @@ export const TrustSection: React.FC<TrustSectionProps> = ({ testimonials = [] })
 
           {/* Right Column: Academic Standards Panel */}
           <div className="lg:col-span-4 bg-[#FCFBF8] border border-[#E8E0D1] rounded-sm p-6 sm:p-8 space-y-6">
-            <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest">
+            <p className="text-[11px] font-sans font-bold text-[#8C6D37] uppercase tracking-widest">
               ACADEMIC STANDARDS
             </p>
 

@@ -30,7 +30,7 @@ export const StorySection: React.FC<StorySectionProps> = ({ onOpenTrial }) => {
 
           {/* Right Column: Editorial Typography & Story */}
           <div className="lg:col-span-6 space-y-6">
-            <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest">
+            <p className="text-[11px] font-sans font-bold text-[#8C6D37] uppercase tracking-widest">
               OUR MISSION
             </p>
 

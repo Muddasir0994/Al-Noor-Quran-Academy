@@ -241,7 +241,7 @@ export const CoursesPage: React.FC<CoursesPageProps> = ({
       <section className="bg-[#F8F5EE] border-y border-[#E8E0D1] py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="text-center space-y-2 max-w-2xl mx-auto">
-            <span className="text-[11px] font-sans font-bold uppercase tracking-widest text-[#B79A62]">
+            <span className="text-[11px] font-sans font-bold uppercase tracking-widest text-[#8C6D37]">
               SIDE-BY-SIDE MATRIX
             </span>
             <h2 className="font-editorial text-3xl sm:text-4xl text-[#0B332D] font-bold">

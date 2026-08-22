@@ -46,7 +46,7 @@ export const MethodologySection: React.FC<MethodologySectionProps> = ({ onOpenTr
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
-          <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest mb-3">
+          <p className="text-[11px] font-sans font-bold text-[#8C6D37] uppercase tracking-widest mb-3">
             HOW IT WORKS
           </p>
           <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl text-[#0B332D] font-semibold tracking-tight">

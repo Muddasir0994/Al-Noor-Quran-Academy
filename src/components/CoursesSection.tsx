@@ -35,7 +35,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
         
         {/* Editorial Section Header */}
         <div className="max-w-2xl mb-16 lg:mb-24">
-          <p className="text-[11px] font-sans font-bold text-[#B79A62] uppercase tracking-widest mb-3.5">
+          <p className="text-[11px] font-sans font-bold text-[#8C6D37] uppercase tracking-widest mb-3.5">
             OUR COURSES
           </p>
           <h2 className="font-editorial text-3xl sm:text-4xl lg:text-5xl text-[#0B332D] leading-[1.15] font-semibold tracking-tight">
