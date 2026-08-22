@@ -95,6 +95,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenTrial, onViewCourses }) => {
                 alt="Student studying the Holy Quran in peaceful natural light"
                 className="w-full h-[420px] sm:h-[480px] object-cover filter brightness-[0.98] contrast-[1.02]"
                 loading="eager"
+                fetchPriority="high"
+                width="600"
+                height="480"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B332D]/20 via-transparent to-transparent pointer-events-none" />
             </div>

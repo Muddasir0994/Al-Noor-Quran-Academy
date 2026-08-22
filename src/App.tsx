@@ -13,18 +13,20 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { WhatsAppWidget } from './components/WhatsAppWidget';
 
-// Pages
+// Main Landing Page
 import { HomePage } from './pages/HomePage';
-import { CoursesPage } from './pages/CoursesPage';
-import { TeachersPage } from './pages/TeachersPage';
-import { TuitionPage } from './pages/TuitionPage';
-import { HowItWorksPage } from './pages/HowItWorksPage';
-import { AboutPage } from './pages/AboutPage';
-import { BlogListPage } from './pages/BlogListPage';
-import { BlogPostPage } from './pages/BlogPostPage';
-import { ContactPage } from './pages/ContactPage';
-import { FAQPage } from './pages/FAQPage';
-import { NotFoundPage } from './pages/NotFoundPage';
+
+// Lazy-loaded secondary pages
+const CoursesPage = lazy(() => import('./pages/CoursesPage').then(m => ({ default: m.CoursesPage })));
+const TeachersPage = lazy(() => import('./pages/TeachersPage').then(m => ({ default: m.TeachersPage })));
+const TuitionPage = lazy(() => import('./pages/TuitionPage').then(m => ({ default: m.TuitionPage })));
+const HowItWorksPage = lazy(() => import('./pages/HowItWorksPage').then(m => ({ default: m.HowItWorksPage })));
+const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
+const BlogListPage = lazy(() => import('./pages/BlogListPage').then(m => ({ default: m.BlogListPage })));
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage').then(m => ({ default: m.BlogPostPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
+const FAQPage = lazy(() => import('./pages/FAQPage').then(m => ({ default: m.FAQPage })));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 
 // Lazy-loaded specialized landings & portals
 const InternationalLanding = lazy(() => import('./components/InternationalLanding').then(m => ({ default: m.InternationalLanding })));

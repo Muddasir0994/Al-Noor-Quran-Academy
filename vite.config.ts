@@ -22,7 +22,7 @@ export default defineConfig(() => {
           manualChunks(id) {
             if (id.includes('node_modules')) {
               if (id.includes('firebase')) return 'vendor-firebase';
-              if (id.includes('react-markdown')) return 'vendor-markdown';
+              if (id.includes('react-markdown') || id.includes('remark') || id.includes('rehype')) return 'vendor-markdown';
               if (id.includes('@phosphor-icons')) return 'vendor-icons';
               return 'vendor-core';
             }
